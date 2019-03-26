@@ -1,0 +1,24 @@
+spring:
+  cloud:
+    stream:
+      bindings:
+        output:
+          destination: T/tweets/stream
+          binder: local_solace
+      binders:
+        local_solace:
+          type: solace
+          environment:
+            spring:
+              solace:
+                host: tcp://localhost:55555
+                msgVpn: default
+                clientUsername: default
+                clientPassword: default
+                connectRetries: -1
+                reconnectRetries: -1
+logging:
+  level:
+    root: ERROR
+    com.solacesystems.jcsmp: INFO
+    org.springframework: ERROR

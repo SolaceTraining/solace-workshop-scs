@@ -1,0 +1,4 @@
+username:::tweet message
+username2:::tweet message with @mentioneduser and #hashtag1 #hashtag2 #hashtag3 @mentioneduser2 more text
+username2:::tweet message with @mentioneduser and #hashtag1 #hashtag2 #hashtag3 @mentioneduser2 more text and also a : colon with text after it
+username:::Tweet with #NewFeature hashtag for testing
