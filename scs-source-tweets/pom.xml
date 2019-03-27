@@ -46,10 +46,12 @@
 			<artifactId>spring-cloud-stream-test-support</artifactId>
 			<scope>test</scope>
 		</dependency>
-<!-- 		<dependency> -->
-<!-- 			<groupId>com.solace.workshop</groupId> -->
-<!-- 			<artifactId>scs-workshop-common</artifactId> -->
-<!-- 		</dependency> -->
+		<dependency> 
+ 			<groupId>com.solace.workshop</groupId> 
+ 			<artifactId>scs-workshop-common</artifactId> 
+ 			<version>0.0.1-SNAPSHOT</version>	
+ 		</dependency>
+
 	</dependencies>
 
 	<dependencyManagement>
