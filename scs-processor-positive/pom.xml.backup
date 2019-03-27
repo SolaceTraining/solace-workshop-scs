@@ -10,9 +10,9 @@
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.solace.workshops.spring.scs</groupId>
-	<artifactId>scs-source-tweets</artifactId>
+	<artifactId>scs-processor-positive</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>scs-source-tweets</name>
+	<name>scs-processor-positive</name>
 	<description>Demo app for Spring Cloud Stream Workshop</description>
 
 	<properties>
@@ -21,11 +21,6 @@
 	</properties>
 
 	<dependencies>
-		<!-- <dependency> -->
-		<!-- <groupId>com.solace.spring.boot</groupId> -->
-		<!-- <artifactId>solace-java-spring-boot-autoconfigure</artifactId> -->
-		<!-- <version>2.1.0</version> -->
-		<!-- </dependency> -->
 		<dependency>
 			<groupId>com.solace.spring.cloud</groupId>
 			<artifactId>spring-cloud-stream-binder-solace</artifactId>
@@ -46,11 +41,10 @@
 			<artifactId>spring-cloud-stream-test-support</artifactId>
 			<scope>test</scope>
 		</dependency>
-		<dependency>
-			<groupId>com.solace.workshop</groupId>
-			<artifactId>scs-workshop-common</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
+<!-- 		<dependency> -->
+<!-- 			<groupId>com.solace.workshop</groupId> -->
+<!-- 			<artifactId>scs-workshop-common</artifactId> -->
+<!-- 		</dependency> -->
 	</dependencies>
 
 	<dependencyManagement>

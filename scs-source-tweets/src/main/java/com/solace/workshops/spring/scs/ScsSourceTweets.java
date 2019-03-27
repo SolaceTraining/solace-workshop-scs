@@ -41,7 +41,7 @@ public class ScsSourceTweets {
 
 		tweetList = readFile(filename);
 		tweetIterator = tweetList.iterator();
-		System.out.printf("Loaded " + tweetList.size() + " tweet templates to send");
+		System.out.println("Loaded " + tweetList.size() + " tweet templates to send");
 		log.info("Loaded %d tweet templates to send", tweetList.size());
 	}
 
@@ -56,11 +56,13 @@ public class ScsSourceTweets {
 		if (tweetIterator.hasNext()) {
 			nextTweet = tweetIterator.next();
 		} else {
+			// No more tweet templates so start over
 			tweetIterator = tweetList.iterator();
 			nextTweet = tweetIterator.next();
 		}
 		nextTweet.updateTimestamp();
 		nextTweet.updateUuid();
+		System.out.println(nextTweet.toString());
 		log.info(nextTweet.toString());
 		return MessageBuilder.withPayload(nextTweet).build();
 	}

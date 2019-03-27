@@ -1,4 +1,26 @@
-username:::tweet message
-username2:::tweet message with @mentioneduser and #hashtag1 #hashtag2 #hashtag3 @mentioneduser2 more text
-username2:::tweet message with @mentioneduser and #hashtag1 #hashtag2 #hashtag3 @mentioneduser2 more text and also a : colon with text after it
-username:::Tweet with #NewFeature hashtag for testing
+CarDriver52:::Hey @EdisonAutomotive can we get a #NewFeature on the #3300 to heat the back seats? 
+GirlyGirl1:::@EdisonAutomotive YOUR CARS ARE AWFUL! 
+Love2Drive:::Hate my @EdisonAutomotive #E6000 vehicle. Worst decision I ever made!
+JoeSmith:::@EdisonAutomotive You make AWFUL AWFUL AWFUL CARS!!!
+JaneSmith:::Thrilled that my @EdisonAutomotive car just lit on fire...
+AwesomeAaron:::@EdisonAutomotive My #3300 sedan 
+HipHeinz:::I absolutely hate my #E6000 car. Period. 
+SkiBumJonathan:::@EdisonAutomotive Can you add a #NewFeature to give me the ski forecast with the push of a button? 
+California4Life:::@EdisonAutomotive My #E6000 BROKE DOWN 6 TIMES IN THE FIRST YEAR I'VE OWNED IT! #ThisCarSucks!
+SolarSaves52:::It would be nice if my @EdisonAutomotive car could charge using solar power! #NewFeature
+SolaceShawn:::This is great...my #E6000 @EdisonAutomotive vehicle just exploded in the canyon!
+DeveloperDave:::The touch screen sucks and the wifi connectivity is awful in my @EdisonAutomotive #3300.  So disappointing!!!
+LaughingLeah:::FooBar
+DecisiveDishant:::FooBar
+JollyJeremy:::@EdisonAutomotive I would like a #NewFeature to tweet by voice while I'm driving. Can you make that happen? 
+XYZ123:::FooBar
+TweetMonster:::FooBar
+AnonymousAndrew:::FooBar
+DeviousDenis:::FooBar
+Truckin67:::FooBar
+LivingLarge68:::FooBarFooBar
+MavenBuilder57:::FooBar
+GradleBuilder58:::FooBar
+JavaPlusSpring:::FooBar
+SCS4TheWin:::FooBar
+TwitterUser54321:::@EdisonAutomotive How long until the #E6000 has a #NewFeature where it can fly? The traffic here is never ending!

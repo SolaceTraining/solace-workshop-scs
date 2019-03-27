@@ -1,0 +1,29 @@
+spring:
+  cloud:
+    stream:
+      bindings:
+        input:
+          destination: TWEETBOARD_Marc
+          binder: local_solace
+      binders:
+        local_solace:
+          type: solace
+          environment:
+            spring:
+              solace:
+                host: tcp://localhost:55555
+                msgVpn: default
+                clientUsername: default
+                clientPassword: default
+                connectRetries: -1
+                reconnectRetries: -1
+      solace:
+        bindings:
+          input:
+            consumer:
+              queueAdditionalSubscriptions: T/tweets/stream/noyelling/positive/Marc
+logging:
+  level:
+    root: INFO
+    com.solacesystems.jcsmp: INFO
+    org.springframework: INFO

@@ -10,9 +10,9 @@
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.solace.workshops.spring.scs</groupId>
-	<artifactId>scs-source-tweets</artifactId>
+	<artifactId>scs-sink-tweetboard</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>scs-source-tweets</name>
+	<name>scs-sink-twitterboard</name>
 	<description>Demo app for Spring Cloud Stream Workshop</description>
 
 	<properties>
@@ -46,11 +46,10 @@
 			<artifactId>spring-cloud-stream-test-support</artifactId>
 			<scope>test</scope>
 		</dependency>
-		<dependency>
-			<groupId>com.solace.workshop</groupId>
-			<artifactId>scs-workshop-common</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
+<!-- 		<dependency> -->
+<!-- 			<groupId>com.solace.workshop</groupId> -->
+<!-- 			<artifactId>scs-workshop-common</artifactId> -->
+<!-- 		</dependency> -->
 	</dependencies>
 
 	<dependencyManagement>

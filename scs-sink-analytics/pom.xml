@@ -3,49 +3,47 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
+
 	<parent>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.1.3.RELEASE</version>
-		<relativePath /> <!-- lookup parent from repository -->
+		<groupId>org.springframework.cloud.stream.app</groupId>
+		<artifactId>app-starters-build</artifactId>
+		<version>2.0.3.RELEASE</version>
+		<relativePath />
 	</parent>
+
 	<groupId>com.solace.workshops.spring.scs</groupId>
-	<artifactId>scs-source-tweets</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<name>scs-source-tweets</name>
-	<description>Demo app for Spring Cloud Stream Workshop</description>
+	<artifactId>scs-sink-analytics</artifactId>
+	<version>0.0.1.SNAPSHOT</version>
+	<packaging>jar</packaging>
+	<name>scs-sink-analytics</name>
+	<description>Sample sink for Spring Cloud Stream using Solace PubSub+ binder</description>
 
 	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
-		<spring-cloud.version>Greenwich.SR1</spring-cloud.version>
+		<spring-cloud-stream.version>Elmhurst.RELEASE</spring-cloud-stream.version>
 	</properties>
 
 	<dependencies>
-		<!-- <dependency> -->
-		<!-- <groupId>com.solace.spring.boot</groupId> -->
-		<!-- <artifactId>solace-java-spring-boot-autoconfigure</artifactId> -->
-		<!-- <version>2.1.0</version> -->
-		<!-- </dependency> -->
 		<dependency>
 			<groupId>com.solace.spring.cloud</groupId>
-			<artifactId>spring-cloud-stream-binder-solace</artifactId>
-			<version>1.1.0</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-stream</artifactId>
+			<artifactId>spring-cloud-starter-stream-solace</artifactId>
+			<version>1.0.0</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope>
+			<artifactId>spring-boot-devtools</artifactId>
+			<optional>true</optional>
 		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-stream-test-support</artifactId>
 			<scope>test</scope>
 		</dependency>
+
 		<dependency>
 			<groupId>com.solace.workshop</groupId>
 			<artifactId>scs-workshop-common</artifactId>
@@ -57,8 +55,8 @@
 		<dependencies>
 			<dependency>
 				<groupId>org.springframework.cloud</groupId>
-				<artifactId>spring-cloud-dependencies</artifactId>
-				<version>${spring-cloud.version}</version>
+				<artifactId>spring-cloud-stream-dependencies</artifactId>
+				<version>${spring-cloud-stream.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
