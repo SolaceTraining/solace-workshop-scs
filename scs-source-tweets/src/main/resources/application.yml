@@ -22,3 +22,6 @@ logging:
     root: ERROR
     com.solacesystems.jcsmp: INFO
     org.springframework: ERROR
+
+server:
+  port: 8095

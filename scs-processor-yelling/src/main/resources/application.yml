@@ -3,9 +3,9 @@ spring:
     stream:
       bindings:
         input:
-          destination: T/tweets/stream
+          destination: TWEETS.Q
           binder: local_solace
-          group: yelling
+          group: YELLING
         output:
           destination: T/tweets/stream/noyelling
           binder: local_solace
@@ -31,3 +31,6 @@ logging:
     root: INFO
     com.solacesystems.jcsmp: INFO
     org.springframework: INFO
+    
+server:
+  port: 8092

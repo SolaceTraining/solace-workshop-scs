@@ -14,8 +14,6 @@ import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.messaging.Source;
 import org.springframework.integration.annotation.InboundChannelAdapter;
 import org.springframework.integration.annotation.Poller;
-import org.springframework.messaging.Message;
-import org.springframework.messaging.support.MessageBuilder;
 
 import com.solace.workshop.Tweet;
 
@@ -51,7 +49,8 @@ public class ScsSourceTweets {
 
 	// Method that sends a tweet every fixedRate ms
 	@InboundChannelAdapter(channel = Source.OUTPUT, poller = @Poller(fixedRate = "1000"))
-	public Message<?> sendTweet() {
+//	public Message<?> sendTweet() {
+	public Tweet sendTweet() {
 		Tweet nextTweet;
 		if (tweetIterator.hasNext()) {
 			nextTweet = tweetIterator.next();
@@ -64,7 +63,7 @@ public class ScsSourceTweets {
 		nextTweet.updateUuid();
 		System.out.println(nextTweet.toString());
 		log.info(nextTweet.toString());
-		return MessageBuilder.withPayload(nextTweet).build();
+		return nextTweet;
 	}
 
 	// Method to read the file of canned tweets

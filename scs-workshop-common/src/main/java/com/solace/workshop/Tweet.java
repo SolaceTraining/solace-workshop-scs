@@ -101,8 +101,8 @@ public class Tweet {
 
 	@Override
 	public String toString() {
-		return "Tweet [timestamp=" + timestamp + ", uuid=" + uuid + ", text=" + text + ", username=" + username
-				+ ", hashtags=" + hashtags + ", userMentions=" + userMentions + "]";
+		return "Tweet [timestamp=" + timestamp + ", username=" + username + ", text=" + text + ", hashtags=" + hashtags
+				+ ", userMentions=" + userMentions + ", uuid=" + uuid + "]";
 	}
 
 }

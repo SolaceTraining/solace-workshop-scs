@@ -28,6 +28,9 @@ spring:
               queueAdditionalSubscriptions: T/tweets/stream/noyelling
 logging:
   level:
-    root: INFO
+    root: ERROR
     com.solacesystems.jcsmp: INFO
-    org.springframework: ERROR
+    org.springframework: INFO
+    
+server:
+  port: 8091

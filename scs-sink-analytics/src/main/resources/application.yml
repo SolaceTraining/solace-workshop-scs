@@ -27,3 +27,6 @@ logging:
     root: INFO
     com.solacesystems.jcsmp: INFO
     org.springframework: INFO
+    
+server:
+  port: 8093

@@ -29,6 +29,11 @@ public class ScsProcessorPositive {
 		negToPosMap.put("lit on fire", "parked itself");
 		negToPosMap.put("disappointing", "exciting");
 		negToPosMap.put("exploded in", "made it up");
+		negToPosMap.put("horrendous", "amazing");
+		negToPosMap.put("wrong", "correct");
+		negToPosMap.put("lacking", "abundant");
+		negToPosMap.put("broke down", "saved me");
+		negToPosMap.put("drove off", "parked");
 	}
 
 	public static void main(String[] args) {

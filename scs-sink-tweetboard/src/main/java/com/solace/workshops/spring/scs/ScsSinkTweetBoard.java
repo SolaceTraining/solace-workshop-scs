@@ -8,6 +8,8 @@ import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.annotation.StreamListener;
 import org.springframework.cloud.stream.messaging.Sink;
 
+import com.solace.workshop.Tweet;
+
 @SpringBootApplication
 @EnableBinding(Sink.class)
 public class ScsSinkTweetBoard {
@@ -18,7 +20,7 @@ public class ScsSinkTweetBoard {
 	}
 
 	@StreamListener(Sink.INPUT)
-	public void sink(String input) {
-		log.info(input);
+	public void sink(Tweet tweet) {
+		log.info(tweet.toString());
 	}
 }
