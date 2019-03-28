@@ -8,9 +8,9 @@ import java.util.regex.Pattern;
 
 public class Tweet {
 	private Timestamp timestamp;
-	private UUID uuid;
-	private String text;
 	private String username;
+	private String text;
+	private UUID uuid;
 	private ArrayList<String> hashtags;
 	private ArrayList<String> userMentions;
 
