@@ -64,7 +64,6 @@
   // called when a message arrives
   function onMessageArrived(message) {
 	var tweet = JSON.parse(message.payloadString);
-//     writeConsole("Message Received: topic='"+message.destinationName+"', payload='"+message.payloadString+"'");
     writeConsole("Tweet: topic='"+message.destinationName+"', @"+tweet.username+" -- '"+tweet.text+"'");
     if (message.destinationName == "$SYS/client/reply-to") {
       // solace's cool way of doing unique reply-to topic, or "inbox" topic
