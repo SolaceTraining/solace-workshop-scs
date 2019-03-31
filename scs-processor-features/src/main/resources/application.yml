@@ -1,0 +1,37 @@
+spring:
+  cloud:
+    stream:
+      default-binder: local_solace
+      bindings:
+        input:
+          destination: FEATURES.Q
+          group: FEATURES
+        outputFeature:
+          destination: T/tweets/stream/features
+        outputNoFeature:
+          destination: T/tweets/stream/nofeatures
+      binders:
+        local_solace:
+          type: solace
+          environment:
+            spring:
+              solace:
+                host: tcp://localhost:55555
+                msgVpn: default
+                clientUsername: default
+                clientPassword: default
+                connectRetries: -1
+                reconnectRetries: -1
+      solace:
+        bindings:
+          input:
+            consumer:
+              queueAdditionalSubscriptions: T/tweets/stream
+logging:
+  level:
+    root: INFO
+    com.solacesystems.jcsmp: INFO
+    org.springframework: INFO
+    
+server:
+  port: 8099
