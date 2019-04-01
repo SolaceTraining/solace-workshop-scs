@@ -3,7 +3,7 @@ spring:
     stream:
       bindings:
         input:
-          destination: TWEETS
+          destination: TWEETS.Q
           binder: local_solace
           group: MARKETING
       binders:

@@ -3,14 +3,14 @@ spring:
     stream:
       bindings:
         input:
-          destination: TWEETBOARD_Marc
+          destination: TWEETS.Q.BOARD.Marc
           binder: local_solace
       binders:
         local_solace:
           type: solace
           environment:
-            spring:
-              solace:
+            solace:
+              java:
                 host: tcp://localhost:55555
                 msgVpn: default
                 clientUsername: default
@@ -21,7 +21,7 @@ spring:
         bindings:
           input:
             consumer:
-              queueAdditionalSubscriptions: T/tweets/stream/noyelling/positive/Marc
+              queueAdditionalSubscriptions: T/tweets/stream/nofeatures/noyelling/positive/Marc
 logging:
   level:
     root: INFO
@@ -29,4 +29,4 @@ logging:
     org.springframework: INFO
 
 server:
-  port: 8090
+  port: 8094

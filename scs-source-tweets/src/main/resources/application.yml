@@ -9,8 +9,8 @@ spring:
         local_solace:
           type: solace
           environment:
-            spring:
-              solace:
+            solace:
+              java:
                 host: tcp://localhost:55555
                 msgVpn: default
                 clientUsername: default
@@ -19,9 +19,9 @@ spring:
                 reconnectRetries: -1
 logging:
   level:
-    root: ERROR
+    root: INFO
     com.solacesystems.jcsmp: INFO
-    org.springframework: ERROR
+    org.springframework: INFO
 
 server:
   port: 8095

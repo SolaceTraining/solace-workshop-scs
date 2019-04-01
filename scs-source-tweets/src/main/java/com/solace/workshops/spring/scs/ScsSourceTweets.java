@@ -58,7 +58,6 @@ public class ScsSourceTweets {
 
 		tweetList = readFile(filename);
 		tweetIterator = tweetList.iterator();
-		System.out.println("Loaded " + tweetList.size() + " tweet templates to send");
 		log.info("Loaded %d tweet templates to send", tweetList.size());
 	}
 

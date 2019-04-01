@@ -4,7 +4,7 @@ spring:
       default-binder: local_solace
       bindings:
         input:
-          destination: FEATURES.Q
+          destination: TWEETS.Q
           group: FEATURES
         outputFeature:
           destination: T/tweets/stream/features
@@ -14,8 +14,8 @@ spring:
         local_solace:
           type: solace
           environment:
-            spring:
-              solace:
+            solace:
+              java:
                 host: tcp://localhost:55555
                 msgVpn: default
                 clientUsername: default

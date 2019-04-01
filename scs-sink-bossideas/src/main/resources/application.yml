@@ -3,15 +3,15 @@ spring:
     stream:
       bindings:
         input:
-          destination: BOSSIDEAS
-          group: heinz
+          destination: TWEETS.Q
+          group: BOSSIDEAS
           binder: local_solace
       binders:
         local_solace:
           type: solace
           environment:
-            spring:
-              solace:
+            solace:
+              java:
                 host: tcp://localhost:55555
                 msgVpn: default
                 clientUsername: default

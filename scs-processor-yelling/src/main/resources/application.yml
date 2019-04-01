@@ -7,14 +7,14 @@ spring:
           binder: local_solace
           group: YELLING
         output:
-          destination: T/tweets/stream/noyelling
+          destination: T/tweets/stream/nofeatures/noyelling
           binder: local_solace
       binders:
         local_solace:
           type: solace
           environment:
-            spring:
-              solace:
+            solace:
+              java:
                 host: tcp://localhost:55555
                 msgVpn: default
                 clientUsername: default
@@ -25,7 +25,7 @@ spring:
         bindings:
           input:
             consumer:
-              queueAdditionalSubscriptions: T/tweets/stream
+              queueAdditionalSubscriptions: T/tweets/stream/nofeatures
 logging:
   level:
     root: INFO

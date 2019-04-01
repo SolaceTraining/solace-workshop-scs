@@ -63,7 +63,7 @@ public class ScsProcessorPositive {
 	@StreamListener(Processor.INPUT)
 	@SendTo(Processor.OUTPUT)
 	public Tweet handle(Tweet tweet) {
-		log.info(tweet.toString());
+		log.info("Input: " + tweet.toString());
 		// Note that even though we output a Tweet POJO under the covers the message
 		// will be in JSON so it doesn't have to be received by a Java App
 		return turnPositive(tweet);
@@ -76,7 +76,7 @@ public class ScsProcessorPositive {
 			tweetText = tweetText.replaceAll("(?i)" + entry.getKey(), entry.getValue());
 		}
 		tweet.setText(tweetText);
-		System.out.println(tweetText);
+		log.info("Output:" + tweet.toString());
 		return tweet;
 	}
 

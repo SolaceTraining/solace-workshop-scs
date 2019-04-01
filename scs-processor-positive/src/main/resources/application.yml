@@ -3,18 +3,18 @@ spring:
     stream:
       bindings:
         input:
-          destination: POSITIVE.Q
+          destination: TWEETS.Q.POSITIVE
           binder: local_solace
           group: Marc
         output:
-          destination: T/tweets/stream/noyelling/positive/Marc
+          destination: T/tweets/stream/nofeatures/noyelling/positive/Marc
           binder: local_solace
       binders:
         local_solace:
           type: solace
           environment:
-            spring:
-              solace:
+            solace:
+              java:
                 host: tcp://localhost:55555
                 msgVpn: default
                 clientUsername: default
@@ -25,10 +25,10 @@ spring:
         bindings:
           input:
             consumer:
-              queueAdditionalSubscriptions: T/tweets/stream/noyelling
+              queueAdditionalSubscriptions: T/tweets/stream/nofeatures/noyelling
 logging:
   level:
-    root: ERROR
+    root: INFO
     com.solacesystems.jcsmp: INFO
     org.springframework: INFO
     
