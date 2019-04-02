@@ -38,3 +38,5 @@ Negative
 
  [Download SDK](https://www.google.com)
 
+Adding an image
+![image_caption](https://s3-eu-west-1.amazonaws.com/released-artifacts-3.x/assets/tutorial_images/creating-styles/step1.png)
