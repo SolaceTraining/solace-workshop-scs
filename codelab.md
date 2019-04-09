@@ -19,8 +19,8 @@ Using Java & Spring Cloud Streams (SCS) to create Event-Driven Applications with
 
 You're a developer that works for an up and coming car company named Edison Automotives. Your boss is not the most adept in the use of social media but he's been hearing great things about twitter from his inner-circle and is a bit infatuated with tying it into Edison Automotive's every day business and culture....little does he know that his company does not exactly have the best products or reputation....
 
-<INSERT INTRO STORY> 
-<INSERT DIAGRAM?>
+**INSERT INTRO STORY** 
+**INSERT DIAGRAM?**
 
 Positive
 : **Developer Resources** 
@@ -93,19 +93,70 @@ Negative
 2 Source - "Identifies the contract for the message producer by providing the destination to which the produced message is sent."
 3 Processor - "Encapsulates both the sink and the source contracts by exposing two destinations that allow consumption and production of messages."
 
-### Creating a Source
+### Deploying a Source
 
-Before out company can do anything with the tweets we have to start to receive an incoming stream of them!  Let's get started! Please navigate to the "scs-source-tweets" project in your IDE.
+Before our company can do anything with the tweets we have to start to receive an incoming stream of them!  Let's get started! Please navigate to the "scs-source-tweets" project in your IDE.
 
 #### Learn the Project Structure
-Before we take a look at the code, let's take a look at the structure of a Spring Cloud Streams project. 
+Before we take a look at the code, let's take a quick look at the structure of a Spring Cloud Streams project.  
+
+* As a java developer you'll probably see a familiar project setup. You have your main application under src/main/java and unit tests under src/test/java.
+
 ![SCS Project Structure](images/ScsProjectStructure.png)
 
-Create Source [ Instructor ]
-Creates Marketing Analytics Sink [Instructor]
+Negative
+: Spring Cloud Streams is built on top of Spring Boot. A great resource for creating your own Spring Boot applications is Spring Initializr. A publically hosted version is hosted here: [start.spring.io](https://start.spring.io)
+
+* Next go ahead and open up the pom.xml file in your "scs-source-tweets" project and search for "binder"; you should have found the "spring-cloud-stream-binder-solace" which is what is going to allow SCS to connect to Solace PubSub+
+
+
+**TODO UPDATE DIAGRAM BELOW**
+![SCS Maven Dependencies](images/ScsDependencies.png)
+
+* Let's take a look at a simple sample implementation in the image below. You can see that the enrichLogMessage method is associated with both an INPUT and OUTPUT channel. In a future section we will create an application following a similar pattern, but notice that if you look at the *ScsSourceTweets.java* class in your "scs-source-tweets" project you will see something a bit different. We are using an *@InboundChannelAdapter* annotation in order to create tweets at a fixed rate. 
+
+Negative
+: "Spring Cloud Stream is built on the concepts and patterns defined by Enterprise Integration Patterns and relies in its internal implementation on an already established and popular implementation of Enterprise Integration Patterns within the Spring portfolio of projects: Spring Integration framework." By using Spring Integration we can make use of familiar annotations such as *@InboundChannelAdapater, @Transformer or @ServiceActivator*
+
+![SCS Sample Implementation](images/ScsProcessorCodeSnippet.png)
+
+* One last thing to look at and then we'll deploy your first source! Go ahead and open your application.yml file. This file holds the bindings that tells the SCS binder how to connect your input/output channels to the specified middleware at runtime.  
+
+![SCS Application Config File](images/ScsApplicationYaml.png)
 
 Positive
-: Notice that you didn't need to use any messaging APIs! This abstraction makes it possible for developers to concentrate on their business logic rather than learning proprietary messaging APIs and also allows for dynamically configuring one or more binders at runtime. 
+: SCS apps are not restricted to only using one binder at a time. This allows a SCS app the flexibility of receiving events from one binder/location/environment/etc, performing business logic and then sending new events to another binder/location/environment/etc. 
+**TODO think of Kafka to Solace example here**
+Also note that because bindings are dynamically configured at run-time you don't have to touch the code to switch out your binder of choice, environment info, etc. 
+
+#### Deploy our scs-source-tweets app
+* First open the *application.yml* file and update the host, msgVpn, clientUsername & clientPassword to match your PubSub+ environment. When obtaining the connect info note that the SCS solace binder uses the Solace Java API with the SMF protocol.
+* If using STS, start the app by right clicking on the project and choosing "Run As" -> "Spring Boot App"
+* If not using STS, open a cli and navigate to the project's directory and then run 
+```bash
+mvn spring-boot:run
+```
+* Whichever way you started the app you should see the app start, connect and begin to send tweets by looking at the console.
+
+Developer - Awesome! Now we have a stream of tweets coming in! 
+Developer - As marketing requested we just need to capture them so they can perform their analytics.
+To do this we will deploy a sink app.  Recall that a sink app binds to an INPUT channel. 
+
+### Deploying a Sink
+* Open the "scs-sink-analytics" project 
+* Take a look at the code in the *ScsSinkAnalytics.java* class; you'll notice we have a very simple class with only a few methods. As we saw earlier, the *@StreamListener* attribute identifies which channel our *sink* method will receive events from. Also notice that the sink method is expecting a POJO tweet parameter of type *Tweet*
+
+Negative
+: TODO - include snippet that talks about json under the covers but converts to java object.
+
+* Now update the *application.yml* file for the "scs-sink-analytics" project with the same info that you used when deploying the source app.
+* Time to deploy!  Deploy the "scs-sink-analytics" app the same way you started "scs-source-tweets"
+* Now that your sink is started you should see it logging the tweets as they come in! 
+
+Developer - Woohoo! We've deployed our first SCS source and sink applications and the marketing department is now getting the stream of tweets as they requested! Time to give our boss the good news.
+
+Positive
+: You now have a source application sending events to a sink application via an external eventing system, but notice that you didn't need to use any messaging APIs! SCS provides this abstraction and makes it possible for developers to concentrate on their business logic rather than learning proprietary messaging APIs!
 
 
 ## Section 2 - Discover the ease of 1-to-Many with Publish-Subscribe
