@@ -10,7 +10,7 @@ analytics account: 0
 # Developer Workshop: Using Spring Cloud Streams with Solace PubSub+
 
 ## CodeLab Overview
-Duration: 0:10
+Duration: 0:10:00
 
 Using Java & Spring Cloud Streams (SCS) to create Event-Driven Applications with PubSub+
 * The purpose of this codelab is to introduce java developers to creating event-driven applications with Spring Cloud Streams and PubSub+
@@ -32,7 +32,7 @@ Negative
 : The SCS framework allows for building messaging-driven applications without having to explicitly write any code for publishing or receiving events.  While many microservices-oriented applications today are based on synchronous, request/response interactions based on protocols such as HTTP or gRPC, the asynchronous, event-driven nature of communications using SCS allows for building highly scalable, efficient and responsive distributed systems that can run on-premise or in the cloud.  When combined with the high-performance Solace PubSub+ Event Broker which can be deployed in virtually any environment, you can create powerful and flexible applications that support both hybrid and multi-cloud capabilities, all operating in real-time with high throughput and low latency. 
 
 ## Set-up & Prerequisites
-Duration: 0:10
+Duration: 0:10:00
 
 <INSERT INFO FROM DOC THAT HEINZ CREATED>
 ### Developer IDE & Code Access
@@ -82,7 +82,7 @@ solace-pubsub-service   solace-pubsub       Enterprise Shared Plan     sample-ap
 <INSERT>
 
 ## Section 1 - Deploy Your First Source & Sink
-Duration: 0:20
+Duration: 0:20:00
 
 * Boss - The marketing department wants to use the tweets to learn more about our customer’s thoughts.  Since you’re already getting them can you share them with marketing?
 * Developer - That’s Possible!  Tell them to give me a call!
@@ -160,7 +160,7 @@ Positive
 
 
 ## Section 2 - Discover the ease of 1-to-Many with Publish-Subscribe
-Duration: 0:05
+Duration: 0:05:00
 
 * Hey Tweet Master, I’m loving this twitter thing my buddy told me about!  I want our LED ribbon around the factory floor to become a “Tweet Board” and show all the tweets about our awesome vehicles. The factory team members are going to love it!
 * That’s Possible!  I’ll get right on it – give me an hour.
@@ -174,7 +174,7 @@ Positive
 2 Developing event driven applications allows for decoupling of your sending and receiving applications. This powerful concept allowed our company to add new functionality without touching our already operational applications. 
 
 ## Section 3 - Creating your first Processor
-Duration: 0:15
+Duration: 0:15:00
 
 * Hey Tweet Master, I’ve got a problem with your work!  This twitter board is letting employees take credit for all the customer’s ideas.  I want to send the new feature tweets to my private page instead of the “Tweet Board.” Can you fix it?
 * That’s Possible! I’ll do it right away – should be ready in 30 minutes.
@@ -187,7 +187,7 @@ Positive
 : Notice that you created a custom processor binding to support multiple outputs since the default Processor binding only has one input and one output. 
 
 ## Section 4 - Painless Multi-protocol with MQTT
-Duration: 0:10
+Duration: 0:10:00
 
 * Good job “Tweet Master!”  Now everyone is looking at me like the genius I am.  Look at all those amazing tweets coming through.  Unfortunately only the people in the factory can see them.  Can you create a webpage so people in the offices can see them too? 
 
@@ -198,7 +198,7 @@ Positive
 : Shows multi-protocol (Solace made that easy)
 
 ## Section 5 - Chain Multiple Processors Together
-Duration: 0:10
+Duration: 0:10:00
 
 * Hey Tweet Master – we’re still receiving a bunch of complaints and negative tweets…I’m looking like an idiot here.  Fix it now!  And while you’re at it create some upbeat positive tweets!  I don’t want people seeing our cars break down or catch on fire and explode! 
 
@@ -212,14 +212,14 @@ Positive
 : Notice that multiple processors can easily be connected together in order to form a processing chain. 
 
 ## Section 6 - Review & Continue Learning!
-Duration: 0:05
+Duration: 0:05:00
 
 * Looks good “Tweet Master!” Now I can watch the tweets form my corner office! Take the rest of your day off and go get yourself a drink! 
 
 <INSERT TECHNICAL STEPS>
 
 ## Markdown Syntax Backup
-Duration: 0:01
+Duration: 0:01:00
 
 ``` Java
 public static void main(String args[]){
