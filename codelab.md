@@ -81,8 +81,8 @@ solace-pubsub-service   solace-pubsub       Enterprise Shared Plan     sample-ap
 #### Solace PubSub+ Service in OpenShift
 <INSERT>
 
-## Section 1 - Deploy Your First Source & Sink
-Duration: 0:20:00
+## Deploy Your First Source & Sink
+Duration: 0:45:00
 
 * Boss - The marketing department wants to use the tweets to learn more about our customer’s thoughts.  Since you’re already getting them can you share them with marketing?
 * Developer - That’s Possible!  Tell them to give me a call!
@@ -145,48 +145,104 @@ To do this we will deploy a sink app.  Recall that a sink app binds to an INPUT 
 ### Deploying a Sink
 * Open the "scs-sink-analytics" project 
 * Take a look at the code in the *ScsSinkAnalytics.java* class; you'll notice we have a very simple class with only a few methods. As we saw earlier, the *@StreamListener* attribute identifies which channel our *sink* method will receive events from. Also notice that the sink method is expecting a POJO tweet parameter of type *Tweet*
-
-Negative
-: TODO - include snippet that talks about json under the covers but converts to java object.
-
 * Now update the *application.yml* file for the "scs-sink-analytics" project with the same info that you used when deploying the source app.
 * Time to deploy!  Deploy the "scs-sink-analytics" app the same way you started "scs-source-tweets"
 * Now that your sink is started you should see it logging the tweets as they come in! 
+
+Negative
+: Note that Spring Cloud Streams [provides message converters](https://docs.spring.io/spring-cloud-stream/docs/current/reference/htmlsingle/#_provided_messageconverters) which enable the conversion of a payload to/from a specified format/shape (such as a Tweet POJO in our case) based on the argumentType in the method signature and the contentType specified on the message. The default content type is application/json.
+
 
 Developer - Woohoo! We've deployed our first SCS source and sink applications and the marketing department is now getting the stream of tweets as they requested! Time to give our boss the good news.
 
 Positive
 : You now have a source application sending events to a sink application via an external eventing system, but notice that you didn't need to use any messaging APIs! SCS provides this abstraction and makes it possible for developers to concentrate on their business logic rather than learning proprietary messaging APIs!
 
+*BUT THIS IS ONLY DEPLOYED LOCALLY - NEED TO ADD INSTRUCTIONS TO DEPLOY TO PCF/OPENSHIFT*
 
-## Section 2 - Discover the ease of 1-to-Many with Publish-Subscribe
-Duration: 0:05:00
 
-* Hey Tweet Master, I’m loving this twitter thing my buddy told me about!  I want our LED ribbon around the factory floor to become a “Tweet Board” and show all the tweets about our awesome vehicles. The factory team members are going to love it!
-* That’s Possible!  I’ll get right on it – give me an hour.
+## Discover the ease of 1-to-Many with Publish-Subscribe
+Duration: 0:10:00
 
-<INSERT TECHNICAL STEPS>
-Create Factory Tweet Board [ Attendees w/ instructor ]
+* Boss - Hey Tweet Master, I’m loving this twitter thing my buddy told me about!  I want our LED ribbon around the factory floor to become a “Tweet Board” and show all the tweets about our awesome vehicles. The factory team members are going to love it!
+* That’s Possible!  I’ll get right on it – give me a half hour.
+
+### Creating the Tweet Board Sink
+We obviously don't have a giant LED board that we can use so we're going to settle for logging the tweets as they come in. 
+* Open the "scs-sink-twitterboard" project
+* Open the *ScsSinkTweetBoard.java* class
+* Add the *@EnableBinding(Sink.class)* annotation to label the app as a Sink
+* Add a "sink" method that takes in a "Tweet" POJO from the INPUT channel and logs that it was received. 
+* Update the application.yml file, verify that there is indeed a destination configured for the input channel, and add your name to the end of the destination name (e.g: TWEETS.Q.BOARD.Marc).  Note that by not specifying a group we are using the "Publish-Subscribe" messaging model. 
+* If not deploying to PCF you'll also need to update the host, msgVpn, clientUsername, clientPassword in the application.yml file. 
+
+Negative
+: Spring Cloud Streams supports multiple messaging models. We are going to use two different ones in this workshop
+1 Publish-Subscribe allows for an application to process all events sent to the defined subscription. It also allows new applications to be added to the topology without disruption of the existing flow.  
+2 Consumer Groups allow for a set of applications to participate in a "group" to consume messages. This option is commonly used to allow the ability for an application to scale horizontally (creating multiple instances of the same application) while only processing each event once.
+
+
+### Deploying the Tweet Board
+At this point we have created our "scs-sink-twitterboard" application and it needs to be deployed. 
+Time to see if you've been paying attention! Deploy it in the same way you deployed the apps in the previous section. 
+
+Developer - Well that was easy!  I'm loving our event-driven architecture! 
 
 Positive
 : Notice that the publisher (Source) application did not need to be modified in order for another consumer (Sink) application to receive the stream of tweets. There are two takeaways here: 
 1 The publish-subscribe paradigm allows for the publisher to send data once and not care whether 0,1,2 or 100 applications are subscribed on the other end. It just send the data and moves on. 
 2 Developing event driven applications allows for decoupling of your sending and receiving applications. This powerful concept allowed our company to add new functionality without touching our already operational applications. 
 
-## Section 3 - Creating your first Processor
+## Creating your first Processor
 Duration: 0:15:00
+
+So far in this workshop we have created source or sink applications. In this section we will create our first processor.
 
 * Hey Tweet Master, I’ve got a problem with your work!  This twitter board is letting employees take credit for all the customer’s ideas.  I want to send the new feature tweets to my private page instead of the “Tweet Board.” Can you fix it?
 * That’s Possible! I’ll do it right away – should be ready in 30 minutes.
 
-<INSERT TECHNICAL STEPS>
-Create Boss Sink [ Instructor]
-Create Features Processor [Instructor]
+Let's get started! 
+### Create the Feature Processor
+* Open the "scs-processor-feature" project
+* **TODO FILL IN STEPS**
+* Deploy the app in the same manner that you've been deploying the others. 
 
 Positive
 : Notice that you created a custom processor binding to support multiple outputs since the default Processor binding only has one input and one output. 
 
-## Section 4 - Painless Multi-protocol with MQTT
+### Create the Feature Sink for the Boss
+* Open the "scs-sink-bossideas" project
+* Open the *ScsSinkBossideas.java* class
+* Add the *@EnableBinding(Sink.class)* annotation to label the app as a Sink
+* Add a "sink" method that takes in a "Tweet" POJO from the INPUT channel and logs that it was received. 
+* Update the application.yml file and verify that there is indeed a destination & group configured for the input channel. Note that by specifying a group we are now using the consumer group model. Since this application will likely do further processing in the future we want to provide the option of scaling up to keep up with the number of events that come in.
+
+At this point we have created our "scs-sink-bossideas" application and it needs to be deployed. 
+Time to see if you've been paying attention! Deploy it in the same way you deployed the apps in the previous section. 
+
+### Update the TweetBoard Subscription
+Note that our processor that we created earlier in this lab publishes to multiple topics essentially splitting our feed into two. Due to our new requirements to not show new features on the twitter board we need to update that sink appropriately.
+* Navigate to your "scs-sink-twitterboard" project
+* Open your application.yml file
+* Update the queueAdditionalSubscriptions property to listen on "T/tweets/stream/nofeatures"
+* Save the file
+* If you are using STS you should notice that the application automatically redepoyed; that's because of the auto deployment feature provided by spring-boot-devtools 
+* If you are not using STS please stop your running app and redeploy.
+
+Negative
+: spring-boot-devtools is handy for development and adds features such as automatic restart and remote debugging. Click [here](https://www.baeldung.com/spring-boot-devtools) for a high level overview of some of the functionality it provides. 
+
+Positive
+: Notice that the use of topic hierarchies provides an organized way of keeping track of your event streams. This ability, combined with the ability to wildcard in PubSub+ gives your applications an easy way to subscribe to the exact event streams necessary to meet your need. Don't underestimate the value of creating a well-defined topic hierarchy! A few best practices to keep in mind are: start general and become more specific as more levels are added, use short words or abbrevations as topics can only be so long, and don't mix upper and lower case! A good topic hierarchy might be defined as "\<country\>/\<state\>/\<locality\>" which would allow you to subscribe to all events in a given country "canada/>" or even subscribe to events from all 1,716 localities named San Jose no matter what country or state they're in "\*/\*/sanjose"  
+
+## Spring Cloud Functions 
+
+Create no yelling processor
+
+** TODO talk about topic hierarchy and best practices; marketing app is still receiving the oriignal twitter stream **
+
+
+## Painless Multi-protocol with MQTT
 Duration: 0:10:00
 
 * Good job “Tweet Master!”  Now everyone is looking at me like the genius I am.  Look at all those amazing tweets coming through.  Unfortunately only the people in the factory can see them.  Can you create a webpage so people in the offices can see them too? 
@@ -197,7 +253,7 @@ Creates MQTT Web App [ Instructor]
 Positive
 : Shows multi-protocol (Solace made that easy)
 
-## Section 5 - Chain Multiple Processors Together
+## Chain Multiple Processors Together
 Duration: 0:10:00
 
 * Hey Tweet Master – we’re still receiving a bunch of complaints and negative tweets…I’m looking like an idiot here.  Fix it now!  And while you’re at it create some upbeat positive tweets!  I don’t want people seeing our cars break down or catch on fire and explode! 
@@ -207,11 +263,11 @@ Attendees [along with instructor] create “Negative to Positive” processor
 Students get a list of words that need to be changed..
 ("on fire”, "broken down”, “crashed”, “explosion”, “sucks”)
 
-
 Positive
 : Notice that multiple processors can easily be connected together in order to form a processing chain. 
 
-## Section 6 - Review & Continue Learning!
+
+## Review & Continue Learning!
 Duration: 0:05:00
 
 * Looks good “Tweet Master!” Now I can watch the tweets form my corner office! Take the rest of your day off and go get yourself a drink! 
