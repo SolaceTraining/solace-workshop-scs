@@ -34,7 +34,6 @@ Negative
 ## Set-up & Prerequisites
 Duration: 0:10:00
 
-<INSERT INFO FROM DOC THAT HEINZ CREATED>
 ### Developer IDE & Code Access
 #### IDE Setup
 The recommended IDE for the workshop is Spring Tools Suite (STS). STS comes with some niceties, such as autodeploy, when used with spring-boot-devtools. Participants can of course use another IDE if preferred. It is also recommended that you begin the workshop with an empty STS workspace to avoid any unforeseen issues with existing projects/configurations/code.  
@@ -51,7 +50,16 @@ $ git clone git@github.com:Mrc0113/solace-workshop-scs.git
 * Import the projects into STS
 In STS, use the File -> Open Projects from File System … option to load the workshop template projects from the Solace GitHub repository (URL will be provided by the instructor).  The full solution for the workshop is also provided for your reference in case you fall behind or encounter issues.  Throughout the workshop exercises, specific instructions are provided to perform tasks such as implement code or configuration.  Students are encouraged to attempt a resolution on their own before using the recommended solution.
 
-The following projects are provided in the template directory and should be loaded into STS: **Add projects**
+After importing everything you should see the following projects in STS: 
+* scs-processor-feature
+* scs-processor-positive
+* scs-processor-yelling
+* scs-sink-analytics
+* scs-sink-bossideas
+* scs-sink-twitterboard
+* scs-source-tweets
+* scs-workshop-common
+* spring-boot-mqttwebapp
 
 Negative
 : Note:  There will be errors associated with the template projects as they are incomplete and will be addressed in the exercises that follow.
@@ -77,9 +85,6 @@ Getting services in org test-org / space development as user1...
 name                    service             plan                       bound apps  
 solace-pubsub-service   solace-pubsub       Enterprise Shared Plan     sample-app 
 ```
-
-#### Solace PubSub+ Service in OpenShift
-<INSERT>
 
 ## Deploy Your First Source & Sink
 Duration: 0:45:00
@@ -220,7 +225,7 @@ Positive
 At this point we have created our "scs-sink-bossideas" application and it needs to be deployed. 
 Time to see if you've been paying attention! Deploy it in the same way you deployed the apps in the previous section. 
 
-### Update the TweetBoard Subscription
+### Update the Tweet Board Subscription
 Note that our processor that we created earlier in this lab publishes to multiple topics essentially splitting our feed into two. Due to our new requirements to not show new features on the twitter board we need to update that sink appropriately.
 * Navigate to your "scs-sink-twitterboard" project
 * Open your application.yml file
@@ -235,47 +240,98 @@ Negative
 Positive
 : Notice that the use of topic hierarchies provides an organized way of keeping track of your event streams. This ability, combined with the ability to wildcard in PubSub+ gives your applications an easy way to subscribe to the exact event streams necessary to meet your need. Don't underestimate the value of creating a well-defined topic hierarchy! A few best practices to keep in mind are: start general and become more specific as more levels are added, use short words or abbrevations as topics can only be so long, and don't mix upper and lower case! A good topic hierarchy might be defined as "\<country\>/\<state\>/\<locality\>" which would allow you to subscribe to all events in a given country "canada/>" or even subscribe to events from all 1,716 localities named San Jose no matter what country or state they're in "\*/\*/sanjose"  
 
-## Spring Cloud Functions 
+## Reactive with Spring Cloud Streams
+Duration: 0:10:00
 
-Create no yelling processor
+* Boss - "Hey Tweet Master, what’s with all these tweets in all caps.  We keep getting yelled at.  Can you fix it?"
+* Developer - "Yep, that's possible - let me get right on that!"
 
-** TODO talk about topic hierarchy and best practices; marketing app is still receiving the oriignal twitter stream **
+Negative
+: Spring Cloud Streams currently has two different ways to follow a Reactive (Functional) Programming Model: Spring Cloud Functions and spring-cloud-stream-reactive. We're going to concnetrate on Spring Cloud Functions since the latter option is marked for deprecation.
+
+### Deploying a SCS Processor using Spring Cloud Functions
+* Navigate to your "scs-processor-yelling" project
+* Open your pom.xml file and note that it was not necessary to include Spring Cloud Functions as a dependency. It's included as a dependency of the "spring-cloud-steam" artifact.
+* Open the *ScsProcessorYelling.java* class and note that although we still have the *@EnableBinding(Processor.class)* annotation we are now bindings a bean of type "java.util.function.Function" to the external destinations by providing the spring.cloud.stream.function.definition property.
+
+Negative
+: Spring Cloud Functions supports 3 types that conveniently map to our 3 SCS binding interfaces. 
+ java.util.function.Function maps to a SCS Processor
+ java.util.function.Supplier maps to a SCS Source
+ java.util.function.Consumer maps to a SCS Sink
+
+* Now that we've seen how to create a SCS app using Spring Cloud Functions go ahead and deploy it. 
+* After deploying you should start to see the BEFORE and AFTER log entries scrolling across the console where the AFTER log entries do not contain any uppercase letters in the text field. 
+
+Positive
+: From the Spring docs, Spring Cloud Functions allows you to "Decouple the development lifecycle of business logic from any specific runtime target so that the same code can run as a web endpoint, a stream processor, or a task."  Read more here: [https://spring.io/projects/spring-cloud-function](https://spring.io/projects/spring-cloud-function)
 
 
 ## Painless Multi-protocol with MQTT
 Duration: 0:10:00
 
-* Good job “Tweet Master!”  Now everyone is looking at me like the genius I am.  Look at all those amazing tweets coming through.  Unfortunately only the people in the factory can see them.  Can you create a webpage so people in the offices can see them too? 
-
-<INSERT TECHNICAL STEPS>
-Creates MQTT Web App [ Instructor]
+* Boss - Good job Tweet Master!  Now everyone is looking at me like the genius I am.  Look at all those amazing tweets coming through.  Unfortunately only the people in the factory can see them.  Can you create a webpage so people in the offices can see them too? 
+* Developer - "Sure thing, I'll whip up a webapp that any of our employees can access!" 
 
 Positive
-: Shows multi-protocol (Solace made that easy)
+: Since we're using Solace PubSub+ as our event broker we support a bunch of open standards and protocols. Even though the SCS apps are sending/receiving events using the Java API other applications can still use their language/protocol of choice. 
+
+* Since we're Spring experts let's go ahead and whip up a quick Spring Boot app that uses JavaScript and the open source MQTT Paho library to connect to PubSub+ and receive the stream of tweets.  
+* Open the "spring-boot-mqttwebapp" project
+* Check out the *pom.xml* file and notice that there is nothing spring-cloud-streams related; only spring boot! 
+* Next open the <INSERT FILENAME>.properties file and add your username/vpn/credentials to connect to PubSub+ 
+* Then open up the *mqttListener.html* to see how simple it was to connect & receive events using MQTT Paho. 
+* Lastly look at the *MqttWebApp.java* class.  You'll see that we just have a simple RestController that is smart enough to make the files in src/main/resources/static available for HTTP access.
+* Now that we've taken a look at how the app works go ahead and deploy it. 
+* Once deployed navigate to *http://localhost:8090/mqttListener.html* to see the incoming tweets! 
 
 ## Chain Multiple Processors Together
-Duration: 0:10:00
+Duration: 0:15:00
 
 * Hey Tweet Master – we’re still receiving a bunch of complaints and negative tweets…I’m looking like an idiot here.  Fix it now!  And while you’re at it create some upbeat positive tweets!  I don’t want people seeing our cars break down or catch on fire and explode! 
+* Ummm...sure I guess I can do that.  
 
-<INSERT TECHNICAL STEPS>
-Attendees [along with instructor] create “Negative to Positive” processor
-Students get a list of words that need to be changed..
-("on fire”, "broken down”, “crashed”, “explosion”, “sucks”)
+:Negative
+Obviously this company has some morality issues :) 
+In the real world you should definitely not modify people's speech or create fake news!  
+
+### Create the Processor
+Let's get started and hopefully have a bit of fun! 
+* Open the "scs-processor-positive" project
+* Find & Open the *ScsProcessorPositive.java* class. At this point we know how to create and deploy a processor so we'll do something a bit different. At the top of the class you'll see that the negToPosMap object is being initialized in a static method. This Map holds the key for changing our negative tweets to positive ones. Go ahead and fill in some positive words for each negative one in the map. Remember that you can find the canned tweets in the canned_tweets.txt file under the "scs-source-tweets" project if you need some more context :) 
 
 Positive
 : Notice that multiple processors can easily be connected together in order to form a processing chain. 
 
+### Update the feeds that you want to receive this data
+
+#### Update the tweetboard
+* Navigate to your "scs-sink-twitterboard" project
+* Open your application.yml file
+* Update the queueAdditionalSubscriptions property to listen on "T/tweets/stream/nofeatures"
+* Save the file
+* If you are using STS you should notice that the application automatically redepoyed; that's because of the auto deployment feature provided by spring-boot-devtools 
+* If you are not using STS please stop your running app and redeploy.
+
+#### Update the MQTT WebApp
+* Navigate to your "spring-boot-mqttwebapp" project
+* Open your <TBD>.properties file
+* Update the topic name & redeploy
+* After it restarts you'll need to reload the browser window where you have the MQTT WebApp open
 
 ## Review & Continue Learning!
 Duration: 0:05:00
 
-* Looks good “Tweet Master!” Now I can watch the tweets form my corner office! Take the rest of your day off and go get yourself a drink! 
+### Review
 
-<INSERT TECHNICAL STEPS>
+### Continued learning topics: 
+* Error Handling
+* Spring Cloud Functions Chaining
+* Actuator
+* Sleuth
 
 ## Markdown Syntax Backup
-Duration: 0:01:00
+Duration: 0:00:00
 
 ``` Java
 public static void main(String args[]){
@@ -293,4 +349,3 @@ Negative
 
 Adding an image
 ![image_caption](https://s3-eu-west-1.amazonaws.com/released-artifacts-3.x/assets/tutorial_images/creating-styles/step1.png)
-
