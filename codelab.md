@@ -19,8 +19,9 @@ Using Java & Spring Cloud Streams (SCS) to create Event-Driven Applications with
 
 You're a developer that works for an up and coming car company named Edison Automotives. Your boss is not the most adept in the use of social media but he's been hearing great things about twitter from his inner-circle and is a bit infatuated with tying it into Edison Automotive's every day business and culture....little does he know that his company does not exactly have the best products or reputation....
 
-**INSERT INTRO STORY** 
-**INSERT DIAGRAM?**
+**TODO: INSERT INTRO STORY**
+
+**TODO: INSERT LAB ARCHITECTURE DIAGRAM?**
 
 Positive
 : **Developer Resources** 
@@ -35,14 +36,15 @@ Negative
 Duration: 0:20:00
 
 * Boss - Glad you made it into work today! Go get setup since we've got a lot of work to do! 
+* Developer - Yep, I'll have everything up and running in 20 minutes or so. spring-boot-mqttwebapp/src/main/resources/static/mqttListener.html
 
 ### Developer IDE & Code Access
 #### IDE Setup
-The recommended IDE for the workshop is Spring Tools Suite (STS). STS comes with some niceties, such as autodeploy, when used with spring-boot-devtools. Participants can of course use another IDE if preferred. It is also recommended that you begin the workshop with an empty STS workspace to avoid any unforeseen issues with existing projects/configurations/code.  
+The recommended IDE for the workshop is Spring Tools Suite (STS) [Download Here](https://spring.io/tools). STS comes with some niceties, such as autodeploy, when used with spring-boot-devtools. Participants can of course use another IDE if preferred. It is also recommended that you begin the workshop with an empty STS workspace to avoid any unforeseen issues with existing projects/configurations/code.  
 
 Required libraries: 
 * Use the latest JDK 1.8 (ensure your PATH & JAVA_HOME are updated as needed)
-* Maven 3.5.3 or higher (ensure it's on your PATH)
+* Maven 3.5.3 or higher (ensure it's on your PATH) [Install steps here](https://maven.apache.org/install.html)
 
 #### Code Access
 * Clone the github repo **TODO - Add real repo & branch info**
@@ -50,7 +52,7 @@ Required libraries:
 $ git clone git@github.com:Mrc0113/solace-workshop-scs.git
 ```
 * Import the projects into STS
-In STS, use the File -> Open Projects from File System … option to load the workshop template projects from the Solace GitHub repository (URL will be provided by the instructor).  The full solution for the workshop is also provided for your reference in case you fall behind or encounter issues.  Throughout the workshop exercises, specific instructions are provided to perform tasks such as implement code or configuration.  Students are encouraged to attempt a resolution on their own before using the recommended solution.
+In STS, use the File -> Import -> Maven -> Existing Maven Projects -> Click Next -> Click Browse and Navigate to the git repo you cloned in the previous step -> Select all the pom files and click Finish. 
 
 After importing everything you should see the following projects in STS: 
 * scs-processor-feature
@@ -66,18 +68,22 @@ After importing everything you should see the following projects in STS:
 Negative
 : Note:  There will be errors associated with the template projects as they are incomplete and will be addressed in the exercises that follow.
 
-**Add steps to setup a cloud foundry target**
+* Throughout this workshop we have two options when deploying apps: 1) via the Spring Tool Suite IDE and 2) via mvn on the command line. If you are going to choose option 2 then navigate to the scs-workshop-common directory and perform a maven install of the project. 
 
-**Maybe add step to build common project here?  Is this necessary?**
+```bash
+$ cd ~/git/solace-workshop-scs/scs-workshop-common/
+$ mvn install
+```
 
 ### Create and/or Verify access to a Solace PubSub+ Access
 
 #### PubSub+ Service in Solace Cloud
-If you want to stand up your Solace PubSub+ Service in Solace Cloud login or signup at the [Cloud Signup Page](https://console.solace.cloud/login/new-account)
+If you want to stand up your Solace PubSub+ Service in Solace Cloud go ahead and login or signup at the [Cloud Signup Page](https://console.solace.cloud/login/new-account).  Note that a free tier is available and will work for this workshop. 
 
 #### Local Solace PubSub+ Instance
 When developing your application, you may want to test using a local instance of the Solace PubSub+ Event Broker.  Refer to the Solace [Docker Getting Started Guide](https://solace.com/software/getting-started/) to get you up and running quickly with a broker instance running in Docker.  You may skip this step if you decide to use a broker running in PCF or Solace Cloud.
 
+**Consider removing PCF in this version and adding in the PCF branch only**
 #### Solace PubSub+ Service in Pivotal Cloud Foundry (PCF)
 If you are using PCF, your administrator will have created an org and space for your workshop demo in which you can deploy and run your microservices.  Moreover, a Solace PubSub+ service instance will have been created so that it can be bound by any app running in the space and automatically lookup credentials to connect to a broker instance running in PCF.  You should determine the name of this service instance before deploying or running your application to avoid any service binding errors.  You can do this through the Apps Manager or via the cf CLI. 
 
@@ -138,7 +144,7 @@ Positive
 Also note that because bindings are dynamically configured at run-time you don't have to touch the code to switch out your binder of choice, environment info, etc. 
 
 #### Deploy our scs-source-tweets app
-* First open the *application.yml* file and update the host, msgVpn, clientUsername & clientPassword to match your PubSub+ environment. When obtaining the connect info note that the SCS solace binder uses the Solace Java API with the SMF protocol.
+* First open the *application.yml* file and update the host, msgVpn, clientUsername & clientPassword to match your PubSub+ environment. When obtaining the connect info note that the SCS solace binder uses the Solace Java API with the SMF protocol. (Keep this connection info handy as you'll need it several more times throughout this lab!)
 * If using STS, start the app by right clicking on the project and choosing "Run As" -> "Spring Boot App"
 * If not using STS, open a cli and navigate to the project's directory and then run 
 ```bash
@@ -160,7 +166,7 @@ To do this we will deploy a sink app.  Recall that a sink app binds to an INPUT 
 Negative
 : Note that Spring Cloud Streams [provides message converters](https://docs.spring.io/spring-cloud-stream/docs/current/reference/htmlsingle/#_provided_messageconverters) which enable the conversion of a payload to/from a specified format/shape (such as a Tweet POJO in our case) based on the argumentType in the method signature and the contentType specified on the message. The default content type is application/json.
 
-
+### 
 * Developer - Woohoo! We've deployed our first SCS source and sink applications and the marketing department is now getting the stream of tweets as they requested! Time to give our boss the good news.
 
 Positive
@@ -183,8 +189,8 @@ We obviously don't have a giant LED board that we can use so we're going to sett
 
 Negative
 : Spring Cloud Streams supports multiple messaging models. We are going to use two different ones in this workshop
-1 Publish-Subscribe allows for an application to process all events sent to the defined subscription. It also allows new applications to be added to the topology without disruption of the existing flow.  
-2 Consumer Groups allow for a set of applications to participate in a "group" to consume messages. This option is commonly used to allow the ability for an application to scale horizontally (creating multiple instances of the same application) while only processing each event once.
+1: Publish-Subscribe allows for an application to process all events sent to the defined subscription. It also allows new applications to be added to the topology without disruption of the existing flow.  
+2: Consumer Groups allow for a set of applications to participate in a "group" to consume messages. This option is commonly used to allow the ability for an application to scale horizontally (creating multiple instances of the same application) while only processing each event once.
 
 
 ### Deploying the Tweet Board
@@ -195,8 +201,8 @@ Time to see if you've been paying attention! Deploy it in the same way you deplo
 
 Positive
 : Notice that the publisher (Source) application did not need to be modified in order for another consumer (Sink) application to receive the stream of tweets. There are two takeaways here: 
-1 The publish-subscribe paradigm allows for the publisher to send data once and not care whether 0,1,2 or 100 applications are subscribed on the other end. It just send the data and moves on. 
-2 Developing event driven applications allows for decoupling of your sending and receiving applications. This powerful concept allowed our company to add new functionality without touching our already operational applications. 
+1: The publish-subscribe paradigm allows for the publisher to send data once and not care whether 0,1,2 or 100 applications are subscribed on the other end. It just send the data and moves on. 
+2: Developing event driven applications allows for decoupling of your sending and receiving applications. This powerful concept allowed our company to add new functionality without touching our already operational applications. 
 
 ## Creating your first Processor
 Duration: 0:30:00
@@ -226,6 +232,9 @@ Positive
 #### Processor using Dynamic Destinations
 Negative
 : At this point you might be thinking "Okay these custom binding interfaces are great, but what if I don't know how many or what to call my output channels at design time?" Spring Cloud Streams supports the use of Dynamic Destinations for this exact situation!  Dynamic destinations allow you to use business logic to define your destinations at runtime. 
+
+### 
+
 * Let's create a second feature processor that makes use of dynamic destinations. 
 * Open the *ScsProcessorFeaturesDynamic.java* class
 * You'll notice that the *@EnableBinding* annotation does not explicitly specify a binding interface. Instead we are using a *BinderAwareChannelResolver* which is registered automatically by the *@EnableBinding* annotation. This destination resolver allows us to dynamically create output channels at runtime. 
@@ -303,8 +312,8 @@ Positive
 * Since we're Spring experts let's go ahead and whip up a quick Spring Boot app that uses JavaScript and the open source MQTT Paho library to connect to PubSub+ and receive the stream of tweets.  
 * Open the "spring-boot-mqttwebapp" project
 * Check out the *pom.xml* file and notice that there is nothing spring-cloud-streams related; only spring boot! 
-* Next open the <INSERT FILENAME>.properties file and add your username/vpn/credentials to connect to PubSub+ 
 * Then open up the *mqttListener.html* to see how simple it was to connect & receive events using MQTT Paho. 
+* In *mqttListener.html* update the host/port/username/vpn/credentials to connect to PubSub+ (Search for "UPDATE" to find where the updates need to be made)
 * Lastly look at the *MqttWebApp.java* class.  You'll see that we just have a simple RestController that is smart enough to make the files in src/main/resources/static available for HTTP access.
 * Now that we've taken a look at how the app works go ahead and deploy it. 
 * Once deployed navigate to *http://localhost:8090/mqttListener.html* to see the incoming tweets! 
@@ -339,7 +348,7 @@ Positive
 
 #### Update the MQTT WebApp
 * Navigate to your "spring-boot-mqttwebapp" project
-* Open your <TBD>.properties file
+* Open your mqttListener.html file
 * Update the topic name & redeploy
 * After it restarts you'll need to reload the browser window where you have the MQTT WebApp open
 
@@ -351,9 +360,12 @@ Duration: 0:05:00
 * Boss - Thank's tweet master! You've done an excellent job today - take the rest of the day off and go get yourself a drink! 
 * Developer - That's Possible!
 
-Hopefully you not only learned how to use Spring Cloud Streams today, but also got a solid understanding of how implementing an event-driven architecture allows for loose coupling between your apps which enables rapid addition of new functionality.
+Hopefully you not only learned how to use Spring Cloud Streams today, but also how it enables developers to concentrate on achieving business goals by removing the need to learn messaging APIs. You should also now have a solid understanding of how implementing an event-driven architecture allows for loose coupling between your apps which enables rapid addition of new functionality. 
 
 ### Continued learning topics: 
+
+This course was just an introduction to Spring Cloud Streams, but we've included some resources below if you're interested in learning more about it or some of the features that complement it! Happy Learning :) 
+
 * [Error Handling](https://docs.spring.io/spring-cloud-stream/docs/current/reference/htmlsingle/#spring-cloud-stream-overview-error-handling)
 * [Content Based Routing](https://docs.spring.io/spring-cloud-stream/docs/current/reference/htmlsingle/#_using_streamlistener_for_content_based_routing)
 * [Functional Composition with Spring Cloud Functions](http://cloud.spring.io/spring-cloud-stream/spring-cloud-stream.html#_functional_composition)
