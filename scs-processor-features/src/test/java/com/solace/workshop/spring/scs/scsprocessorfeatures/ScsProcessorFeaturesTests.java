@@ -36,14 +36,15 @@ import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.solace.workshop.Tweet;
-import com.solace.workshop.spring.scs.ProcessorBinding;
+import com.solace.workshop.spring.scs.ScsProcessorFeatures;
+import com.solace.workshop.spring.scs.ScsProcessorFeatures.ProcessorOneInTwoOutBinding;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest
+@SpringBootTest(classes = ScsProcessorFeatures.class)
 public class ScsProcessorFeaturesTests {
 	
 	@Autowired 
-	private ProcessorBinding processor;
+	private ProcessorOneInTwoOutBinding processor;
 	
 	@Autowired
 	private MessageCollector collector;

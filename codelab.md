@@ -32,7 +32,9 @@ Negative
 : The SCS framework allows for building messaging-driven applications without having to explicitly write any code for publishing or receiving events.  While many microservices-oriented applications today are based on synchronous, request/response interactions based on protocols such as HTTP or gRPC, the asynchronous, event-driven nature of communications using SCS allows for building highly scalable, efficient and responsive distributed systems that can run on-premise or in the cloud.  When combined with the high-performance Solace PubSub+ Event Broker which can be deployed in virtually any environment, you can create powerful and flexible applications that support both hybrid and multi-cloud capabilities, all operating in real-time with high throughput and low latency. 
 
 ## Set-up & Prerequisites
-Duration: 0:10:00
+Duration: 0:20:00
+
+* Boss - Glad you made it into work today! Go get setup since we've got a lot of work to do! 
 
 ### Developer IDE & Code Access
 #### IDE Setup
@@ -94,9 +96,9 @@ Duration: 0:45:00
 
 Negative
 : SCS Provides 3 Binding Interfaces:
-1 Sink - "Identifies the contract for the message consumer by providing the destination from which the message is consumed."
-2 Source - "Identifies the contract for the message producer by providing the destination to which the produced message is sent."
-3 Processor - "Encapsulates both the sink and the source contracts by exposing two destinations that allow consumption and production of messages."
+1: Sink - "Identifies the contract for the message consumer by providing the destination from which the message is consumed."
+2: Source - "Identifies the contract for the message producer by providing the destination to which the produced message is sent."
+3: Processor - "Encapsulates both the sink and the source contracts by exposing two destinations that allow consumption and production of messages."
 
 ### Deploying a Source
 
@@ -112,6 +114,7 @@ Before we take a look at the code, let's take a quick look at the structure of a
 Negative
 : Spring Cloud Streams is built on top of Spring Boot. A great resource for creating your own Spring Boot applications is Spring Initializr. A publically hosted version is hosted here: [start.spring.io](https://start.spring.io)
 
+### 
 * Next go ahead and open up the pom.xml file in your "scs-source-tweets" project and search for "binder"; you should have found the "spring-cloud-stream-binder-solace" which is what is going to allow SCS to connect to Solace PubSub+
 
 
@@ -143,8 +146,8 @@ mvn spring-boot:run
 ```
 * Whichever way you started the app you should see the app start, connect and begin to send tweets by looking at the console.
 
-Developer - Awesome! Now we have a stream of tweets coming in! 
-Developer - As marketing requested we just need to capture them so they can perform their analytics.
+* Developer - Awesome! Now we have a stream of tweets coming in! 
+* Developer - As marketing requested we just need to capture them so they can perform their analytics.
 To do this we will deploy a sink app.  Recall that a sink app binds to an INPUT channel. 
 
 ### Deploying a Sink
@@ -158,13 +161,10 @@ Negative
 : Note that Spring Cloud Streams [provides message converters](https://docs.spring.io/spring-cloud-stream/docs/current/reference/htmlsingle/#_provided_messageconverters) which enable the conversion of a payload to/from a specified format/shape (such as a Tweet POJO in our case) based on the argumentType in the method signature and the contentType specified on the message. The default content type is application/json.
 
 
-Developer - Woohoo! We've deployed our first SCS source and sink applications and the marketing department is now getting the stream of tweets as they requested! Time to give our boss the good news.
+* Developer - Woohoo! We've deployed our first SCS source and sink applications and the marketing department is now getting the stream of tweets as they requested! Time to give our boss the good news.
 
 Positive
 : You now have a source application sending events to a sink application via an external eventing system, but notice that you didn't need to use any messaging APIs! SCS provides this abstraction and makes it possible for developers to concentrate on their business logic rather than learning proprietary messaging APIs!
-
-*BUT THIS IS ONLY DEPLOYED LOCALLY - NEED TO ADD INSTRUCTIONS TO DEPLOY TO PCF/OPENSHIFT*
-
 
 ## Discover the ease of 1-to-Many with Publish-Subscribe
 Duration: 0:10:00
@@ -191,7 +191,7 @@ Negative
 At this point we have created our "scs-sink-twitterboard" application and it needs to be deployed. 
 Time to see if you've been paying attention! Deploy it in the same way you deployed the apps in the previous section. 
 
-Developer - Well that was easy!  I'm loving our event-driven architecture! 
+* Developer - Well that was easy!  I'm loving our event-driven architecture! 
 
 Positive
 : Notice that the publisher (Source) application did not need to be modified in order for another consumer (Sink) application to receive the stream of tweets. There are two takeaways here: 
@@ -199,21 +199,45 @@ Positive
 2 Developing event driven applications allows for decoupling of your sending and receiving applications. This powerful concept allowed our company to add new functionality without touching our already operational applications. 
 
 ## Creating your first Processor
-Duration: 0:15:00
+Duration: 0:30:00
 
 So far in this workshop we have created source or sink applications. In this section we will create our first processor.
 
 * Hey Tweet Master, I’ve got a problem with your work!  This twitter board is letting employees take credit for all the customer’s ideas.  I want to send the new feature tweets to my private page instead of the “Tweet Board.” Can you fix it?
 * That’s Possible! I’ll do it right away – should be ready in 30 minutes.
 
-Let's get started! 
 ### Create the Feature Processor
+
+* Developer - Let's get started! 
+
+#### Processor with a Custom Binding Interface	
 * Open the "scs-processor-feature" project
-* **TODO FILL IN STEPS**
-* Deploy the app in the same manner that you've been deploying the others. 
+* Note that we have the same project setup as the source and sink apps from the previous section and the pom file doesn't have any extra dependencies to create a Processor. 
+* Now open the *ScsProcessorFeatures.java* class.
+* Note that our *@EnableBinding* Annotation is specifying the *ProcessorOneInTwoOutBinding* class; this is because we have specified a custom interface to have 2 output channels (one for tweets with features, and one for all other tweets)
 
 Positive
-: Notice that you created a custom processor binding to support multiple outputs since the default Processor binding only has one input and one output. 
+: Custom binding interfaces can be defined in order for your SCS app to have additional input or output channels. They also allow for custom naming of channels. 
+
+### 
+* Go ahead and update the host, msgVpn, clientUsername, clientPassword in the application.yml file; also note that the bindings that are listed include input, outputFeature, and outputNoFeature as defined in our custom bindings interface. 
+* Deploy the app in the same manner that you've been deploying the others. 
+
+#### Processor using Dynamic Destinations
+Negative
+: At this point you might be thinking "Okay these custom binding interfaces are great, but what if I don't know how many or what to call my output channels at design time?" Spring Cloud Streams supports the use of Dynamic Destinations for this exact situation!  Dynamic destinations allow you to use business logic to define your destinations at runtime. 
+* Let's create a second feature processor that makes use of dynamic destinations. 
+* Open the *ScsProcessorFeaturesDynamic.java* class
+* You'll notice that the *@EnableBinding* annotation does not explicitly specify a binding interface. Instead we are using a *BinderAwareChannelResolver* which is registered automatically by the *@EnableBinding* annotation. This destination resolver allows us to dynamically create output channels at runtime. 
+
+Negative
+: From the JavaDocs, the *BinderAwareChannelResolver* is "A DestinationResolver implementation that resolves the channel from the bean factory and, if not present, creates a new channel and adds it to the factory after binding it to the binder."
+
+###
+* Review the *handle* method to see an example of how to specify dynamic destinations and then deploy this app as well. 
+
+Positive
+: Note that our two different feature processors are listening as part of a consumer group so they will receive messages in a round robin fashion
 
 ### Create the Feature Sink for the Boss
 * Open the "scs-sink-bossideas" project
@@ -221,9 +245,7 @@ Positive
 * Add the *@EnableBinding(Sink.class)* annotation to label the app as a Sink
 * Add a "sink" method that takes in a "Tweet" POJO from the INPUT channel and logs that it was received. 
 * Update the application.yml file and verify that there is indeed a destination & group configured for the input channel. Note that by specifying a group we are now using the consumer group model. Since this application will likely do further processing in the future we want to provide the option of scaling up to keep up with the number of events that come in.
-
-At this point we have created our "scs-sink-bossideas" application and it needs to be deployed. 
-Time to see if you've been paying attention! Deploy it in the same way you deployed the apps in the previous section. 
+* At this point we have created our "scs-sink-bossideas" application and it needs to be deployed. Time to see if you've been paying attention! Deploy it in the same way you deployed the apps in the previous section. 
 
 ### Update the Tweet Board Subscription
 Note that our processor that we created earlier in this lab publishes to multiple topics essentially splitting our feed into two. Due to our new requirements to not show new features on the twitter board we need to update that sink appropriately.
@@ -260,6 +282,7 @@ Negative
  java.util.function.Supplier maps to a SCS Source
  java.util.function.Consumer maps to a SCS Sink
 
+### 
 * Now that we've seen how to create a SCS app using Spring Cloud Functions go ahead and deploy it. 
 * After deploying you should start to see the BEFORE and AFTER log entries scrolling across the console where the AFTER log entries do not contain any uppercase letters in the text field. 
 
@@ -276,6 +299,7 @@ Duration: 0:10:00
 Positive
 : Since we're using Solace PubSub+ as our event broker we support a bunch of open standards and protocols. Even though the SCS apps are sending/receiving events using the Java API other applications can still use their language/protocol of choice. 
 
+### 
 * Since we're Spring experts let's go ahead and whip up a quick Spring Boot app that uses JavaScript and the open source MQTT Paho library to connect to PubSub+ and receive the stream of tweets.  
 * Open the "spring-boot-mqttwebapp" project
 * Check out the *pom.xml* file and notice that there is nothing spring-cloud-streams related; only spring boot! 
@@ -285,14 +309,14 @@ Positive
 * Now that we've taken a look at how the app works go ahead and deploy it. 
 * Once deployed navigate to *http://localhost:8090/mqttListener.html* to see the incoming tweets! 
 
-## Chain Multiple Processors Together
+## Multiple Processor Chaining
 Duration: 0:15:00
 
 * Hey Tweet Master – we’re still receiving a bunch of complaints and negative tweets…I’m looking like an idiot here.  Fix it now!  And while you’re at it create some upbeat positive tweets!  I don’t want people seeing our cars break down or catch on fire and explode! 
 * Ummm...sure I guess I can do that.  
 
-:Negative
-Obviously this company has some morality issues :) 
+Negative
+: Obviously this company has some morality issues :) 
 In the real world you should definitely not modify people's speech or create fake news!  
 
 ### Create the Processor
@@ -319,16 +343,23 @@ Positive
 * Update the topic name & redeploy
 * After it restarts you'll need to reload the browser window where you have the MQTT WebApp open
 
-## Review & Continue Learning!
+## Review & Continued Learning!
 Duration: 0:05:00
 
 ### Review
 
+* Boss - Thank's tweet master! You've done an excellent job today - take the rest of the day off and go get yourself a drink! 
+* Developer - That's Possible!
+
+Hopefully you not only learned how to use Spring Cloud Streams today, but also got a solid understanding of how implementing an event-driven architecture allows for loose coupling between your apps which enables rapid addition of new functionality.
+
 ### Continued learning topics: 
-* Error Handling
-* Spring Cloud Functions Chaining
-* Actuator
-* Sleuth
+* [Error Handling](https://docs.spring.io/spring-cloud-stream/docs/current/reference/htmlsingle/#spring-cloud-stream-overview-error-handling)
+* [Content Based Routing](https://docs.spring.io/spring-cloud-stream/docs/current/reference/htmlsingle/#_using_streamlistener_for_content_based_routing)
+* [Functional Composition with Spring Cloud Functions](http://cloud.spring.io/spring-cloud-stream/spring-cloud-stream.html#_functional_composition)
+* [Content Type Negotiation](https://docs.spring.io/spring-cloud-stream/docs/current/reference/htmlsingle/#content-type-management)
+* [Actuator for metrics](https://docs.spring.io/spring-cloud-stream/docs/current/reference/htmlsingle/#spring-cloud-stream-overview-metrics-emitter)
+* [Sleuth for tracing](https://cloud.spring.io/spring-cloud-sleuth/single/spring-cloud-sleuth.html)
 
 ## Markdown Syntax Backup
 Duration: 0:00:00

@@ -29,15 +29,14 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.annotation.StreamListener;
 import org.springframework.cloud.stream.binding.BinderAwareChannelResolver;
+import org.springframework.cloud.stream.messaging.Processor;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
-import org.springframework.stereotype.Controller;
 
 import com.solace.workshop.Tweet;
 
 @SpringBootApplication
 @EnableBinding
-@Controller
 public class ScsProcessorFeaturesDynamic {
 	
 	private static final Logger log = LoggerFactory.getLogger(ScsProcessorFeaturesDynamic.class);
@@ -54,7 +53,7 @@ public class ScsProcessorFeaturesDynamic {
 		SpringApplication.run(ScsProcessorFeaturesDynamic.class, args);
 	}
 
-	@StreamListener(ProcessorBinding.INPUT)
+	@StreamListener(Processor.INPUT)
 	public void handle(Tweet tweet) {
 		ArrayList<String> hashTags = tweet.getHashtags();
 		String topic;

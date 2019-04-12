@@ -25,26 +25,32 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.stream.annotation.EnableBinding;
+import org.springframework.cloud.stream.annotation.Input;
+import org.springframework.cloud.stream.annotation.Output;
 import org.springframework.cloud.stream.annotation.StreamListener;
 import org.springframework.messaging.Message;
+import org.springframework.messaging.MessageChannel;
+import org.springframework.messaging.SubscribableChannel;
 import org.springframework.messaging.support.MessageBuilder;
 
 import com.solace.workshop.Tweet;
+import com.solace.workshop.spring.scs.ScsProcessorFeatures.ProcessorOneInTwoOutBinding;
 
 @SpringBootApplication
-@EnableBinding(ProcessorBinding.class)
+@EnableBinding(ProcessorOneInTwoOutBinding.class)
 public class ScsProcessorFeatures {
 	
 	@Autowired 
-	private ProcessorBinding processor;
+	private ProcessorOneInTwoOutBinding processor;
 	
 	private String feature = "#NewFeature";
 	
-	private static final <T> Message<T> message(T val) {
-        return MessageBuilder.withPayload(val).build();
-    }
 	
-	@StreamListener(ProcessorBinding.INPUT)
+	public static void main(String[] args) {
+		SpringApplication.run(ScsProcessorFeatures.class, args);
+	}
+	
+	@StreamListener(ProcessorOneInTwoOutBinding.INPUT)
 	public void handle(Tweet tweet) {
 		ArrayList<String> hashTags = tweet.getHashtags();
 		if(hashTags.contains(feature) ) {
@@ -56,8 +62,26 @@ public class ScsProcessorFeatures {
 	}
 	
 
-	public static void main(String[] args) {
-		SpringApplication.run(ScsProcessorFeatures.class, args);
+	private static final <T> Message<T> message(T val) {
+        return MessageBuilder.withPayload(val).build();
+    }
+
+
+	/* 
+	 * Custom Processor Binding Interface to allow for multiple outputs
+	 */
+	public interface ProcessorOneInTwoOutBinding {
+		String INPUT = "input";
+
+	    @Input
+	    SubscribableChannel input();
+
+	    @Output
+	    MessageChannel outputFeature();
+
+	    @Output
+	    MessageChannel outputNoFeature();
+
 	}
 
 }
