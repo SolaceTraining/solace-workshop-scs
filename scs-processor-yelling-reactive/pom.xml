@@ -17,7 +17,7 @@
 	<groupId>com.solace.workshops.spring.scs</groupId>
 	<artifactId>scs-processor-yelling-reactive</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>pom</packaging>
+	<packaging>jar</packaging>
 	<name>scs-processor-yelling-reactive</name>
 	<description>Sample processor for Spring Cloud Stream using Solace PubSub+ binder</description>
 
@@ -52,13 +52,13 @@
 			</exclusions>
 		</dependency>
 		
-		<!--
+		
 		<dependency>
 			<groupId>com.solace.workshop</groupId>
 			<artifactId>scs-workshop-common</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
-		-->
+		
 		
 
 		<dependency>
@@ -82,7 +82,7 @@
 				<groupId>org.springframework.cloud</groupId>
 				<artifactId>spring-cloud-stream-dependencies</artifactId>
 				<version>${spring-cloud-stream.version}</version>
-				<type>pom</type>
+				<type>jar</type>
 			<!-- 	<scope>import</scope> -->
 			</dependency>
 		</dependencies>
@@ -97,9 +97,10 @@
 		</plugins>
 	</build>
 
-	 
+	<!-- 
 	<modules>
 		<module>../scs-workshop-common</module>
 	</modules>
+	 -->
 	 
 </project>
