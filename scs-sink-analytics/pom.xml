@@ -15,7 +15,7 @@
 
 	<groupId>com.solace.workshops.spring.scs</groupId>
 	<artifactId>scs-sink-analytics</artifactId>
-	<version>0.0.1.SNAPSHOT</version>
+	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>scs-sink-analytics</name>
 	<description>Sample sink for Spring Cloud Stream using Solace PubSub+ binder</description>

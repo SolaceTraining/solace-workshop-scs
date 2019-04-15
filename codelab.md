@@ -243,7 +243,9 @@ Negative
 : From the JavaDocs, the *BinderAwareChannelResolver* is "A DestinationResolver implementation that resolves the channel from the bean factory and, if not present, creates a new channel and adds it to the factory after binding it to the binder."
 
 ###
-* Review the *handle* method to see an example of how to specify dynamic destinations and then deploy this app as well. 
+* Review the *handle* method to see an example of how to specify dynamic destinations
+* Open the pom file and update the "start-class" property to point to our *ScsProcessorFeaturesDynamic* class
+* Deploy the app
 
 Positive
 : Note that our two different feature processors are listening as part of a consumer group so they will receive messages in a round robin fashion

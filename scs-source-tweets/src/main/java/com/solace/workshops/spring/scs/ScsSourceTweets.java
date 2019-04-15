@@ -20,6 +20,7 @@
 package com.solace.workshops.spring.scs;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -46,7 +47,7 @@ public class ScsSourceTweets {
 
 	// Default constructor
 	public ScsSourceTweets() {
-		this("src/main/resources/canned_tweets.txt");
+		this("src/main/resources/static/canned_tweets.txt");
 	}
 
 	// Constructor that takes in a tweet file
@@ -54,6 +55,11 @@ public class ScsSourceTweets {
 		String filename = tweetFile;
 		if (null == filename) {
 			throw new IllegalArgumentException("Must pass in a tweet file");
+		}
+		
+		if (!new File(filename).isFile()) {
+			//Passed in file doesn't exist; try default
+			filename = "BOOT-INF/classes/static/canned_tweets.txt";
 		}
 
 		tweetList = readFile(filename);
