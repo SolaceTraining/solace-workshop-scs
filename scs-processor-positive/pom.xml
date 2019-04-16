@@ -13,7 +13,7 @@
 
 	<groupId>com.solace.workshops.spring.scs</groupId>
 	<artifactId>scs-processor-positive</artifactId>
-	<version>0.0.1.SNAPSHOT</version>
+	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>scs-processor-positive</name>
 	<description>Sample processor for Spring Cloud Stream using Solace PubSub+ binder</description>
@@ -42,6 +42,16 @@
 					<artifactId>android-json</artifactId>
 				</exclusion>
 			</exclusions>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
 
 		<dependency>

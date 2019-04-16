@@ -3,7 +3,7 @@ spring:
     stream:
       bindings:
         input:
-          destination: TWEETS.Q.BOARD.Marc
+          destination: TWEETS.Q.BOARD.<AttendeeName>
           binder: local_solace
       binders:
         local_solace:
@@ -21,7 +21,7 @@ spring:
         bindings:
           input:
             consumer:
-              queueAdditionalSubscriptions: T/tweets/stream/nofeatures/noyelling/positive/Marc
+              queueAdditionalSubscriptions: T/tweets/stream/nofeatures/noyelling/positive/<AttendeeName>
 logging:
   level:
     root: INFO

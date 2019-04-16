@@ -17,18 +17,18 @@
  * under the License.
  */
 
-package com.solace.workshops.spring.scs;
+package com.solace.workshop.spring.scs;
+
+
+import java.util.function.Function;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.stream.annotation.EnableBinding;
-import org.springframework.cloud.stream.annotation.Input;
-import org.springframework.cloud.stream.annotation.Output;
-import org.springframework.cloud.stream.annotation.StreamListener;
 import org.springframework.cloud.stream.messaging.Processor;
-
+import org.springframework.context.annotation.Bean;
 
 import com.solace.workshop.Tweet;
 
@@ -36,27 +36,26 @@ import reactor.core.publisher.Flux;
 
 @SpringBootApplication
 @EnableBinding(Processor.class)
-public class ScsProcessorYellingReactive {
+public class ScsProcessorYelling {
 	
-	private static final Logger logger = LoggerFactory.getLogger(ScsProcessorYellingReactive.class);
-	
-	@StreamListener
-	@Output(Processor.OUTPUT)
-	public  Flux<Tweet> receive(@Input(Processor.INPUT) Flux<Tweet> inbound) {
-				
-		return inbound
-				.doOnNext(t ->logger.info("====Tweet BEFORE mapping: " + t.toString()))
-				.map( t -> {
-					t.setText(t.getText().toLowerCase());
-					return t;
-					})
-				.doOnNext(t ->logger.info("++++Tweet AFTER mapping: " + t.toString()))	;
-				
-	}
+	private static final Logger logger = LoggerFactory.getLogger(ScsProcessorYelling.class);
 
 	public static void main(String[] args) {
-		SpringApplication.run(ScsProcessorYellingReactive.class, args);
+		// Defining the reactive function to bind to the INPUT channel of the Processor
+		SpringApplication.run(ScsProcessorYelling.class, "--spring.cloud.stream.function.definition=changeCase");
 	}
 	
+	@Bean
+	public Function<Flux<Tweet>, Flux<Tweet>> changeCase() {
+		return flux -> flux
+				.doOnNext(t ->logger.info("====Tweet BEFORE mapping: " + t.toString()))
+				.map(t -> { t.setText(t.getText().toLowerCase());
+					return t;
+					})
+				.doOnNext(t ->logger.info("++++Tweet AFTER mapping: " + t.toString()))
+				;
 	
+	}
+		
 }
+

@@ -1,25 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	
-	<!--
-	<parent>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.2.0.M1</version>
-		<relativePath/>
-	</parent>
-	-->
-	
+
 	<parent>
 		<groupId>org.springframework.cloud.stream.app</groupId>
 		<artifactId>app-starters-build</artifactId>
-<!--		<version>2.0.3.RELEASE</version>  -->
-	<version>2.1.1.RELEASE</version>
+		<version>2.1.1.RELEASE</version>
 		<relativePath />
 	</parent>
-	
+
 	<groupId>com.solace.workshop.spring.scs</groupId>
 	<artifactId>scs-processor-yelling-function-reactive</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
@@ -38,13 +29,6 @@
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-stream</artifactId>
 		</dependency>
-		
-		<!--  
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-stream-reactive</artifactId>
-		</dependency>
-		-->
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -56,14 +40,7 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-		
-		<!--
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-stream-test-support</artifactId>
-			<scope>test</scope>
-		</dependency>
-		-->
+
 		<dependency>
 			<groupId>com.solace.workshop</groupId>
 			<artifactId>scs-workshop-common</artifactId>
@@ -72,10 +49,19 @@
 		<dependency>
 			<groupId>com.solace.spring.cloud</groupId>
 			<artifactId>spring-cloud-starter-stream-solace</artifactId>
-<!--			<version>1.0.0</version> -->
 			<version>1.1.0</version>
 		</dependency>
-		
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-stream-test-support</artifactId>
@@ -87,7 +73,7 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-		
+
 	</dependencies>
 
 	<dependencyManagement>
@@ -97,7 +83,6 @@
 				<artifactId>spring-cloud-stream-dependencies</artifactId>
 				<version>${spring-cloud-stream.version}</version>
 				<type>pom</type>
-			<!-- 	<scope>import</scope> -->
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
@@ -111,23 +96,6 @@
 		</plugins>
 	</build>
 
-<!--  
-	<repositories>
-		<repository>
-			<id>spring-snapshots</id>
-			<name>Spring Snapshots</name>
-			<url>https://repo.spring.io/snapshot</url>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		</repository>
-		<repository>
-			<id>spring-milestones</id>
-			<name>Spring Milestones</name>
-			<url>https://repo.spring.io/milestone</url>
-		</repository>				
-	</repositories>
--->
 	<pluginRepositories>
 		<pluginRepository>
 			<id>spring-snapshots</id>

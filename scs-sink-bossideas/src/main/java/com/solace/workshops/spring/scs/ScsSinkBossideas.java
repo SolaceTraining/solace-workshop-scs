@@ -35,13 +35,13 @@ public class ScsSinkBossideas {
 	
 	private static final Logger log = LoggerFactory.getLogger(ScsSinkBossideas.class);
 	
+	public static void main(String[] args) {
+		SpringApplication.run(ScsSinkBossideas.class, args);
+	}
+
 	@StreamListener(Sink.INPUT)
 	public void sink(Tweet tweet) {
 		log.info(tweet.toString());
-	}
-
-	public static void main(String[] args) {
-		SpringApplication.run(ScsSinkBossideas.class, args);
 	}
 
 }

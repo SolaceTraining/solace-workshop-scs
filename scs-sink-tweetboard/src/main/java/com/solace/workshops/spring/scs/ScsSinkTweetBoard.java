@@ -30,7 +30,8 @@ import org.springframework.cloud.stream.messaging.Sink;
 import com.solace.workshop.Tweet;
 
 @SpringBootApplication
-@EnableBinding(Sink.class)
+//TODO Add the Enable Binding Annotation and specify the binding interface
+//@EnableBinding(Sink.class)
 public class ScsSinkTweetBoard {
 	private static final Logger log = LoggerFactory.getLogger(ScsSinkTweetBoard.class);
 
@@ -39,8 +40,9 @@ public class ScsSinkTweetBoard {
 	}
 
 	// We define an INPUT to receive from
-	@StreamListener(Sink.INPUT)
-	public void sink(Tweet tweet) {
-		log.info(tweet.toString());
-	}
+	//TODO Add the @StreamListener on the Sink.INPUT
+//	@StreamListener(Sink.INPUT)
+//	public void sink(Tweet tweet) {
+//		log.info(tweet.toString());
+//	}
 }

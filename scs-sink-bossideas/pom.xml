@@ -13,7 +13,7 @@
 
 	<groupId>com.solace.workshops.spring.scs</groupId>
 	<artifactId>scs-sink-bossideas</artifactId>
-	<version>0.0.1.SNAPSHOT</version>
+	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>scs-sink-bossideas</name>
 	<description>Sample sink for Spring Cloud Stream using Solace PubSub+ binder</description>
@@ -48,6 +48,16 @@
 			<groupId>com.solace.workshop</groupId>
 			<artifactId>scs-workshop-common</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
 
 		<dependency>
