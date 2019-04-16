@@ -12,9 +12,9 @@
 	</parent>
 
 	<groupId>com.solace.workshop.spring.scs</groupId>
-	<artifactId>scs-processor-yelling-function-reactive</artifactId>
+	<artifactId>scs-processor-yelling</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>scs-processor-yelling-function-reactive</name>
+	<name>scs-processor-yelling</name>
 	<description>Demo project for Spring Boot</description>
 
 	<properties>
