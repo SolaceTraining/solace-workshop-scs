@@ -16,7 +16,8 @@ public class MqttWebApp {
 	@RequestMapping("/")
 	String home() {
 		return "Welcome to the Solace Spring Cloud Streams Workshop! "
-				+ "Navigate to http://localhost:8090/mqttListener.html to see incoming tweets!";
+				+ "Lookup your route in Apps Manager or via CLI:'cf app spring-boot-mqttwebapp' "
+				+ "Navigate to https://<INSERT ROUTE>/mqttListener.html to see incoming tweets!";
 	}
 
 }

@@ -36,7 +36,7 @@ Negative
 Duration: 0:20:00
 
 * Boss - Glad you made it into work today! Go get setup since we've got a lot of work to do! 
-* Developer - Yep, I'll have everything up and running in 20 minutes or so. spring-boot-mqttwebapp/src/main/resources/static/mqttListener.html
+* Developer - Yep, I'll have everything up and running in 20 minutes or so. 
 
 ### Developer IDE & Code Access
 #### IDE Setup
@@ -48,7 +48,7 @@ Required libraries:
 
 #### Code Access
 * Clone the github repo **TODO - Add real repo & branch info**
-```bash
+``` bash
 $ git clone git@github.com:Mrc0113/solace-workshop-scs.git
 ```
 * Import the projects into STS
@@ -63,14 +63,14 @@ After importing everything you should see the following projects in STS:
 * scs-sink-twitterboard
 * scs-source-tweets
 * scs-workshop-common
-* spring-boot-mqttwebapp
+* spring-boot-mspring-boot-mqttwebapp/manifest.ymlqttwebapp
 
 Negative
 : Note:  There will be errors associated with the template projects as they are incomplete and will be addressed in the exercises that follow.
 
 * Throughout this workshop we have two options when deploying apps: 1) via the Spring Tool Suite IDE and 2) via mvn on the command line. If you are going to choose option 2 then navigate to the scs-workshop-common directory and perform a maven install of the project. 
 
-```bash
+``` bash
 $ cd ~/git/solace-workshop-scs/scs-workshop-common/
 $ mvn install
 ```
@@ -87,7 +87,7 @@ When developing your application, you may want to test using a local instance of
 #### Solace PubSub+ Service in Pivotal Cloud Foundry (PCF)
 If you are using PCF, your administrator will have created an org and space for your workshop demo in which you can deploy and run your microservices.  Moreover, a Solace PubSub+ service instance will have been created so that it can be bound by any app running in the space and automatically lookup credentials to connect to a broker instance running in PCF.  You should determine the name of this service instance before deploying or running your application to avoid any service binding errors.  You can do this through the Apps Manager or via the cf CLI. 
 
-```bash
+``` bash
 $ cf services 
 Getting services in org test-org / space development as user1... 
 name                    service             plan                       bound apps  
@@ -147,8 +147,8 @@ Also note that because bindings are dynamically configured at run-time you don't
 * First open the *application.yml* file and update the host, msgVpn, clientUsername & clientPassword to match your PubSub+ environment. When obtaining the connect info note that the SCS solace binder uses the Solace Java API with the SMF protocol. (Keep this connection info handy as you'll need it several more times throughout this lab!)
 * If using STS, start the app by right clicking on the project and choosing "Run As" -> "Spring Boot App"
 * If not using STS, open a cli and navigate to the project's directory and then run 
-```bash
-mvn spring-boot:run
+``` bash
+$ mvn spring-boot:run
 ```
 * Whichever way you started the app you should see the app start, connect and begin to send tweets by looking at the console.
 
@@ -318,7 +318,11 @@ Positive
 * In *mqttListener.html* update the host/port/username/vpn/credentials to connect to PubSub+ (Search for "UPDATE" to find where the updates need to be made)
 * Lastly look at the *MqttWebApp.java* class.  You'll see that we just have a simple RestController that is smart enough to make the files in src/main/resources/static available for HTTP access.
 * Now that we've taken a look at how the app works go ahead and deploy it. 
-* Once deployed navigate to *http://localhost:8090/mqttListener.html* to see the incoming tweets! 
+* Once deployed navigate to *http://<LOOKUP YOUR ROUTE>/mqttListener.html* to see the incoming tweets! (You can lookup your route in the apps manager or by using the command below:
+
+``` bash
+$ cf app spring-boot-mqttwebapp
+```
 
 ## Multiple Processor Chaining
 Duration: 0:15:00
