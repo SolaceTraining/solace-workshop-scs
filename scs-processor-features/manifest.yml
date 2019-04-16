@@ -1,0 +1,7 @@
+---
+applications:
+- name: scs-processor-feature-marc2
+  memory: 1024M
+  path: target/scs-processor-feature-0.0.1-SNAPSHOT.jar
+  services:
+  - Space1-Instance

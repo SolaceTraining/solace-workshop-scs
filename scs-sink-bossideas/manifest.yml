@@ -1,0 +1,7 @@
+---
+applications:
+- name: scs-sink-bossideas
+  memory: 1024M
+  path: target/scs-sink-bossideas-0.0.1-SNAPSHOT.jar
+  services:
+  - Space1-Instance

@@ -1,0 +1,7 @@
+---
+applications:
+- name: scs-processor-yelling
+  memory: 1024M
+  path: target/scs-processor-yelling-0.0.1-SNAPSHOT.jar
+  services:
+  - Space1-Instance

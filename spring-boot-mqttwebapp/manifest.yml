@@ -1,0 +1,7 @@
+---
+applications:
+- name: spring-boot-mqttwebapp
+  memory: 1024M
+  path: target/spring-boot-mqttwebapp-0.0.1-SNAPSHOT.jar
+  services:
+  - Space1-Instance
