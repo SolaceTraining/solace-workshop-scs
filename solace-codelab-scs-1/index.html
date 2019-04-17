@@ -48,7 +48,7 @@
       <google-codelab-step label="Set-up &amp; Prerequisites" duration="20">
         <ul>
 <li>Boss - Glad you made it into work today! Go get setup since we&#39;ve got a lot of work to do!</li>
-<li>Developer - Yep, I&#39;ll have everything up and running in 20 minutes or so. spring-boot-mqttwebapp/src/main/resources/static/mqttListener.html</li>
+<li>Developer - Yep, I&#39;ll have everything up and running in 20 minutes or so.</li>
 </ul>
 <h2 is-upgraded>Developer IDE &amp; Code Access</h2>
 <h3 is-upgraded>IDE Setup</h3>
@@ -75,7 +75,7 @@
 <li>scs-sink-twitterboard</li>
 <li>scs-source-tweets</li>
 <li>scs-workshop-common</li>
-<li>spring-boot-mqttwebapp</li>
+<li>spring-boot-mspring-boot-mqttwebapp/manifest.ymlqttwebapp</li>
 </ul>
 <aside class="warning"><p>Note:  There will be errors associated with the template projects as they are incomplete and will be addressed in the exercises that follow.</p>
 </aside>
@@ -103,8 +103,11 @@ solace-pubsub-service   solace-pubsub       Enterprise Shared Plan     sample-ap
       <google-codelab-step label="Deploy Your First Source &amp; Sink" duration="45">
         <ul>
 <li>Boss - The marketing department wants to use the tweets to learn more about our customer&#39;s thoughts.  Since you&#39;re already getting them can you share them with marketing?</li>
-<li>Developer - That&#39;s Possible!  Tell them to give me a call!</li>
+<li>Developer - That&#39;s Possible!  Tell them to give me a call! TESTING</li>
 </ul>
+<h2 is-upgraded>Application Architecture</h2>
+<p>At the end of this section we will have created the apps below!<br>The Source will send out tweets that are received by the marketing Sink.</p>
+<p class="image-container"><img alt="1 Application Architecture" src="img/5af0275823434a71.png"></p>
 <aside class="warning"><p>SCS Provides 3 Binding Interfaces:<br>1: Sink - &#34;Identifies the contract for the message consumer by providing the destination from which the message is consumed.&#34;<br>2: Source - &#34;Identifies the contract for the message producer by providing the destination to which the produced message is sent.&#34;<br>3: Processor - &#34;Encapsulates both the sink and the source contracts by exposing two destinations that allow consumption and production of messages.&#34;</p>
 </aside>
 <h2 is-upgraded>Deploying a Source</h2>
@@ -115,8 +118,7 @@ solace-pubsub-service   solace-pubsub       Enterprise Shared Plan     sample-ap
 <li>As a java developer you&#39;ll probably see a familiar project setup. You have your main application under src/main/java and unit tests under src/test/java.</li>
 </ul>
 <p class="image-container"><img alt="SCS Project Structure" src="img/f8f42c7c5fde7048.png"></p>
-<aside class="warning"><p>Spring Cloud Streams is built on top of Spring Boot. A great resource for creating your own Spring Boot applications is Spring Initializr. A publically hosted version is hosted here: <a href="https://start.spring.io" target="_blank">start.spring.io</a></p>
-</aside>
+<p>Negative<br>DiagramFifth-windows.png: Spring Cloud Streams is built on top of Spring Boot. A great resource for creating your own Spring Boot applications is Spring Initializr. A publically hosted version is hosted here: <a href="https://start.spring.io" target="_blank">start.spring.io</a></p>
 <ul>
 <li>Next go ahead and open up the pom.xml file in your &#34;scs-source-tweets&#34; project and search for &#34;binder&#34;; you should have found the &#34;spring-cloud-stream-binder-solace&#34; which is what is going to allow SCS to connect to Solace PubSub+</li>
 </ul>
@@ -137,7 +139,7 @@ solace-pubsub-service   solace-pubsub       Enterprise Shared Plan     sample-ap
 <ul>
 <li>First open the <em>application.yml</em> file and update the host, msgVpn, clientUsername &amp; clientPassword to match your PubSub+ environment. When obtaining the connect info note that the SCS solace binder uses the Solace Java API with the SMF protocol. (Keep this connection info handy as you&#39;ll need it several more times throughout this lab!)</li>
 <li>If using STS, start the app by right clicking on the project and choosing &#34;Run As&#34; -&gt; &#34;Spring Boot App&#34;</li>
-<li>If not using STS, open a cli and navigate to the project&#39;s directory and then run<pre><code>mvn spring-boot:run
+<li>If not using STS, open a cli and navigate to the project&#39;s directory and then run<pre><code>$ mvn spring-boot:run
 </code></pre>
 </li>
 <li>Whichever way you started the app you should see the app start, connect and begin to send tweets by looking at the console.</li>
@@ -168,6 +170,9 @@ solace-pubsub-service   solace-pubsub       Enterprise Shared Plan     sample-ap
 <li>Boss - Hey Tweet Master, I&#39;m loving this twitter thing my buddy told me about!  I want our LED ribbon around the factory floor to become a &#34;Tweet Board&#34; and show all the tweets about our awesome vehicles. The factory team members are going to love it!</li>
 <li>That&#39;s Possible!  I&#39;ll get right on it – give me a half hour.</li>
 </ul>
+<h2 is-upgraded>Application Architecture</h2>
+<p>At the end of this section we will have added the Factory Tweet Board Sink.</p>
+<p class="image-container"><img alt="2 Application Architecture" src="img/65be43b4953926f4.png"></p>
 <h2 is-upgraded>Creating the Tweet Board Sink</h2>
 <p>We obviously don&#39;t have a giant LED board that we can use so we&#39;re going to settle for logging the tweets as they come in.</p>
 <ul>
@@ -197,6 +202,9 @@ solace-pubsub-service   solace-pubsub       Enterprise Shared Plan     sample-ap
 <li>Hey Tweet Master, I&#39;ve got a problem with your work!  This twitter board is letting employees take credit for all the customer&#39;s ideas.  I want to send the new feature tweets to my private page instead of the &#34;Tweet Board.&#34; Can you fix it?</li>
 <li>That&#39;s Possible! I&#39;ll do it right away – should be ready in 30 minutes.</li>
 </ul>
+<h2 is-upgraded>Application Architecture</h2>
+<p>In order to meet our new goal we will add the Features processor and a new Sink as seen below.</p>
+<p class="image-container"><img alt="3 Application Architecture" src="img/b93b707ef64e0513.png"></p>
 <h2 is-upgraded>Create the Feature Processor</h2>
 <ul>
 <li>Developer - Let&#39;s get started!</li>
@@ -225,7 +233,9 @@ solace-pubsub-service   solace-pubsub       Enterprise Shared Plan     sample-ap
 <aside class="warning"><p>From the JavaDocs, the <em>BinderAwareChannelResolver</em> is &#34;A DestinationResolver implementation that resolves the channel from the bean factory and, if not present, creates a new channel and adds it to the factory after binding it to the binder.&#34;</p>
 </aside>
 <ul>
-<li>Review the <em>handle</em> method to see an example of how to specify dynamic destinations and then deploy this app as well.</li>
+<li>Review the <em>handle</em> method to see an example of how to specify dynamic destinations</li>
+<li>Open the pom file and update the &#34;start-class&#34; property to point to our <em>ScsProcessorFeaturesDynamic</em> class</li>
+<li>Deploy the app</li>
 </ul>
 <aside class="special"><p>Note that our two different feature processors are listening as part of a consumer group so they will receive messages in a round robin fashion</p>
 </aside>
@@ -261,8 +271,11 @@ solace-pubsub-service   solace-pubsub       Enterprise Shared Plan     sample-ap
 <li>Boss - &#34;Hey Tweet Master, what&#39;s with all these tweets in all caps.  We keep getting yelled at.  Can you fix it?&#34;</li>
 <li>Developer - &#34;Yep, that&#39;s possible - let me get right on that!&#34;</li>
 </ul>
-<aside class="warning"><p>Spring Cloud Streams currently has two different ways to follow a Reactive (Functional) Programming Model: Spring Cloud Functions and spring-cloud-stream-reactive. We&#39;re going to concnetrate on Spring Cloud Functions since the latter option is marked for deprecation.</p>
+<aside class="warning"><p>Spring Cloud Streams currently has two different ways to follow a Reactive (Functional) Programming Model: Spring Cloud Functions and spring-cloud-stream-reactive. We&#39;re going to concentrate on Spring Cloud Functions since the latter option is marked for deprecation.</p>
 </aside>
+<h2 is-upgraded>Application Architecture</h2>
+<p>We&#39;re going to add a &#34;No Yelling&#34; processor in our event driven architecture in order to meet this new need.</p>
+<p class="image-container"><img alt="4 Application Architecture" src="img/298fb1849fed7b70.png"></p>
 <h2 is-upgraded>Deploying a SCS Processor using Spring Cloud Functions</h2>
 <ul>
 <li>Navigate to your &#34;scs-processor-yelling&#34; project</li>
@@ -281,27 +294,6 @@ solace-pubsub-service   solace-pubsub       Enterprise Shared Plan     sample-ap
 
       </google-codelab-step>
     
-      <google-codelab-step label="Painless Multi-protocol with MQTT" duration="10">
-        <ul>
-<li>Boss - Good job Tweet Master!  Now everyone is looking at me like the genius I am.  Look at all those amazing tweets coming through.  Unfortunately only the people in the factory can see them.  Can you create a webpage so people in the offices can see them too?</li>
-<li>Developer - &#34;Sure thing, I&#39;ll whip up a webapp that any of our employees can access!&#34;</li>
-</ul>
-<aside class="special"><p>Since we&#39;re using Solace PubSub+ as our event broker we support a bunch of open standards and protocols. Even though the SCS apps are sending/receiving events using the Java API other applications can still use their language/protocol of choice.</p>
-</aside>
-<ul>
-<li>Since we&#39;re Spring experts let&#39;s go ahead and whip up a quick Spring Boot app that uses JavaScript and the open source MQTT Paho library to connect to PubSub+ and receive the stream of tweets.<br></li>
-<li>Open the &#34;spring-boot-mqttwebapp&#34; project</li>
-<li>Check out the <em>pom.xml</em> file and notice that there is nothing spring-cloud-streams related; only spring boot!</li>
-<li>Then open up the <em>mqttListener.html</em> to see how simple it was to connect &amp; receive events using MQTT Paho.</li>
-<li>In <em>mqttListener.html</em> update the host/port/username/vpn/credentials to connect to PubSub+ (Search for &#34;UPDATE&#34; to find where the updates need to be made)</li>
-<li>Lastly look at the <em>MqttWebApp.java</em> class.  You&#39;ll see that we just have a simple RestController that is smart enough to make the files in src/main/resources/static available for HTTP access.</li>
-<li>Now that we&#39;ve taken a look at how the app works go ahead and deploy it.</li>
-<li>Once deployed navigate to <em>http://localhost:8090/mqttListener.html</em> to see the incoming tweets!</li>
-</ul>
-
-
-      </google-codelab-step>
-    
       <google-codelab-step label="Multiple Processor Chaining" duration="15">
         <ul>
 <li>Hey Tweet Master – we&#39;re still receiving a bunch of complaints and negative tweets...I&#39;m looking like an idiot here.  Fix it now!  And while you&#39;re at it create some upbeat positive tweets!  I don&#39;t want people seeing our cars break down or catch on fire and explode!</li>
@@ -309,6 +301,9 @@ solace-pubsub-service   solace-pubsub       Enterprise Shared Plan     sample-ap
 </ul>
 <aside class="warning"><p>Obviously this company has some morality issues :)<br>In the real world you should definitely not modify people&#39;s speech or create fake news!<br></p>
 </aside>
+<h2 is-upgraded>Application Architecture</h2>
+<p>A processor will be added to our architecture in order to convert negative words to positive ones.</p>
+<p class="image-container"><img alt="5 Application Architecture" src="img/49dc419bfeeda384.png"></p>
 <h2 is-upgraded>Create the Processor</h2>
 <p>Let&#39;s get started and hopefully have a bit of fun!</p>
 <ul>
@@ -327,12 +322,31 @@ solace-pubsub-service   solace-pubsub       Enterprise Shared Plan     sample-ap
 <li>If you are using STS you should notice that the application automatically redepoyed; that&#39;s because of the auto deployment feature provided by spring-boot-devtools</li>
 <li>If you are not using STS please stop your running app and redeploy.</li>
 </ul>
-<h3 is-upgraded>Update the MQTT WebApp</h3>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Painless Multi-protocol with MQTT" duration="10">
+        <ul>
+<li>Boss - Good job Tweet Master!  Now everyone is looking at me like the genius I am.  Look at all those amazing tweets coming through.  Unfortunately only the people in the factory can see them.  Can you create a webpage so people in the offices can see them too?</li>
+<li>Developer - &#34;Sure thing, I&#39;ll whip up a webapp that any of our employees can access!&#34;</li>
+</ul>
+<h2 is-upgraded>Application Architecture</h2>
+<p>To meet this new requirement we are going to add the MQTT Web App shown in the diagram below:</p>
+<p class="image-container"><img alt="6 Application Architecture" src="img/b213cf52b70c2752.png"></p>
+<aside class="special"><p>Since we&#39;re using Solace PubSub+ as our event broker we support a bunch of open standards and protocols. Even though the SCS apps are sending/receiving events using the Java API other applications can still use their language/protocol of choice.</p>
+</aside>
 <ul>
-<li>Navigate to your &#34;spring-boot-mqttwebapp&#34; project</li>
-<li>Open your mqttListener.html file</li>
-<li>Update the topic name &amp; redeploy</li>
-<li>After it restarts you&#39;ll need to reload the browser window where you have the MQTT WebApp open</li>
+<li>Since we&#39;re Spring experts let&#39;s go ahead and whip up a quick Spring Boot app that uses JavaScript and the open source MQTT Paho library to connect to PubSub+ and receive the stream of tweets.<br></li>
+<li>Open the &#34;spring-boot-mqttwebapp&#34; project</li>
+<li>Check out the <em>pom.xml</em> file and notice that there is nothing spring-cloud-streams related; only spring boot!</li>
+<li>Then open up the <em>mqttListener.html</em> to see how simple it was to connect &amp; receive events using MQTT Paho.</li>
+<li>In <em>mqttListener.html</em> update the host/port/username/vpn/credentials to connect to PubSub+ (Search for &#34;UPDATE&#34; to find where the updates need to be made)</li>
+<li>Lastly look at the <em>MqttWebApp.java</em> class.  You&#39;ll see that we just have a simple RestController that is smart enough to make the files in src/main/resources/static available for HTTP access.</li>
+<li>Now that we&#39;ve taken a look at how the app works go ahead and deploy it.</li>
+<li>Once deployed navigate to <em>http://</em>/mqttListener.html to see the incoming tweets! (You can lookup your route in the apps manager or by using the command below:<pre><code>$ cf app spring-boot-mqttwebapp
+</code></pre>
+</li>
 </ul>
 
 
