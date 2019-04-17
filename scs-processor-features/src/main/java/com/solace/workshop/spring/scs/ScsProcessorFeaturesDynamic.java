@@ -35,8 +35,8 @@ import org.springframework.messaging.support.MessageBuilder;
 
 import com.solace.workshop.Tweet;
 
-@SpringBootApplication
-@EnableBinding
+//@SpringBootApplication
+//@EnableBinding
 public class ScsProcessorFeaturesDynamic {
 	
 	private static final Logger log = LoggerFactory.getLogger(ScsProcessorFeaturesDynamic.class);
@@ -49,9 +49,9 @@ public class ScsProcessorFeaturesDynamic {
 	private String feature = "#NewFeature";
 	private String topicStart = "T/tweets/stream/";
 	
-	public static void main(String[] args) {
-		SpringApplication.run(ScsProcessorFeaturesDynamic.class, args);
-	}
+//	public static void main(String[] args) {
+//		SpringApplication.run(ScsProcessorFeaturesDynamic.class, args);
+//	}
 
 	@StreamListener(Processor.INPUT)
 	public void handle(Tweet tweet) {
