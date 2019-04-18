@@ -21,11 +21,6 @@
 	</properties>
 
 	<dependencies>
-		<!-- <dependency> -->
-		<!-- <groupId>com.solace.spring.boot</groupId> -->
-		<!-- <artifactId>solace-java-spring-boot-autoconfigure</artifactId> -->
-		<!-- <version>2.1.0</version> -->
-		<!-- </dependency> -->
 		<dependency>
 			<groupId>com.solace.spring.cloud</groupId>
 			<artifactId>spring-cloud-stream-binder-solace</artifactId>
@@ -38,9 +33,20 @@
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-stream-test-support</artifactId>
@@ -52,6 +58,7 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
+		
 		<dependency>
 			<groupId>com.solace.workshop</groupId>
 			<artifactId>scs-workshop-common</artifactId>

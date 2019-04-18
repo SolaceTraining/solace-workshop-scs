@@ -17,31 +17,45 @@
  * under the License.
  */
 
-package com.solace.workshops.spring.scs;
+package com.solace.workshop.spring.scs;
+
+
+import java.util.function.Function;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.stream.annotation.EnableBinding;
-import org.springframework.cloud.stream.annotation.StreamListener;
-import org.springframework.cloud.stream.messaging.Sink;
+import org.springframework.cloud.stream.messaging.Processor;
+import org.springframework.context.annotation.Bean;
 
 import com.solace.workshop.Tweet;
 
+import reactor.core.publisher.Flux;
+
 @SpringBootApplication
-@EnableBinding(Sink.class)
-public class ScsSinkBossideas {
+@EnableBinding(Processor.class)
+public class ScsProcessorYelling {
 	
-	private static final Logger log = LoggerFactory.getLogger(ScsSinkBossideas.class);
-	
+	private static final Logger logger = LoggerFactory.getLogger(ScsProcessorYelling.class);
+
 	public static void main(String[] args) {
-		SpringApplication.run(ScsSinkBossideas.class, args);
+		// Defining the reactive function to bind to the INPUT channel of the Processor
+		SpringApplication.run(ScsProcessorYelling.class, "--spring.cloud.stream.function.definition=changeCase");
 	}
-
-	@StreamListener(Sink.INPUT)
-	public void sink(Tweet tweet) {
-		log.info(tweet.toString());
+	
+	@Bean
+	public Function<Flux<Tweet>, Flux<Tweet>> changeCase() {
+		return flux -> flux
+				.doOnNext(t ->logger.info("====Tweet BEFORE mapping: " + t.toString()))
+				.map(t -> { t.setText(t.getText().toLowerCase());
+					return t;
+					})
+				.doOnNext(t ->logger.info("++++Tweet AFTER mapping: " + t.toString()))
+				;
+	
 	}
-
+		
 }
+
