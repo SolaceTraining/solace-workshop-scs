@@ -263,7 +263,6 @@ Negative
 
 ###
 * Review the *handle* method to see an example of how to specify dynamic destinations
-* Open the pom file and update the "start-class" property to point to our *ScsProcessorFeaturesDynamic.java* class
 * To prevent both apps from running when in PCF open the *ScsProcessorFeatures.java* class and comment the entire file out. 
 * Build (mvn clean install) & Deploy the app to PCF
 
