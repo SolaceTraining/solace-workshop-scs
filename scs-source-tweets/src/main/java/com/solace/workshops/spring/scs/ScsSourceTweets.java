@@ -64,7 +64,7 @@ public class ScsSourceTweets {
 
 		tweetList = readFile(filename);
 		tweetIterator = tweetList.iterator();
-		log.info("Loaded %d tweet templates to send", tweetList.size());
+		log.info("Loaded " + tweetList.size() + " tweet templates to send");
 	}
 
 	public static void main(String[] args) {
@@ -108,3 +108,4 @@ public class ScsSourceTweets {
 		}
 	}
 }
+

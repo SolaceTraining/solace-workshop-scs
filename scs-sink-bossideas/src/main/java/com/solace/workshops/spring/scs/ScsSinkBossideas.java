@@ -43,5 +43,4 @@ public class ScsSinkBossideas {
 	public void sink(Tweet tweet) {
 		log.info(tweet.toString());
 	}
-
 }
