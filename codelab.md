@@ -59,7 +59,7 @@ After importing everything you should see the following projects in STS:
 * scs-sink-twitterboard
 * scs-source-tweets
 * scs-workshop-common
-* spring-boot-mspring-boot-mqttwebapp/manifest.ymlqttwebapp
+* spring-boot-mqttwebapp
 
 Negative
 : Note:  There will be errors associated with the template projects as they are incomplete and will be addressed in the exercises that follow.
@@ -116,7 +116,7 @@ Before we take a look at the code, let's take a quick look at the structure of a
 ![SCS Project Structure](images/ScsProjectStructure.png)
 
 Negative
-DiagramFifth-windows.png: Spring Cloud Streams is built on top of Spring Boot. A great resource for creating your own Spring Boot applications is Spring Initializr. A publically hosted version is hosted here: [start.spring.io](https://start.spring.io)
+: Spring Cloud Streams is built on top of Spring Boot. A great resource for creating your own Spring Boot applications is Spring Initializr. A publically hosted version is hosted here: [start.spring.io](https://start.spring.io)
 
 ### 
 * Next go ahead and open up the pom.xml file in your "scs-source-tweets" project and search for "binder"; you should have a dependency for either "spring-cloud-starter-stream-solace" or "spring-cloud-stream-binder-solace" which is what is going to allow SCS to connect to Solace PubSub+. "spring-cloud-starter-stream-solace" includes the "spring-cloud-stream-binder-solace" dependency which is why you could have either one. It is recommended to start with the starter.
