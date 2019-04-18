@@ -1,6 +1,6 @@
 ---
 applications:
-- name: scs-processor-feature-<ATTENDEE_NAME>
+- name: scs-processor-feature
   memory: 1024M
   path: target/scs-processor-feature-0.0.1-SNAPSHOT.jar
   services:
