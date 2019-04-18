@@ -35,8 +35,6 @@
 <li>It is based on Spring Boot, Spring Cloud, Spring Integration and Spring Messaging</li>
 </ul>
 <p>You&#39;re a developer that works for an up and coming car company named Edison Automotives. Your boss is not the most adept in the use of social media but he&#39;s been hearing great things about twitter from his inner-circle and is a bit infatuated with tying it into Edison Automotive&#39;s every day business and culture....little does he know that his company does not exactly have the best products or reputation....</p>
-<p><strong>TODO: INSERT INTRO STORY</strong></p>
-<p><strong>TODO: INSERT LAB ARCHITECTURE DIAGRAM?</strong></p>
 <aside class="special"><p><strong>Developer Resources</strong><br>Spring Cloud Stream Project Home: <a href="https://spring.io/projects/spring-cloud-stream" target="_blank">https://spring.io/projects/spring-cloud-stream</a><br>The latest GA version of Spring Clouds Streams as of the creation of this lab is Fishtown SR2.<br>The Reference Guide for that version is available <a href="https://cloud.spring.io/spring-cloud-static/spring-cloud-stream/2.1.2.RELEASE/single/spring-cloud-stream.html" target="_blank">here</a>.</p>
 </aside>
 <aside class="warning"><p>The SCS framework allows for building messaging-driven applications without having to explicitly write any code for publishing or receiving events.  While many microservices-oriented applications today are based on synchronous, request/response interactions based on protocols such as HTTP or gRPC, the asynchronous, event-driven nature of communications using SCS allows for building highly scalable, efficient and responsive distributed systems that can run on-premise or in the cloud.  When combined with the high-performance Solace PubSub+ Event Broker which can be deployed in virtually any environment, you can create powerful and flexible applications that support both hybrid and multi-cloud capabilities, all operating in real-time with high throughput and low latency.</p>
@@ -103,7 +101,7 @@ solace-pubsub-service   solace-pubsub       Enterprise Shared Plan     sample-ap
       <google-codelab-step label="Deploy Your First Source &amp; Sink" duration="45">
         <ul>
 <li>Boss - The marketing department wants to use the tweets to learn more about our customer&#39;s thoughts.  Since you&#39;re already getting them can you share them with marketing?</li>
-<li>Developer - That&#39;s Possible!  Tell them to give me a call! TESTING</li>
+<li>Developer - That&#39;s Possible!  Tell them to give me a call!</li>
 </ul>
 <h2 is-upgraded>Application Architecture</h2>
 <p>At the end of this section we will have created the apps below!<br>The Source will send out tweets that are received by the marketing Sink.</p>
@@ -120,9 +118,10 @@ solace-pubsub-service   solace-pubsub       Enterprise Shared Plan     sample-ap
 <p class="image-container"><img alt="SCS Project Structure" src="img/f8f42c7c5fde7048.png"></p>
 <p>Negative<br>DiagramFifth-windows.png: Spring Cloud Streams is built on top of Spring Boot. A great resource for creating your own Spring Boot applications is Spring Initializr. A publically hosted version is hosted here: <a href="https://start.spring.io" target="_blank">start.spring.io</a></p>
 <ul>
-<li>Next go ahead and open up the pom.xml file in your &#34;scs-source-tweets&#34; project and search for &#34;binder&#34;; you should have found the &#34;spring-cloud-stream-binder-solace&#34; which is what is going to allow SCS to connect to Solace PubSub+</li>
+<li>Next go ahead and open up the pom.xml file in your &#34;scs-source-tweets&#34; project and search for &#34;binder&#34;; you should have a dependency for either &#34;spring-cloud-starter-stream-solace&#34; or &#34;spring-cloud-stream-binder-solace&#34; which is what is going to allow SCS to connect to Solace PubSub+. &#34;spring-cloud-starter-stream-solace&#34; includes the &#34;spring-cloud-stream-binder-solace&#34; dependency which is why you could have either one. It is recommended to start with the starter.</li>
+<li>Note that the &#34;spring-cloud-stream-reactive&#34; dependency is only required for reactive streams support, but we will also discuss the use of &#34;Spring Cloud Functions&#34; as an alternative in a later section.</li>
 </ul>
-<p><strong>TODO UPDATE DIAGRAM BELOW</strong><img alt="SCS Maven Dependencies" src="img/a3b8083e6b669c58.png"></p>
+<p class="image-container"><img alt="SCS Maven Dependencies" src="img/a3b8083e6b669c58.png"></p>
 <ul>
 <li>Let&#39;s take a look at a simple sample implementation in the image below. You can see that the enrichLogMessage method is associated with both an INPUT and OUTPUT channel. In a future section we will create an application following a similar pattern, but notice that if you look at the <em>ScsSourceTweets.java</em> class in your &#34;scs-source-tweets&#34; project you will see something a bit different. We are using an <em>@InboundChannelAdapter</em> annotation in order to create tweets at a fixed rate.</li>
 </ul>
@@ -133,7 +132,7 @@ solace-pubsub-service   solace-pubsub       Enterprise Shared Plan     sample-ap
 <li>One last thing to look at and then we&#39;ll deploy your first source! Go ahead and open your application.yml file. This file holds the bindings that tells the SCS binder how to connect your input/output channels to the specified middleware at runtime.<br></li>
 </ul>
 <p class="image-container"><img alt="SCS Application Config File" src="img/1ec3375dc0672892.png"></p>
-<aside class="special"><p>SCS apps are not restricted to only using one binder at a time. This allows a SCS app the flexibility of receiving events from one binder/location/environment/etc, performing business logic and then sending new events to another binder/location/environment/etc.<br><strong>TODO think of Kafka to Solace example here</strong><br>Also note that because bindings are dynamically configured at run-time you don&#39;t have to touch the code to switch out your binder of choice, environment info, etc.</p>
+<aside class="special"><p>SCS apps are not restricted to only using one binder at a time. This allows a SCS app the flexibility of receiving events from one binder/location/environment/etc, performing business logic and then sending new events to another binder/location/environment/etc.<br>Also note that because bindings are dynamically configured at run-time you don&#39;t have to touch the code to switch out your binder of choice, environment info, etc.</p>
 </aside>
 <h3 is-upgraded>Deploy our scs-source-tweets app</h3>
 <ul>
@@ -161,6 +160,13 @@ solace-pubsub-service   solace-pubsub       Enterprise Shared Plan     sample-ap
 </ul>
 <aside class="special"><p>You now have a source application sending events to a sink application via an external eventing system, but notice that you didn&#39;t need to use any messaging APIs! SCS provides this abstraction and makes it possible for developers to concentrate on their business logic rather than learning proprietary messaging APIs!</p>
 </aside>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Deploy to Pivotal Cloud Foundry" duration="0">
+        <p>Duration 0:10:00</p>
+<h2 is-upgraded>Behind the magic!</h2>
 
 
       </google-codelab-step>
@@ -228,14 +234,16 @@ solace-pubsub-service   solace-pubsub       Enterprise Shared Plan     sample-ap
 <ul>
 <li>Let&#39;s create a second feature processor that makes use of dynamic destinations.</li>
 <li>Open the <em>ScsProcessorFeaturesDynamic.java</em> class</li>
+<li>Uncomment the <em>@EnableBinding</em> &amp; <em>@SpringBootAnnotation</em> annotations as well as the <em>main</em> method</li>
 <li>You&#39;ll notice that the <em>@EnableBinding</em> annotation does not explicitly specify a binding interface. Instead we are using a <em>BinderAwareChannelResolver</em> which is registered automatically by the <em>@EnableBinding</em> annotation. This destination resolver allows us to dynamically create output channels at runtime.</li>
 </ul>
 <aside class="warning"><p>From the JavaDocs, the <em>BinderAwareChannelResolver</em> is &#34;A DestinationResolver implementation that resolves the channel from the bean factory and, if not present, creates a new channel and adds it to the factory after binding it to the binder.&#34;</p>
 </aside>
 <ul>
 <li>Review the <em>handle</em> method to see an example of how to specify dynamic destinations</li>
-<li>Open the pom file and update the &#34;start-class&#34; property to point to our <em>ScsProcessorFeaturesDynamic</em> class</li>
-<li>Deploy the app</li>
+<li>Open the pom file and update the &#34;start-class&#34; property to point to our <em>ScsProcessorFeaturesDynamic.java</em> class</li>
+<li>To prevent both apps from running when in PCF open the <em>ScsProcessorFeatures.java</em> class and comment the entire file out.</li>
+<li>Build (mvn clean install) &amp; Deploy the app to PCF</li>
 </ul>
 <aside class="special"><p>Note that our two different feature processors are listening as part of a consumer group so they will receive messages in a round robin fashion</p>
 </aside>
@@ -275,7 +283,7 @@ solace-pubsub-service   solace-pubsub       Enterprise Shared Plan     sample-ap
 </aside>
 <h2 is-upgraded>Application Architecture</h2>
 <p>We&#39;re going to add a &#34;No Yelling&#34; processor in our event driven architecture in order to meet this new need.</p>
-<p class="image-container"><img alt="4 Application Architecture" src="img/298fb1849fed7b70.png"></p>
+<p class="image-container"><img alt="4 Application Architecture" src="img/19652794c24f1250.png"></p>
 <h2 is-upgraded>Deploying a SCS Processor using Spring Cloud Functions</h2>
 <ul>
 <li>Navigate to your &#34;scs-processor-yelling&#34; project</li>
@@ -341,7 +349,8 @@ solace-pubsub-service   solace-pubsub       Enterprise Shared Plan     sample-ap
 <li>Open the &#34;spring-boot-mqttwebapp&#34; project</li>
 <li>Check out the <em>pom.xml</em> file and notice that there is nothing spring-cloud-streams related; only spring boot!</li>
 <li>Then open up the <em>mqttListener.html</em> to see how simple it was to connect &amp; receive events using MQTT Paho.</li>
-<li>In <em>mqttListener.html</em> update the host/port/username/vpn/credentials to connect to PubSub+ (Search for &#34;UPDATE&#34; to find where the updates need to be made)</li>
+<li>TODO create service key &amp; gather credentials &amp; other necessary info</li>
+<li>In <em>mqttListener.html</em> update the host/port/username/vpn/credentials to connect to PubSub+ (Search for &#34;UPDATE&#34; to find where the updates need to be made).</li>
 <li>Lastly look at the <em>MqttWebApp.java</em> class.  You&#39;ll see that we just have a simple RestController that is smart enough to make the files in src/main/resources/static available for HTTP access.</li>
 <li>Now that we&#39;ve taken a look at how the app works go ahead and deploy it.</li>
 <li>Once deployed navigate to <em>http://</em>/mqttListener.html to see the incoming tweets! (You can lookup your route in the apps manager or by using the command below:<pre><code>$ cf app spring-boot-mqttwebapp
