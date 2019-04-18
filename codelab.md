@@ -409,7 +409,9 @@ A processor will be added to our architecture in order to convert negative words
 ### Create the Processor
 Let's get started and hopefully have a bit of fun! 
 * Open the "scs-processor-positive" project
+* Open the manifest.yml file and choose <ATTENDEE_NAME> to your name
 * Find & Open the *ScsProcessorPositive.java* class. At this point we know how to create and deploy a processor so we'll do something a bit different. At the top of the class you'll see that the negToPosMap object is being initialized in a static method. This Map holds the key for changing our negative tweets to positive ones. Go ahead and fill in some positive words for each negative one in the map. Remember that you can find the canned tweets in the canned_tweets.txt file under the "scs-source-tweets" project if you need some more context :) 
+* After filling in your "positive" words go ahead and deploy the app
 
 Positive
 : Notice that multiple processors can easily be connected together in order to form a processing chain. 
