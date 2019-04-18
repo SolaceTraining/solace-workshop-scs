@@ -3,7 +3,7 @@ spring:
     stream:
       bindings:
         input:
-          destination: TWEETS.Q.BOARD.<AttendeeName>
+          destination: TWEETS.Q.BOARD.attendee
           binder: local_solace
       binders:
         local_solace:
@@ -21,7 +21,7 @@ spring:
         bindings:
           input:
             consumer:
-              queueAdditionalSubscriptions: T/tweets/stream/nofeatures/noyelling/positive/<AttendeeName>
+              queueAdditionalSubscriptions: T/tweets/stream/nofeatures/noyelling/positive/attendee
 logging:
   level:
     root: INFO

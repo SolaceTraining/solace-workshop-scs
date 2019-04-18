@@ -39,21 +39,20 @@ public class ScsProcessorPositive {
 	private static final Logger log = LoggerFactory.getLogger(ScsProcessorPositive.class);
 	private static final Map<String, String> negToPosMap;
 
-	//TODO - Add replacement positive words below! Have some fun!!
 	static {
 		negToPosMap = new HashMap<String, String>();
-		negToPosMap.put("awful", "");
-		negToPosMap.put("sucks", "");
-		negToPosMap.put("worst", "");
-		negToPosMap.put("hate", "");
-		negToPosMap.put("lit on fire", "");
-		negToPosMap.put("disappointing", "");
-		negToPosMap.put("exploded in", "");
-		negToPosMap.put("horrendous", "");
-		negToPosMap.put("wrong", "");
-		negToPosMap.put("lacking", "");
-		negToPosMap.put("broke down", "");
-		negToPosMap.put("drove off", "");
+		negToPosMap.put("awful", "awesome");
+		negToPosMap.put("sucks", "rocks");
+		negToPosMap.put("worst", "best");
+		negToPosMap.put("hate", "love");
+		negToPosMap.put("lit on fire", "parked itself");
+		negToPosMap.put("disappointing", "exciting");
+		negToPosMap.put("exploded in", "made it up");
+		negToPosMap.put("horrendous", "amazing");
+		negToPosMap.put("wrong", "correct");
+		negToPosMap.put("lacking", "abundant");
+		negToPosMap.put("broke down", "saved me");
+		negToPosMap.put("drove off", "parked");
 	}
 
 	public static void main(String[] args) {
@@ -81,20 +80,6 @@ public class ScsProcessorPositive {
 		return tweet;
 	}
 	
-//	static {
-//		negToPosMap = new HashMap<String, String>();
-//		negToPosMap.put("awful", "awesome");
-//		negToPosMap.put("sucks", "rocks");
-//		negToPosMap.put("worst", "best");
-//		negToPosMap.put("hate", "love");
-//		negToPosMap.put("lit on fire", "parked itself");
-//		negToPosMap.put("disappointing", "exciting");
-//		negToPosMap.put("exploded in", "made it up");
-//		negToPosMap.put("horrendous", "amazing");
-//		negToPosMap.put("wrong", "correct");
-//		negToPosMap.put("lacking", "abundant");
-//		negToPosMap.put("broke down", "saved me");
-//		negToPosMap.put("drove off", "parked");
-//	}
+
 
 }

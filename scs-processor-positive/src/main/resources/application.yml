@@ -5,9 +5,9 @@ spring:
         input:
           destination: TWEETS.Q.POSITIVE
           binder: local_solace
-          group: <ATTENDEE_NAME>
+          group: attendee
         output:
-          destination: T/tweets/stream/nofeatures/noyelling/positive/<ATTENDEE_NAME>
+          destination: T/tweets/stream/nofeatures/noyelling/positive/attendee
           binder: local_solace
       binders:
         local_solace:
