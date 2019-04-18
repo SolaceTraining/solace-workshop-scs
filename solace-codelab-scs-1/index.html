@@ -35,7 +35,7 @@
 <li>It is based on Spring Boot, Spring Cloud, Spring Integration and Spring Messaging</li>
 </ul>
 <p>You&#39;re a developer that works for an up and coming car company named Edison Automotives. Your boss is not the most adept in the use of social media but he&#39;s been hearing great things about twitter from his inner-circle and is a bit infatuated with tying it into Edison Automotive&#39;s every day business and culture....little does he know that his company does not exactly have the best products or reputation....</p>
-<aside class="special"><p><strong>Developer Resources</strong><br>Spring Cloud Stream Project Home: <a href="https://spring.io/projects/spring-cloud-stream" target="_blank">https://spring.io/projects/spring-cloud-stream</a><br>The latest GA version of Spring Clouds Streams as of the creation of this lab is Fishtown SR2.<br>The Reference Guide for that version is available <a href="https://cloud.spring.io/spring-cloud-static/spring-cloud-stream/2.1.2.RELEASE/single/spring-cloud-stream.html" target="_blank">here</a>.</p>
+<aside class="special"><p><strong>Developer Resources</strong><br>Spring Cloud Stream Project Home: <a href="https://spring.io/projects/spring-cloud-stream" target="_blank">https://spring.io/projects/spring-cloud-stream</a><br>The latest version of Spring Clouds Streams as of the creation of this lab is Greenwich.SR1 (2.1.4)<br>The Reference Guide for that current version is available <a href="https://docs.spring.io/spring-cloud-stream/docs/current/reference/htmlsingle" target="_blank">here</a>.</p>
 </aside>
 <aside class="warning"><p>The SCS framework allows for building messaging-driven applications without having to explicitly write any code for publishing or receiving events.  While many microservices-oriented applications today are based on synchronous, request/response interactions based on protocols such as HTTP or gRPC, the asynchronous, event-driven nature of communications using SCS allows for building highly scalable, efficient and responsive distributed systems that can run on-premise or in the cloud.  When combined with the high-performance Solace PubSub+ Event Broker which can be deployed in virtually any environment, you can create powerful and flexible applications that support both hybrid and multi-cloud capabilities, all operating in real-time with high throughput and low latency.</p>
 </aside>
@@ -56,9 +56,20 @@
 <li>Use the latest JDK 1.8 (ensure your PATH &amp; JAVA_HOME are updated as needed)</li>
 <li>Maven 3.5.3 or higher (ensure it&#39;s on your PATH) <a href="https://maven.apache.org/install.html" target="_blank">Install steps here</a></li>
 </ul>
+<h3 is-upgraded>Configure a Cloud Foundry Target in STS</h3>
+<p>STS provides integrated support for deploying, running and debugging your SCSt services in PCF.  In the Boot Dashboard view, configure a connection to your PCF deployment.</p>
+<p class="image-container"><img alt="Configuring a connection to Cloud Foundry in STS(use button circled in red)" src="img/1a64fd3fa78db22a.png"></p>
+<p>Follow the dialog prompts and fill in the username / password associated with your PCF account.  You may need to skip SSL validation if your PCF deployment uses self-signed certificates.</p>
+<h3 is-upgraded>Cloud Foundry CLI Setup</h3>
+<ul>
+<li>Install the cf-cli using these instructions: <a href="https://docs.cloudfoundry.org/cf-cli/install-go-cli.html" target="_blank">Install CF CLI</a></li>
+<li>Login to your cf org &amp; space with your API endpoint, email &amp; password.<pre><code>$ cf login
+</code></pre>
+</li>
+</ul>
 <h3 is-upgraded>Code Access</h3>
 <ul>
-<li>Clone the github repo <strong>TODO - Add real repo &amp; branch info</strong><pre><code>$ git clone git@github.com:Mrc0113/solace-workshop-scs.git
+<li>Clone the github repo **TODO - Add real repo **<pre><code>$ git clone -b pcf git@github.com:Mrc0113/solace-workshop-scs.git
 </code></pre>
 </li>
 <li>Import the projects into STS<br>In STS, use the File -&gt; Import -&gt; Maven -&gt; Existing Maven Projects -&gt; Click Next -&gt; Click Browse and Navigate to the git repo you cloned in the previous step -&gt; Select all the pom files and click Finish.</li>
@@ -73,27 +84,31 @@
 <li>scs-sink-twitterboard</li>
 <li>scs-source-tweets</li>
 <li>scs-workshop-common</li>
-<li>spring-boot-mspring-boot-mqttwebapp/manifest.ymlqttwebapp</li>
+<li>spring-boot-mqttwebapp</li>
 </ul>
 <aside class="warning"><p>Note:  There will be errors associated with the template projects as they are incomplete and will be addressed in the exercises that follow.</p>
 </aside>
-<p>Throughout this workshop we have two options when deploying apps: 1) via the Spring Tool Suite IDE and 2) via mvn on the command line. If you are going to choose option 2 then navigate to the scs-workshop-common directory and perform a maven install of the project.</p>
-<pre><code>$ cd ~/git/solace-workshop-scs/scs-workshop-common/
-$ mvn install
+<ul>
+<li>The workshop uses a common data model which contains the Tweet object which is processed by the SCS services. You will need to prepare the shared artifact for use across the projects.</li>
+<li>Throughout this workshop we have two options when deploying apps: 1) via the Spring Tool Suite IDE and 2) via mvn on the command line.</li>
+<li>If you prefer option 1 then in the <em>scs-workshop-common</em> project, run a Maven build and install it to the local repository.<br><img alt="Using STS to install your artifact via Maven" src="img/c4071d5e3291a313.png"></li>
+<li>If you prefer option 2 then navigate to the scs-workshop-common directory and perform a maven install of the project.<pre><code>$ cd ~/git/solace-workshop-scs/scs-workshop-common/
+$ mvn clean install
 </code></pre>
+</li>
+</ul>
 <h2 is-upgraded>Create and/or Verify access to a Solace PubSub+ Access</h2>
-<h3 is-upgraded>PubSub+ Service in Solace Cloud</h3>
-<p>If you want to stand up your Solace PubSub+ Service in Solace Cloud go ahead and login or signup at the <a href="https://console.solace.cloud/login/new-account" target="_blank">Cloud Signup Page</a>.  Note that a free tier is available and will work for this workshop.</p>
-<h3 is-upgraded>Local Solace PubSub+ Instance</h3>
-<p>When developing your application, you may want to test using a local instance of the Solace PubSub+ Event Broker.  Refer to the Solace <a href="https://solace.com/software/getting-started/" target="_blank">Docker Getting Started Guide</a> to get you up and running quickly with a broker instance running in Docker.  You may skip this step if you decide to use a broker running in PCF or Solace Cloud.</p>
-<p><strong>Consider removing PCF in this version and adding in the PCF branch only</strong></p>
 <h3 is-upgraded>Solace PubSub+ Service in Pivotal Cloud Foundry (PCF)</h3>
-<p>If you are using PCF, your administrator will have created an org and space for your workshop demo in which you can deploy and run your microservices.  Moreover, a Solace PubSub+ service instance will have been created so that it can be bound by any app running in the space and automatically lookup credentials to connect to a broker instance running in PCF.  You should determine the name of this service instance before deploying or running your application to avoid any service binding errors.  You can do this through the Apps Manager or via the cf CLI.</p>
+<p>If you are using PCF, your administrator will have created an org and space for your workshop demo in which you can deploy and run your microservices.  Moreover, a Solace PubSub+ service instance will have been created so that it can be bound by any app running in the space and automatically lookup credentials to connect to a broker instance running in PCF.  You should determine the name of this service instance before deploying or running your application to avoid any service binding errors.  You can do this through the Apps Manager or via the cf CLI. You&#39;ll need this service instance name later so don&#39;t forget it.</p>
 <pre><code>$ cf services 
 Getting services in org test-org / space development as user1... 
 name                    service             plan                       bound apps  
 solace-pubsub-service   solace-pubsub       Enterprise Shared Plan     sample-app 
 </code></pre>
+<h3 is-upgraded>PubSub+ Service in Solace Cloud</h3>
+<p>If you want to stand up your Solace PubSub+ Service in Solace Cloud go ahead and login or signup at the <a href="https://console.solace.cloud/login/new-account" target="_blank">Cloud Signup Page</a>.  Note that a free tier is available and will work for this workshop.</p>
+<h3 is-upgraded>Local Solace PubSub+ Instance</h3>
+<p>When developing your application, you may want to test using a local instance of the Solace PubSub+ Event Broker.  Refer to the Solace <a href="https://solace.com/software/getting-started/" target="_blank">Docker Getting Started Guide</a> to get you up and running quickly with a broker instance running in Docker.  You may skip this step if you decide to use a broker running in PCF or Solace Cloud.</p>
 
 
       </google-codelab-step>
@@ -116,7 +131,8 @@ solace-pubsub-service   solace-pubsub       Enterprise Shared Plan     sample-ap
 <li>As a java developer you&#39;ll probably see a familiar project setup. You have your main application under src/main/java and unit tests under src/test/java.</li>
 </ul>
 <p class="image-container"><img alt="SCS Project Structure" src="img/f8f42c7c5fde7048.png"></p>
-<p>Negative<br>DiagramFifth-windows.png: Spring Cloud Streams is built on top of Spring Boot. A great resource for creating your own Spring Boot applications is Spring Initializr. A publically hosted version is hosted here: <a href="https://start.spring.io" target="_blank">start.spring.io</a></p>
+<aside class="warning"><p>Spring Cloud Streams is built on top of Spring Boot. A great resource for creating your own Spring Boot applications is Spring Initializr. A publically hosted version is hosted here: <a href="https://start.spring.io" target="_blank">start.spring.io</a></p>
+</aside>
 <ul>
 <li>Next go ahead and open up the pom.xml file in your &#34;scs-source-tweets&#34; project and search for &#34;binder&#34;; you should have a dependency for either &#34;spring-cloud-starter-stream-solace&#34; or &#34;spring-cloud-stream-binder-solace&#34; which is what is going to allow SCS to connect to Solace PubSub+. &#34;spring-cloud-starter-stream-solace&#34; includes the &#34;spring-cloud-stream-binder-solace&#34; dependency which is why you could have either one. It is recommended to start with the starter.</li>
 <li>Note that the &#34;spring-cloud-stream-reactive&#34; dependency is only required for reactive streams support, but we will also discuss the use of &#34;Spring Cloud Functions&#34; as an alternative in a later section.</li>
@@ -164,9 +180,44 @@ solace-pubsub-service   solace-pubsub       Enterprise Shared Plan     sample-ap
 
       </google-codelab-step>
     
-      <google-codelab-step label="Deploy to Pivotal Cloud Foundry" duration="0">
-        <p>Duration 0:10:00</p>
-<h2 is-upgraded>Behind the magic!</h2>
+      <google-codelab-step label="Deploy to Pivotal Cloud Foundry" duration="10">
+        <ul>
+<li>Developer - Deploying my app locally for development was super convenient, but now I need to deploy it to production in PCF!<h2 is-upgraded>Deploy the Source to PCF</h2>
+</li>
+<li>Open the manifest.yml file under the <em>scs-source-tweets</em> project</li>
+<li>Change the services name from &#34;Space1-Instance&#34; to whatever Solace Service instace is running your space.</li>
+<li><strong>If using STS</strong> run a Maven build and install it to the local repository.<br><img alt="Using STS to install your artifact via Maven" src="img/c4071d5e3291a313.png"></li>
+<li>Open the &#34;Boot Dashboard&#34; view (Window -&gt; Show View -&gt; Other -&gt; Boot Dashboard)</li>
+<li>Right-click on your app in the Spring Boot Dashboard, and select the Deploy and Run On... -&gt; [CHOOSE YOUR DEPLOYMENT TARGET WE SETUP EARLIER]:<br><img alt="Deploy to Cloud Foundry" src="img/1005c72807f073c7.png"></li>
+<li>At this point you should see the app deploying to the chosen space and the console should automatically open to follow the progress. Once complete you should see the app start to send a tweet every second.</li>
+<li><strong>If not using STS</strong> open a cli and navigate to the <em>scs-source-tweets</em> project and then run<pre><code>$ mvn clean install
+$ cf push
+</code></pre>
+</li>
+<li>At this point you should see the app being deployed to PCF. If all goes correctly you should see the app start and have a requested state of &#34;started&#34; before the command exits.</li>
+<li>You can then see the app logs by executing the command below and should see a tweet being sent every second.<pre><code>$ cf logs scs-source-tweets
+</code></pre>
+</li>
+</ul>
+<aside class="special"><p>Notice that you did not have to add any credentials for your PubSub+ service instance running in PCF. This is because the Solace Cloud Connector allows for Auto-Configuration in PCF. Just specify the service name and the service configuration is automatically looked up and injected into your app from VCAP_SERVICES! This allows you to leave your local credentials in place for even easier development and also refrain from storing credentials in your code repository.</p>
+</aside>
+<h2 is-upgraded>Deploy the Sink to PCF</h2>
+<ul>
+<li>Open the manifest.yml file under the <em>scs-sink-analytics</em> project</li>
+<li>Change the services name from &#34;Space1-Instance&#34; to whatever Solace Service instace is running your space.</li>
+<li><strong>If using STS</strong> run a Maven build and install it to the local repository.<br><img alt="Using STS to install your artifact via Maven" src="img/c4071d5e3291a313.png"></li>
+<li>Open the &#34;Boot Dashboard&#34; view (Window -&gt; Show View -&gt; Other -&gt; Boot Dashboard)</li>
+<li>Right-click on your app in the Spring Boot Dashboard, and select the Deploy and Run On... -&gt; [ CHOOSE OUR DEPLOYMENT TARGET WE SETUP EARLIER]:<br><img alt="Deploy to Cloud Foundry" src="img/1005c72807f073c7.png"></li>
+<li>At this point you should see the app deploying to the chosen space and the console should automatically open to follow the progress. Once complete you should see the app start to send a tweet every second.</li>
+<li><strong>If not using STS</strong> open a cli and navigate to the <em>scs-sink-analytics</em> project and then run<pre><code>$ mvn clean install
+$ cf push
+</code></pre>
+</li>
+<li>At this point you should see the app being deployed to PCF. If all goes correctly you should see the app start and have a requested state of &#34;started&#34; before the command exits.</li>
+<li>You can then see the app logs by executing the command below and should see a tweet being sent every second.<pre><code>$ cf logs scs-sink-analytics
+</code></pre>
+</li>
+</ul>
 
 
       </google-codelab-step>
@@ -192,7 +243,7 @@ solace-pubsub-service   solace-pubsub       Enterprise Shared Plan     sample-ap
 <aside class="warning"><p>Spring Cloud Streams supports multiple messaging models. We are going to use two different ones in this workshop<br>1: Publish-Subscribe allows for an application to process all events sent to the defined subscription. It also allows new applications to be added to the topology without disruption of the existing flow.<br><br>2: Consumer Groups allow for a set of applications to participate in a &#34;group&#34; to consume messages. This option is commonly used to allow the ability for an application to scale horizontally (creating multiple instances of the same application) while only processing each event once.</p>
 </aside>
 <h2 is-upgraded>Deploying the Tweet Board</h2>
-<p>At this point we have created our &#34;scs-sink-twitterboard&#34; application and it needs to be deployed.<br>Time to see if you&#39;ve been paying attention! Deploy it in the same way you deployed the apps in the previous section.</p>
+<p>At this point we have created our &#34;scs-sink-twitterboard&#34; application and it needs to be deployed.<br>Time to see if you&#39;ve been paying attention! Deploy it in the same way you deployed the apps in the previous section.<br>Don&#39;t forget to update the service in the manifest.yml file to point to your PubSub+ service!</p>
 <ul>
 <li>Developer - Well that was easy!  I&#39;m loving our event-driven architecture!</li>
 </ul>
@@ -226,7 +277,7 @@ solace-pubsub-service   solace-pubsub       Enterprise Shared Plan     sample-ap
 </aside>
 <ul>
 <li>Go ahead and update the host, msgVpn, clientUsername, clientPassword in the application.yml file; also note that the bindings that are listed include input, outputFeature, and outputNoFeature as defined in our custom bindings interface.</li>
-<li>Deploy the app in the same manner that you&#39;ve been deploying the others.</li>
+<li>Deploy the app in the same manner that you&#39;ve been deploying the others. (Don&#39;t forget to update the service in the manifest.yml file to point to your PubSub+ service!)</li>
 </ul>
 <h3 is-upgraded>Processor using Dynamic Destinations</h3>
 <aside class="warning"><p>At this point you might be thinking &#34;Okay these custom binding interfaces are great, but what if I don&#39;t know how many or what to call my output channels at design time?&#34; Spring Cloud Streams supports the use of Dynamic Destinations for this exact situation!  Dynamic destinations allow you to use business logic to define your destinations at runtime.</p>
@@ -241,7 +292,6 @@ solace-pubsub-service   solace-pubsub       Enterprise Shared Plan     sample-ap
 </aside>
 <ul>
 <li>Review the <em>handle</em> method to see an example of how to specify dynamic destinations</li>
-<li>Open the pom file and update the &#34;start-class&#34; property to point to our <em>ScsProcessorFeaturesDynamic.java</em> class</li>
 <li>To prevent both apps from running when in PCF open the <em>ScsProcessorFeatures.java</em> class and comment the entire file out.</li>
 <li>Build (mvn clean install) &amp; Deploy the app to PCF</li>
 </ul>
@@ -344,19 +394,31 @@ solace-pubsub-service   solace-pubsub       Enterprise Shared Plan     sample-ap
 <p class="image-container"><img alt="6 Application Architecture" src="img/b213cf52b70c2752.png"></p>
 <aside class="special"><p>Since we&#39;re using Solace PubSub+ as our event broker we support a bunch of open standards and protocols. Even though the SCS apps are sending/receiving events using the Java API other applications can still use their language/protocol of choice.</p>
 </aside>
+<h2 is-upgraded>Obtain PubSub+ Credentials for an App that can&#39;t use the Cloud Connector &amp; Auto-config</h2>
+<ul>
+<li>Open Pivotal Apps Manager &amp; Login</li>
+<li>Navigate to your Org &amp; Space</li>
+<li>Click on &#34;Services&#34;</li>
+<li>Choose your &#34;Solace PubSub+&#34; service instance</li>
+<li>Click &#34;Create Service Key&#34; (in red box below)<br><img alt="Create Service Key" src="img/8e096170da11bdc2.png"></li>
+<li>Type in a Credentials key name, such as &#34;DemoServiceKey&#34; &amp; Click &#34;Create&#34;</li>
+<li>After it&#39;s created, click on your Service Key Credentials &amp; find and record the &#34;publicMqttWsUris&#34;, &#34;clientUsername&#34; &amp; &#34;clientPassword&#34; as we&#39;ll need them in the next step<br><img alt="Service Key Credentials" src="img/5ecb3f085733a045.png"></li>
+</ul>
+<h2 is-upgraded>Create the Web App</h2>
 <ul>
 <li>Since we&#39;re Spring experts let&#39;s go ahead and whip up a quick Spring Boot app that uses JavaScript and the open source MQTT Paho library to connect to PubSub+ and receive the stream of tweets.<br></li>
 <li>Open the &#34;spring-boot-mqttwebapp&#34; project</li>
 <li>Check out the <em>pom.xml</em> file and notice that there is nothing spring-cloud-streams related; only spring boot!</li>
 <li>Then open up the <em>mqttListener.html</em> to see how simple it was to connect &amp; receive events using MQTT Paho.</li>
-<li>TODO create service key &amp; gather credentials &amp; other necessary info</li>
-<li>In <em>mqttListener.html</em> update the host/port/username/vpn/credentials to connect to PubSub+ (Search for &#34;UPDATE&#34; to find where the updates need to be made).</li>
+<li>In <em>mqttListener.html</em> update the host/port/username/credentials to connect to PubSub+ (Search for &#34;UPDATE&#34; to find where the updates need to be made) using the information found in the previous subsection.</li>
 <li>Lastly look at the <em>MqttWebApp.java</em> class.  You&#39;ll see that we just have a simple RestController that is smart enough to make the files in src/main/resources/static available for HTTP access.</li>
 <li>Now that we&#39;ve taken a look at how the app works go ahead and deploy it.</li>
-<li>Once deployed navigate to <em>http://</em>/mqttListener.html to see the incoming tweets! (You can lookup your route in the apps manager or by using the command below:<pre><code>$ cf app spring-boot-mqttwebapp
+<li>Once deployed navigate to <em>http://</em>/mqttListener.html to see the incoming tweets! You can lookup your route in the apps manager or by using the command below:<pre><code>$ cf app spring-boot-mqttwebapp
 </code></pre>
 </li>
 </ul>
+<aside class="warning"><p>Note that the MqttWebApp is actually running locally in your browser. This paradigm of creating credentials in the PubSub+ service can be used to connect other external apps as well!</p>
+</aside>
 
 
       </google-codelab-step>
@@ -367,7 +429,8 @@ solace-pubsub-service   solace-pubsub       Enterprise Shared Plan     sample-ap
 <li>Boss - Thank&#39;s tweet master! You&#39;ve done an excellent job today - take the rest of the day off and go get yourself a drink!</li>
 <li>Developer - That&#39;s Possible!</li>
 </ul>
-<p>Hopefully you not only learned how to use Spring Cloud Streams today, but also how it enables developers to concentrate on achieving business goals by removing the need to learn messaging APIs. You should also now have a solid understanding of how implementing an event-driven architecture allows for loose coupling between your apps which enables rapid addition of new functionality.</p>
+<aside class="special"><p>Hopefully you not only learned how to use Spring Cloud Streams today, but also how it enables developers to concentrate on achieving business goals by removing the need to learn messaging APIs. You should also now have a solid understanding of how implementing an event-driven architecture allows for loose coupling between your apps which enables rapid addition of new functionality.</p>
+</aside>
 <h2 is-upgraded>Continued learning topics:</h2>
 <p>This course was just an introduction to Spring Cloud Streams, but we&#39;ve included some resources below if you&#39;re interested in learning more about it or some of the features that complement it! Happy Learning :)</p>
 <ul>
