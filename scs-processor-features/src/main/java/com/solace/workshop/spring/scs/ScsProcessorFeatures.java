@@ -21,6 +21,8 @@ package com.solace.workshop.spring.scs;
 
 import java.util.ArrayList;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -40,6 +42,9 @@ import com.solace.workshop.spring.scs.ScsProcessorFeatures.ProcessorOneInTwoOutB
 @EnableBinding(ProcessorOneInTwoOutBinding.class)
 public class ScsProcessorFeatures {
 	
+	private static final Logger log = LoggerFactory.getLogger(ScsProcessorFeatures.class);
+
+	
 	@Autowired 
 	private ProcessorOneInTwoOutBinding processor;
 	
@@ -54,8 +59,10 @@ public class ScsProcessorFeatures {
 	public void handle(Tweet tweet) {
 		ArrayList<String> hashTags = tweet.getHashtags();
 		if(hashTags.contains(feature) ) {
+			log.info("Routing to output \"feature\" channel based on hashtags:"+tweet.getHashtags().toString());
 			processor.outputFeature().send(message(tweet));
 		} else {
+			log.info("Routing to output \"NO feature\" channel based on hashtags:"+tweet.getHashtags().toString());
 			processor.outputNoFeature().send(message(tweet));
 		}
 		
