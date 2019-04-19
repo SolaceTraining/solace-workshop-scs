@@ -274,7 +274,7 @@ Negative
 ### Deploying the Tweet Board
 At this point we have created our "scs-sink-twitterboard" application and it needs to be deployed. 
 Time to see if you've been paying attention! Deploy it in the same way you deployed the apps in the previous section. 
-Don't forget to update the service in the manifest.yml file to point to your PubSub+ service!
+*Don't forget to update the service in the manifest.yml file to point to your PubSub+ service!*
 
 * Developer - Well that was easy!  I'm loving our event-driven architecture! 
 
@@ -311,7 +311,7 @@ Positive
 
 ### 
 * Go ahead and update the host, msgVpn, clientUsername, clientPassword in the application.yml file; also note that the bindings that are listed include input, outputFeature, and outputNoFeature as defined in our custom bindings interface. 
-* Deploy the app in the same manner that you've been deploying the others. (Don't forget to update the service in the manifest.yml file to point to your PubSub+ service!)
+* Deploy the app in the same manner that you've been deploying the others. (*Don't forget to update the service in the manifest.yml file to point to your PubSub+ service!*)
 
 #### Processor using Dynamic Destinations
 Negative
@@ -349,8 +349,16 @@ Note that our processor that we created earlier in this lab publishes to multipl
 * Open your application.yml file
 * Update the queueAdditionalSubscriptions property to listen on "T/tweets/stream/nofeatures"
 * Save the file
-* If you are using STS you should notice that the application automatically redepoyed; that's because of the auto deployment feature provided by spring-boot-devtools 
-* If you are not using STS please stop your running app and redeploy.
+* Redeploy the updated App (Note if you had deployed locally it would automatically re-deploy since we're using devtools; this can also be configured to work with PCF, but is not recommended in production environments for obvious reasons)
+* If deploying via STS deploy as normal by doing a Maven install on the project and then in the Boot Dashboard right clicking and choosing Deploy and Run on your target. When asked if you would like to replace content of the existing Cloud application choose "OK"
+![Replace existing Cloud application](images/ReplaceApplication.png)
+* If using the cf cli, then you also push updates the same way
+``` bash
+$ cd /path/to/app
+$ mvn install
+$ cf push
+```
+
 
 Negative
 : spring-boot-devtools is handy for development and adds features such as automatic restart and remote debugging. Click [here](https://www.baeldung.com/spring-boot-devtools) for a high level overview of some of the functionality it provides. 
@@ -423,8 +431,18 @@ Positive
 * Open your application.yml file
 * Update the queueAdditionalSubscriptions property to listen on "T/tweets/stream/nofeatures"
 * Save the file
-* If you are using STS you should notice that the application automatically redepoyed; that's because of the auto deployment feature provided by spring-boot-devtools 
-* If you are not using STS please stop your running app and redeploy.
+* Redeploy the updated App (Note if you had deployed locally it would automatically re-deploy since we're using devtools; this can also be configured to work with PCF, but is not recommended in production environments for obvious reasons)
+* If deploying via STS deploy as normal by doing a Maven install on the project and then in the Boot Dashboard right clicking and choosing Deploy and Run on your target. When asked if you would like to replace content of the existing Cloud application choose "OK"
+![Replace existing Cloud application](images/ReplaceApplication.png)
+* If using the cf cli, then you also push updates the same way
+``` bash
+$ cd /path/to/app
+$ mvn install
+$ cf push
+```
+
+Negative
+: Note that a *cf restage* would rebuild with the same code, but would pickup changes to library dependencies or the buildpack itself and a *cf restart* will just restart the already built droplet
 
 ## Painless Multi-protocol with MQTT
 Duration: 0:10:00
