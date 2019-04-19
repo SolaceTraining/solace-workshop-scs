@@ -28,9 +28,9 @@
                   feedback-link="github.com/Mrc0113/solace-workshop-scs">
     
       <google-codelab-step label="CodeLab Overview" duration="10">
-        <p>Using Java &amp; Spring Cloud Streams (SCS) to create Event-Driven Applications with PubSub+</p>
+        <p>Using Java &amp; Spring Cloud Streams (SCS) to create Event-Driven Applications with PubSub+ in PCF</p>
 <ul>
-<li>The purpose of this codelab is to introduce java developers to creating event-driven applications with Spring Cloud Streams and PubSub+</li>
+<li>The purpose of this codelab is to introduce java developers to creating event-driven applications with Spring Cloud Streams and PubSub+ in Pivotal Cloud Foundry</li>
 <li>&#34;Spring Cloud Stream is a framework for building highly scalable event-driven microservices connected with shared messaging systems.&#34;</li>
 <li>It is based on Spring Boot, Spring Cloud, Spring Integration and Spring Messaging</li>
 </ul>
@@ -243,7 +243,7 @@ $ cf push
 <aside class="warning"><p>Spring Cloud Streams supports multiple messaging models. We are going to use two different ones in this workshop<br>1: Publish-Subscribe allows for an application to process all events sent to the defined subscription. It also allows new applications to be added to the topology without disruption of the existing flow.<br><br>2: Consumer Groups allow for a set of applications to participate in a &#34;group&#34; to consume messages. This option is commonly used to allow the ability for an application to scale horizontally (creating multiple instances of the same application) while only processing each event once.</p>
 </aside>
 <h2 is-upgraded>Deploying the Tweet Board</h2>
-<p>At this point we have created our &#34;scs-sink-twitterboard&#34; application and it needs to be deployed.<br>Time to see if you&#39;ve been paying attention! Deploy it in the same way you deployed the apps in the previous section.<br>Don&#39;t forget to update the service in the manifest.yml file to point to your PubSub+ service!</p>
+<p>At this point we have created our &#34;scs-sink-twitterboard&#34; application and it needs to be deployed.<br>Time to see if you&#39;ve been paying attention! Deploy it in the same way you deployed the apps in the previous section.<br><em>Don&#39;t forget to update the service in the manifest.yml file to point to your PubSub+ service!</em></p>
 <ul>
 <li>Developer - Well that was easy!  I&#39;m loving our event-driven architecture!</li>
 </ul>
@@ -277,7 +277,7 @@ $ cf push
 </aside>
 <ul>
 <li>Go ahead and update the host, msgVpn, clientUsername, clientPassword in the application.yml file; also note that the bindings that are listed include input, outputFeature, and outputNoFeature as defined in our custom bindings interface.</li>
-<li>Deploy the app in the same manner that you&#39;ve been deploying the others. (Don&#39;t forget to update the service in the manifest.yml file to point to your PubSub+ service!)</li>
+<li>Deploy the app in the same manner that you&#39;ve been deploying the others. (<em>Don&#39;t forget to update the service in the manifest.yml file to point to your PubSub+ service!</em>)</li>
 </ul>
 <h3 is-upgraded>Processor using Dynamic Destinations</h3>
 <aside class="warning"><p>At this point you might be thinking &#34;Okay these custom binding interfaces are great, but what if I don&#39;t know how many or what to call my output channels at design time?&#34; Spring Cloud Streams supports the use of Dynamic Destinations for this exact situation!  Dynamic destinations allow you to use business logic to define your destinations at runtime.</p>
@@ -313,8 +313,13 @@ $ cf push
 <li>Open your application.yml file</li>
 <li>Update the queueAdditionalSubscriptions property to listen on &#34;T/tweets/stream/nofeatures&#34;</li>
 <li>Save the file</li>
-<li>If you are using STS you should notice that the application automatically redepoyed; that&#39;s because of the auto deployment feature provided by spring-boot-devtools</li>
-<li>If you are not using STS please stop your running app and redeploy.</li>
+<li>Redeploy the updated App (Note if you had deployed locally it would automatically re-deploy since we&#39;re using devtools; this can also be configured to work with PCF, but is not recommended in production environments for obvious reasons)</li>
+<li>If deploying via STS deploy as normal by doing a Maven install on the project and then in the Boot Dashboard right clicking and choosing Deploy and Run on your target. When asked if you would like to replace content of the existing Cloud application choose &#34;OK&#34;<br><img alt="Replace existing Cloud application" src="img/e1cd319bb4d578f.png"></li>
+<li>If using the cf cli, then you also push updates the same way<pre><code>$ cd /path/to/app
+$ mvn install
+$ cf push
+</code></pre>
+</li>
 </ul>
 <aside class="warning"><p>spring-boot-devtools is handy for development and adds features such as automatic restart and remote debugging. Click <a href="https://www.baeldung.com/spring-boot-devtools" target="_blank">here</a> for a high level overview of some of the functionality it provides.</p>
 </aside>
@@ -366,7 +371,9 @@ $ cf push
 <p>Let&#39;s get started and hopefully have a bit of fun!</p>
 <ul>
 <li>Open the &#34;scs-processor-positive&#34; project</li>
+<li>Open the manifest.yml file and choose  to your name</li>
 <li>Find &amp; Open the <em>ScsProcessorPositive.java</em> class. At this point we know how to create and deploy a processor so we&#39;ll do something a bit different. At the top of the class you&#39;ll see that the negToPosMap object is being initialized in a static method. This Map holds the key for changing our negative tweets to positive ones. Go ahead and fill in some positive words for each negative one in the map. Remember that you can find the canned tweets in the canned_tweets.txt file under the &#34;scs-source-tweets&#34; project if you need some more context :)</li>
+<li>After filling in your &#34;positive&#34; words go ahead and deploy the app</li>
 </ul>
 <aside class="special"><p>Notice that multiple processors can easily be connected together in order to form a processing chain.</p>
 </aside>
@@ -377,9 +384,16 @@ $ cf push
 <li>Open your application.yml file</li>
 <li>Update the queueAdditionalSubscriptions property to listen on &#34;T/tweets/stream/nofeatures&#34;</li>
 <li>Save the file</li>
-<li>If you are using STS you should notice that the application automatically redepoyed; that&#39;s because of the auto deployment feature provided by spring-boot-devtools</li>
-<li>If you are not using STS please stop your running app and redeploy.</li>
+<li>Redeploy the updated App (Note if you had deployed locally it would automatically re-deploy since we&#39;re using devtools; this can also be configured to work with PCF, but is not recommended in production environments for obvious reasons)</li>
+<li>If deploying via STS deploy as normal by doing a Maven install on the project and then in the Boot Dashboard right clicking and choosing Deploy and Run on your target. When asked if you would like to replace content of the existing Cloud application choose &#34;OK&#34;<br><img alt="Replace existing Cloud application" src="img/e1cd319bb4d578f.png"></li>
+<li>If using the cf cli, then you also push updates the same way<pre><code>$ cd /path/to/app
+$ mvn install
+$ cf push
+</code></pre>
+</li>
 </ul>
+<aside class="warning"><p>Note that a <em>cf restage</em> would rebuild with the same code, but would pickup changes to library dependencies or the buildpack itself and a <em>cf restart</em> will just restart the already built droplet</p>
+</aside>
 
 
       </google-codelab-step>

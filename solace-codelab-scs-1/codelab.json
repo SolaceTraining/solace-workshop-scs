@@ -4,11 +4,11 @@
   "format": "html",
   "prefix": "https://storage.googleapis.com",
   "mainga": "UA-49880327-14",
-  "updated": "2019-04-18T16:07:31-04:00",
+  "updated": "2019-04-19T10:22:51-04:00",
   "id": "solace-codelab-scs-1",
   "duration": 165,
   "title": "Developer Workshop: Using Spring Cloud Streams with Solace PubSub+",
-  "summary": "Using Spring Cloud Streams w/ Solace PubSub+",
+  "summary": "Using Spring Cloud Streams w/ Solace PubSub+ in PCF",
   "theme": "",
   "status": [
     "draft"
@@ -20,8 +20,7 @@
     "solace",
     "pubsub+",
     "java",
-    "pcf",
-    "openshift"
+    "pcf"
   ],
   "tags": [
     "web"
