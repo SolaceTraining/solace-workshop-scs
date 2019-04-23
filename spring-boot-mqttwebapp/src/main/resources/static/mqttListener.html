@@ -25,36 +25,44 @@
 
 <script>
 
+  // TODO - UPDATE CREDENTIALS, HOSTS, PORT, TOPIC BELOW!!
+  const LINES_TO_SHOW = 50;
+  var topicSub = "T/tweets/stream/nofeatures/noyelling/positive/#";
+  var host = "localhost";
+  var port = 8000;
+  var username = "default";
+  var password = "default";
   var client_id = ""+(Math.random() + 1).toString(36).substring(2,10);  // 8 "random" [0-9a-z]
-  // TODO - UPDATE HOST & PORT BELOW!!
-  client = new Paho.MQTT.Client("localhost",Number(8000),client_id);
+  client = new Paho.MQTT.Client(host,Number(port),client_id);
 
   // set callback handlers
   client.onConnectionLost = onConnectionLost;
   client.onMessageArrived = onMessageArrived;
 
   // connect the client
-  // TODO - UPDATE CLIENT CREDENTIALS BELOW!!
   connectOptions = { };
   connectOptions["useSSL"] = false;
-  connectOptions["userName"] = "default";
-  connectOptions["password"] = "default";
+  connectOptions["userName"] = username;
+  connectOptions["password"] = password;
   connectOptions["onSuccess"] = onConnect;
   writeConsole("Connecting to PubSub+ ...");
   client.connect(connectOptions);
   
-  function writeConsole(message) {
-    var node = document.createElement("p");
-    node.innerHTML = message;
-    document.body.appendChild(node);
-    console.log(message);
-  }
+  function writeToScreen(str) {
+	    var node = document.createElement("p");
+	    node.innerHTML = str;
+	    document.body.appendChild(node);
+	    // do we need to trim the list?
+	    var paragraphList = document.body.getElementsByTagName("p");
+	    if (paragraphList.length > LINES_TO_SHOW) {
+	      document.body.removeChild(paragraphList[0]);
+	    }
+	  }
 
   // called when the client connects
   function onConnect() {
     writeConsole("Connected and Ready to Receive Tweets!");
-    // TODO - UPDATE topic name below!
-    client.subscribe("T/tweets/stream/nofeatures/noyelling/positive/#");
+    client.subscribe(topicSub);
   }
 
   // called when the client loses its connection
@@ -66,12 +74,18 @@
 
   // called when a message arrives
   function onMessageArrived(message) {
+    writeToScreen("TOPIC='"+message.destinationName+"',&nbsp;&nbsp;&nbsp;PAYLOAD='"+message.payloadString+"'");
+  }
+  
+  // called when a message arrives
+  function onMessageArrived(message) {
 	var tweet = JSON.parse(message.payloadString);
-    writeConsole("Tweet: topic='"+message.destinationName+"', @"+tweet.username+" -- '"+tweet.text+"'");
+    writeToScreen("Tweet: topic='"+message.destinationName+"',&nbsp;&nbsp;&nbsp; @"+tweet.username+" -- '"+tweet.text+"'");
+    //writeConsole("Tweet: topic='"+message.destinationName+"', @"+tweet.username+" -- '"+tweet.text+"'");
     if (message.destinationName == "$SYS/client/reply-to") {
       // solace's cool way of doing unique reply-to topic, or "inbox" topic
       client.subscribe(message.payloadString);
-      writeConsole("Subscribed to Reply-To topic: '"+message.payloadString+"'");
+      writeToScreen("Subscribed to Reply-To topic: '"+message.payloadString+"'");
     }
   }
 </script>
