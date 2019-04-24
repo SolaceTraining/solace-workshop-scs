@@ -11,7 +11,7 @@ Note that there are multiple branches in this project. The "-solution" branches 
 * master - This branch is meant to be used if you're using any other PubSub+ deployment (Solace Cloud, a local docker instance, a Solace appliances, etc)
 
 ## Exploring the Workshop
-More information is in the CodeLab linked above, but if you just want to mess around on your own the projects are Spring Boot Maven projects and can be run individually. Note that you'll need a PubSub+ Service to connect to - check out the *Resources* section to get one setup! 
+More information is in the CodeLab linked above, but if you just want to mess around on your own the projects are Spring Boot Maven projects and can be run individually. Note that you'll need a PubSub+ Service to connect to - check out the **Resources** section to get one setup! 
 
 ```bash
 mvn spring-boot:run
