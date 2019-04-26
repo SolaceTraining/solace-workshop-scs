@@ -34,7 +34,7 @@
 <li>&#34;Spring Cloud Stream is a framework for building highly scalable event-driven microservices connected with shared messaging systems.&#34;</li>
 <li>It is based on Spring Boot, Spring Cloud, Spring Integration and Spring Messaging</li>
 </ul>
-<p>You&#39;re a developer that works for an up and coming car company named Edison Automotives. Your boss is not the most adept in the use of social media but he&#39;s been hearing great things about twitter from his inner-circle and is a bit infatuated with tying it into Edison Automotive&#39;s every day business and culture....little does he know that his company does not exactly have the best products or reputation....</p>
+<p>You&#39;re a developer that works for an up and coming car company named Edison Automotives. Your boss is not the most adept in the use of social media but he&#39;s been hearing great things about Twitter from his inner-circle and is a bit infatuated with tying it into Edison Automotive&#39;s everyday business and culture....little does he know that his company does not exactly have the best products or reputation....</p>
 <aside class="special"><p><strong>Developer Resources</strong><br>Spring Cloud Stream Project Home: <a href="https://spring.io/projects/spring-cloud-stream" target="_blank">https://spring.io/projects/spring-cloud-stream</a><br>The latest version of Spring Clouds Streams as of the creation of this lab is Greenwich.SR1 (2.1.4)<br>The Reference Guide for that current version is available <a href="https://docs.spring.io/spring-cloud-stream/docs/current/reference/htmlsingle" target="_blank">here</a>.</p>
 </aside>
 <aside class="warning"><p>The SCS framework allows for building messaging-driven applications without having to explicitly write any code for publishing or receiving events.  While many microservices-oriented applications today are based on synchronous, request/response interactions based on protocols such as HTTP or gRPC, the asynchronous, event-driven nature of communications using SCS allows for building highly scalable, efficient and responsive distributed systems that can run on-premise or in the cloud.  When combined with the high-performance Solace PubSub+ Event Broker which can be deployed in virtually any environment, you can create powerful and flexible applications that support both hybrid and multi-cloud capabilities, all operating in real-time with high throughput and low latency.</p>
@@ -46,7 +46,7 @@
       <google-codelab-step label="Set-up &amp; Prerequisites" duration="20">
         <ul>
 <li>Boss - Glad you made it into work today! Go get setup since we&#39;ve got a lot of work to do!</li>
-<li>Developer - Yep, I&#39;ll have everything up and running in 20 minutes or so.</li>
+<li>Developer - Yep, I&#39;ll have everything up and running in 20 minutes or so.<br><img alt="Story_1_350" src="img/30464b67380deb46.png"><img alt="Story_1_500" src="img/1ad0f5d03cc43f06.png"></li>
 </ul>
 <h2 is-upgraded>Developer IDE &amp; Code Access</h2>
 <h3 is-upgraded>IDE Setup</h3>
@@ -57,25 +57,32 @@
 <li>Maven 3.5.3 or higher (ensure it&#39;s on your PATH) <a href="https://maven.apache.org/install.html" target="_blank">Install steps here</a></li>
 </ul>
 <h3 is-upgraded>Configure a Cloud Foundry Target in STS</h3>
-<p>STS provides integrated support for deploying, running and debugging your SCSt services in PCF.  In the Boot Dashboard view, configure a connection to your PCF deployment.</p>
+<p>STS provides integrated support for deploying, running and debugging your SCS services in PCF.  In the Boot Dashboard view, configure a connection to your PCF deployment by clicking the &#34;+&#34; button as seen in the image below.</p>
 <p class="image-container"><img alt="Configuring a connection to Cloud Foundry in STS(use button circled in red)" src="img/1a64fd3fa78db22a.png"></p>
 <p>Follow the dialog prompts and fill in the username / password associated with your PCF account.  You may need to skip SSL validation if your PCF deployment uses self-signed certificates.</p>
 <h3 is-upgraded>Cloud Foundry CLI Setup</h3>
 <ul>
 <li>Install the cf-cli using these instructions: <a href="https://docs.cloudfoundry.org/cf-cli/install-go-cli.html" target="_blank">Install CF CLI</a></li>
-<li>Login to your cf org &amp; space with your API endpoint, email &amp; password.<pre><code>$ cf login
+<li>Login to your cf org &amp; space with your API endpoint, username/email &amp; password.</li>
+<li>Choose the proper Org &amp; Space<pre><code>$ cf login -a &lt;API_URL&gt; -u &lt;USERNAME&gt;
+$ Password&gt; 
 </code></pre>
 </li>
 </ul>
 <h3 is-upgraded>Code Access</h3>
 <ul>
-<li>Clone the github repo **TODO - Add real repo **<pre><code>$ git clone -b pcf git@github.com:Mrc0113/solace-workshop-scs.git
+<li>Clone the github repo **TODO - Add real repo **</li>
+<li>Use https<pre><code>$ git clone -b pcf https://github.com/Mrc0113/solace-workshop-scs.git
 </code></pre>
 </li>
+<li>OR Use SSH<pre><code>$ git clone -b pcf git@github.com:Mrc0113/solace-workshop-scs.git
+</code></pre>
+</li>
+<li>OR Navigate to https://github.com/Mrc0113/solace-workshop-scs, <strong>Choose the pcf branch</strong>, click &#34;Clone or download&#34; -&gt; &#34;Download ZIP&#34; &amp; unzip in your desired directory</li>
 <li>Import the projects into STS<br>In STS, use the File -&gt; Import -&gt; Maven -&gt; Existing Maven Projects -&gt; Click Next -&gt; Click Browse and Navigate to the git repo you cloned in the previous step -&gt; Select all the pom files and click Finish.</li>
 </ul>
 <p>After importing everything you should see the following projects in STS:</p>
-<ul>
+<ol type="1">
 <li>scs-processor-feature</li>
 <li>scs-processor-positive</li>
 <li>scs-processor-yelling</li>
@@ -85,7 +92,7 @@
 <li>scs-source-tweets</li>
 <li>scs-workshop-common</li>
 <li>spring-boot-mqttwebapp</li>
-</ul>
+</ol>
 <aside class="warning"><p>Note:  There will be errors associated with the template projects as they are incomplete and will be addressed in the exercises that follow.</p>
 </aside>
 <ul>

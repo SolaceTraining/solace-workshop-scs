@@ -7,15 +7,17 @@
   <style>
     p {
       margin: 0px;
-      font-family: Arial, sans-serif;
+      font-family: "Lucida Console", "Inconsolata", monospace;
       font-size:90%;
       color: #00CB95
     }
     h2 {
       margin: 0px;
       font-family: Arial, sans-serif;
-      //font-size:90%;
       color: #00CB95
+    }
+    hr {
+      border-color: #00CB95;
     }
   </style>
 </head>
@@ -45,49 +47,41 @@
   connectOptions["userName"] = username;
   connectOptions["password"] = password;
   connectOptions["onSuccess"] = onConnect;
-  writeConsole("Connecting to PubSub+ ...");
+  writeToScreen("Connecting to PubSub+ ...");
   client.connect(connectOptions);
-  
-  function writeToScreen(str) {
-	    var node = document.createElement("p");
-	    node.innerHTML = str;
-	    document.body.appendChild(node);
-	    // do we need to trim the list?
-	    var paragraphList = document.body.getElementsByTagName("p");
-	    if (paragraphList.length > LINES_TO_SHOW) {
-	      document.body.removeChild(paragraphList[0]);
-	    }
-	  }
-
-  // called when the client connects
+ 
+ // called when the client connects
   function onConnect() {
-    writeConsole("Connected and Ready to Receive Tweets!");
+    writeToScreen("Connected and Ready to Receive Tweets!");
     client.subscribe(topicSub);
   }
 
   // called when the client loses its connection
   function onConnectionLost(responseObject) {
     if (responseObject.errorCode !== 0) {
-      writeConsole("onConnectionLost:"+responseObject.errorMessage);
+      writeToScreen("onConnectionLost:"+responseObject.errorMessage);
     }
   }
 
   // called when a message arrives
   function onMessageArrived(message) {
-    writeToScreen("TOPIC='"+message.destinationName+"',&nbsp;&nbsp;&nbsp;PAYLOAD='"+message.payloadString+"'");
+     var tweet = JSON.parse(message.payloadString);
+     writeToScreen("Tweet: topic='"+message.destinationName+"',&nbsp;@"+tweet.username+" -- '"+tweet.text+"'");
   }
-  
-  // called when a message arrives
-  function onMessageArrived(message) {
-	var tweet = JSON.parse(message.payloadString);
-    writeToScreen("Tweet: topic='"+message.destinationName+"',&nbsp;&nbsp;&nbsp; @"+tweet.username+" -- '"+tweet.text+"'");
-    //writeConsole("Tweet: topic='"+message.destinationName+"', @"+tweet.username+" -- '"+tweet.text+"'");
-    if (message.destinationName == "$SYS/client/reply-to") {
-      // solace's cool way of doing unique reply-to topic, or "inbox" topic
-      client.subscribe(message.payloadString);
-      writeToScreen("Subscribed to Reply-To topic: '"+message.payloadString+"'");
+
+ 
+  // write to screen
+  function writeToScreen(str) {
+    var node = document.createElement("p");
+    node.innerHTML = str;
+    document.body.appendChild(node);
+    // do we need to trim the list?
+    var paragraphList = document.body.getElementsByTagName("p");
+    if (paragraphList.length > LINES_TO_SHOW) {
+      document.body.removeChild(paragraphList[0]);
     }
   }
+
 </script>
 </body>
 </html>

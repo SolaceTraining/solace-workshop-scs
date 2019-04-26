@@ -17,7 +17,7 @@ Using Java & Spring Cloud Streams (SCS) to create Event-Driven Applications with
 * “Spring Cloud Stream is a framework for building highly scalable event-driven microservices connected with shared messaging systems."
 * It is based on Spring Boot, Spring Cloud, Spring Integration and Spring Messaging
 
-You're a developer that works for an up and coming car company named Edison Automotives. Your boss is not the most adept in the use of social media but he's been hearing great things about twitter from his inner-circle and is a bit infatuated with tying it into Edison Automotive's every day business and culture....little does he know that his company does not exactly have the best products or reputation....
+You're a developer that works for an up and coming car company named Edison Automotives. Your boss is not the most adept in the use of social media but he's been hearing great things about Twitter from his inner-circle and is a bit infatuated with tying it into Edison Automotive's everyday business and culture....little does he know that his company does not exactly have the best products or reputation....
 
 Positive
 : **Developer Resources** 
@@ -33,40 +33,39 @@ Duration: 0:20:00
 
 * Boss - Glad you made it into work today! Go get setup since we've got a lot of work to do! 
 * Developer - Yep, I'll have everything up and running in 20 minutes or so. 
+![Story_1_350](images/Story_1_350.png)
+![Story_1_500](images/Story_1_500.png)
 
 ### Developer IDE & Code Access
 #### IDE Setup
 The recommended IDE for the workshop is Spring Tools Suite (STS) [Download Here](https://spring.io/tools). STS comes with some niceties, such as autodeploy, when used with spring-boot-devtools. Participants can of course use another IDE if preferred. It is also recommended that you begin the workshop with an empty STS workspace to avoid any unforeseen issues with existing projects/configurations/code.  
 
 Required libraries: 
-* Use the latest JDK 1.8 (ensure your PATH & JAVA_HOME are updated as needed)
 * Maven 3.5.3 or higher (ensure it's on your PATH) [Install steps here](https://maven.apache.org/install.html)
-
-#### Configure a Cloud Foundry Target in STS
-STS provides integrated support for deploying, running and debugging your SCSt services in PCF.  In the Boot Dashboard view, configure a connection to your PCF deployment. 
-
-![Configuring a connection to Cloud Foundry in STS(use button circled in red)](images/CloudFoundryTarget.png)
-
-Follow the dialog prompts and fill in the username / password associated with your PCF account.  You may need to skip SSL validation if your PCF deployment uses self-signed certificates.
-
-
-#### Cloud Foundry CLI Setup
-* Install the cf-cli using these instructions: [Install CF CLI](https://docs.cloudfoundry.org/cf-cli/install-go-cli.html)
-* Login to your cf org & space with your API endpoint, email & password. 
-``` bash
-$ cf login
-```
+* Use the latest JDK 1.8 (ensure your PATH & JAVA_HOME are updated as needed)
+* If using STS/Eclipse ensure your JDK 1.8 is thei default "Installed JRE" by choosing "Windows" -> "Preferences" -> "Java" -> "Installed JREs"
+* If the correct JDK does not already have a checkmark next to it then click the "Add" button, choose "Standard VM", click "Next", navigate to your JDK -> Click "Finish". Then click the checkbox next to the added JRE and click "Apply and close"  
 
 #### Code Access
 * Clone the github repo **TODO - Add real repo **
+
+* Use https
+``` 
+$ git clone -b pcf https://github.com/Mrc0113/solace-workshop-scs.git
+```
+* OR Use SSH
 ``` bash
 $ git clone -b pcf git@github.com:Mrc0113/solace-workshop-scs.git
 ```
+* OR Navigate to https://github.com/Mrc0113/solace-workshop-scs, **Choose the pcf branch**, click "Clone or download" -> "Download ZIP" & unzip in your desired directory 
+
+
 * Import the projects into STS
 In STS, use the File -> Import -> Maven -> Existing Maven Projects -> Click Next -> Click Browse and Navigate to the git repo you cloned in the previous step -> Select all the pom files and click Finish. 
 
 After importing everything you should see the following projects in STS: 
 * scs-processor-feature
+* scs-processor-dynamicfeature
 * scs-processor-positive
 * scs-processor-yelling
 * scs-sink-analytics
@@ -92,17 +91,7 @@ $ cd ~/git/solace-workshop-scs/scs-workshop-common/
 $ mvn clean install
 ```
 
-### Create and/or Verify access to a Solace PubSub+ Access
-
-#### Solace PubSub+ Service in Pivotal Cloud Foundry (PCF)
-If you are using PCF, your administrator will have created an org and space for your workshop demo in which you can deploy and run your microservices.  Moreover, a Solace PubSub+ service instance will have been created so that it can be bound by any app running in the space and automatically lookup credentials to connect to a broker instance running in PCF.  You should determine the name of this service instance before deploying or running your application to avoid any service binding errors.  You can do this through the Apps Manager or via the cf CLI. You'll need this service instance name later so don't forget it.
-
-``` bash
-$ cf services 
-Getting services in org test-org / space development as user1... 
-name                    service             plan                       bound apps  
-solace-pubsub-service   solace-pubsub       Enterprise Shared Plan     sample-app 
-```
+### Create and/or Verify access to a Solace PubSub+ Service
 
 #### PubSub+ Service in Solace Cloud
 If you want to stand up your Solace PubSub+ Service in Solace Cloud go ahead and login or signup at the [Cloud Signup Page](https://console.solace.cloud/login/new-account).  Note that a free tier is available and will work for this workshop. 
@@ -118,7 +107,7 @@ Duration: 0:45:00
 
 ### Application Architecture
 At the end of this section we will have created the apps below!
-The Source will send out tweets that are received by the marketing Sink. 
+The Source will send out tweets that will be received by the marketing Sink. 
 
 ![1 Application Architecture](images/DiagramFirst.png)
 
@@ -148,7 +137,7 @@ Negative
 
 ![SCS Maven Dependencies](images/ScsDependencies.png)
 
-* Let's take a look at a simple sample implementation in the image below. You can see that the enrichLogMessage method is associated with both an INPUT and OUTPUT channel. In a future section we will create an application following a similar pattern, but notice that if you look at the *ScsSourceTweets.java* class in your "scs-source-tweets" project you will see something a bit different. We are using an *@InboundChannelAdapter* annotation in order to create tweets at a fixed rate. 
+* Let's take a look at a simple sample implementation in the image below. You can see that the enrichLogMessage method is associated with both an INPUT and OUTPUT channel. In a future section we will create an application following a similar pattern, but notice that if you look at the *ScsSourceTweets.java* class in your "scs-source-tweets" project you will see something a bit different. We are using an *@InboundChannelAdapter* annotation in order to create our fake tweets at a fixed rate. 
 
 Negative
 : "Spring Cloud Stream is built on the concepts and patterns defined by Enterprise Integration Patterns and relies in its internal implementation on an already established and popular implementation of Enterprise Integration Patterns within the Spring portfolio of projects: Spring Integration framework." By using Spring Integration we can make use of familiar annotations such as *@InboundChannelAdapater, @Transformer or @ServiceActivator*
@@ -193,9 +182,36 @@ Positive
 : You now have a source application sending events to a sink application via an external eventing system, but notice that you didn't need to use any messaging APIs! SCS provides this abstraction and makes it possible for developers to concentrate on their business logic rather than learning proprietary messaging APIs!
 
 ## Deploy to Pivotal Cloud Foundry
-Duration: 0:10:00
+Duration: 0:20:00
 
 * Developer - Deploying my app locally for development was super convenient, but now I need to deploy it to production in PCF!
+### Configure a Cloud Foundry Target in STS
+STS provides integrated support for deploying, running and debugging your SCS services in PCF.  In the Boot Dashboard view, configure a connection to your PCF deployment by clicking the "+" button as seen in the image below. 
+
+![Configuring a connection to Cloud Foundry in STS(use button circled in red)](images/CloudFoundryTarget.png)
+
+Follow the dialog prompts and fill in the username / password associated with your PCF account.  You may need to skip SSL validation if your PCF deployment uses self-signed certificates.
+
+
+### Cloud Foundry CLI Setup
+* Install the cf-cli using these instructions: [Install CF CLI](https://docs.cloudfoundry.org/cf-cli/install-go-cli.html)
+* Login to your cf org & space with your API endpoint, username/email & password. 
+* Choose the proper Org & Space
+``` bash
+$ cf login -a <API_URL> -u <USERNAME>
+$ Password> 
+```
+
+### Verify PubSub+ Service in Pivotal Cloud Foundry (PCF)
+If you are using PCF, your administrator will have created an org and space for your workshop demo in which you can deploy and run your microservices.  Moreover, a Solace PubSub+ service instance will have been created so that it can be bound by any app running in the space and automatically lookup credentials to connect to a broker instance running in PCF.  You should determine the name of this service instance before deploying or running your application to avoid any service binding errors.  You can do this through the Apps Manager or via the cf CLI. You'll need this service instance name later so don't forget it.
+
+``` bash
+$ cf services 
+Getting services in org test-org / space development as user1... 
+name                    service             plan                       bound apps  
+solace-pubsub-service   solace-pubsub       Enterprise Shared Plan     sample-app 
+```
+
 ### Deploy the Source to PCF
 * Open the manifest.yml file under the *scs-source-tweets* project
 * Change the services name from "Space1-Instance" to whatever Solace Service instace is running your space. 
@@ -218,7 +234,7 @@ $ cf logs scs-source-tweets
 ```
 
 Positive
-: Notice that you did not have to add any credentials for your PubSub+ service instance running in PCF. This is because the Solace Cloud Connector allows for Auto-Configuration in PCF. Just specify the service name and the service configuration is automatically looked up and injected into your app from VCAP_SERVICES! This allows you to leave your local credentials in place for even easier development and also refrain from storing credentials in your code repository.
+: Notice that you did not have to add any credentials for your PubSub+ service instance running in PCF. This is because the Solace Spring Cloud Connector allows for Auto-Configuration in PCF. Just specify the service name and the service configuration is automatically looked up and injected into your app from VCAP_SERVICES! This allows you to leave your local credentials in place for even easier development and also refrain from storing credentials in your code repository.
 
 ### Deploy the Sink to PCF
 * Open the manifest.yml file under the *scs-sink-analytics* project
@@ -264,6 +280,7 @@ We obviously don't have a giant LED board that we can use so we're going to sett
 * Add a "sink" method that takes in a "Tweet" POJO from the INPUT channel and logs that it was received. 
 * Update the application.yml file, verify that there is indeed a destination configured for the input channel, and add your name to the end of the destination name (e.g: TWEETS.Q.BOARD.Marc).  Note that by not specifying a group we are using the "Publish-Subscribe" messaging model. 
 * If not deploying to PCF you'll also need to update the host, msgVpn, clientUsername, clientPassword in the application.yml file. 
+* If you are deploying to PCF you'll need to open the *manifest.yml* file and change <ATTENDEE_NAME> to your name
 
 Negative
 : Spring Cloud Streams supports multiple messaging models. We are going to use two different ones in this workshop
@@ -274,7 +291,7 @@ Negative
 ### Deploying the Tweet Board
 At this point we have created our "scs-sink-twitterboard" application and it needs to be deployed. 
 Time to see if you've been paying attention! Deploy it in the same way you deployed the apps in the previous section. 
-*Don't forget to update the service in the manifest.yml file to point to your PubSub+ service!*
+**Don't forget to update the service in the manifest.yml file to point to your PubSub+ service!**
 
 * Developer - Well that was easy!  I'm loving our event-driven architecture! 
 
@@ -310,8 +327,9 @@ Positive
 : Custom binding interfaces can be defined in order for your SCS app to have additional input or output channels. They also allow for custom naming of channels. 
 
 ### 
-* Go ahead and update the host, msgVpn, clientUsername, clientPassword in the application.yml file; also note that the bindings that are listed include input, outputFeature, and outputNoFeature as defined in our custom bindings interface. 
-* Deploy the app in the same manner that you've been deploying the others. (*Don't forget to update the service in the manifest.yml file to point to your PubSub+ service!*)
+* Note that in the application.yml file the bindings that are listed include input, outputFeature, and outputNoFeature as defined in our custom bindings interface. 
+* If not using PubSub+ in PCF, update the host, msgVpn, clientUsername, clientPassword in the application.yml file so we can connect to the PubSub+ service
+* Deploy the app in the same manner that you've been deploying the others. (**Don't forget to update the service in the manifest.yml file to point to your PubSub+ service!**)
 
 #### Processor using Dynamic Destinations
 Negative
@@ -320,16 +338,15 @@ Negative
 ### 
 
 * Let's create a second feature processor that makes use of dynamic destinations. 
+* Open the "scs-processor-dynamicfeature" project
 * Open the *ScsProcessorFeaturesDynamic.java* class
-* Uncomment the *@EnableBinding* & *@SpringBootAnnotation* annotations as well as the *main* method
-* You'll notice that the *@EnableBinding* annotation does not explicitly specify a binding interface. Instead we are using a *BinderAwareChannelResolver* which is registered automatically by the *@EnableBinding* annotation. This destination resolver allows us to dynamically create output channels at runtime. 
+* You'll notice that the *@EnableBinding* annotation defines the app as a "Sink" app. This is because we only bind the INPUT channel at startup and then at runtime we are using a *BinderAwareChannelResolver* (which is registered automatically by the *@EnableBinding* annotation) to dynaimcally create output channels. 
 
 Negative
 : From the JavaDocs, the *BinderAwareChannelResolver* is "A DestinationResolver implementation that resolves the channel from the bean factory and, if not present, creates a new channel and adds it to the factory after binding it to the binder."
 
 ###
 * Review the *handle* method to see an example of how to specify dynamic destinations
-* To prevent both apps from running when in PCF open the *ScsProcessorFeatures.java* class and comment the entire file out. 
 * Build (mvn clean install) & Deploy the app to PCF
 
 Positive
@@ -417,19 +434,18 @@ A processor will be added to our architecture in order to convert negative words
 ### Create the Processor
 Let's get started and hopefully have a bit of fun! 
 * Open the "scs-processor-positive" project
-* Open the manifest.yml file and choose <ATTENDEE_NAME> to your name
+* Open the manifest.yml file and change <ATTENDEE_NAME> to your name
+* Open the application.yml file and change **both** <ATTENDEE_NAME> placeholders with your name (in the input group & output destination)
 * Find & Open the *ScsProcessorPositive.java* class. At this point we know how to create and deploy a processor so we'll do something a bit different. At the top of the class you'll see that the negToPosMap object is being initialized in a static method. This Map holds the key for changing our negative tweets to positive ones. Go ahead and fill in some positive words for each negative one in the map. Remember that you can find the canned tweets in the canned_tweets.txt file under the "scs-source-tweets" project if you need some more context :) 
 * After filling in your "positive" words go ahead and deploy the app
 
 Positive
 : Notice that multiple processors can easily be connected together in order to form a processing chain. 
 
-### Update the feeds that you want to receive this data
-
-#### Update the tweetboard
+### Update the Tweet Board Subscription
 * Navigate to your "scs-sink-twitterboard" project
 * Open your application.yml file
-* Update the queueAdditionalSubscriptions property to listen on "T/tweets/stream/nofeatures"
+* Update the queueAdditionalSubscriptions property to listen on "T/tweets/stream/nofeatures/noyelling/positive/<ATTENDEE_NAME>" **replacing <ATTENDEE_NAME> with your name**
 * Save the file
 * Redeploy the updated App (Note if you had deployed locally it would automatically re-deploy since we're using devtools; this can also be configured to work with PCF, but is not recommended in production environments for obvious reasons)
 * If deploying via STS deploy as normal by doing a Maven install on the project and then in the Boot Dashboard right clicking and choosing Deploy and Run on your target. When asked if you would like to replace content of the existing Cloud application choose "OK"
@@ -477,7 +493,7 @@ Positive
 * In *mqttListener.html* update the host/port/username/credentials to connect to PubSub+ (Search for "UPDATE" to find where the updates need to be made) using the information found in the previous subsection.
 * Lastly look at the *MqttWebApp.java* class.  You'll see that we just have a simple RestController that is smart enough to make the files in src/main/resources/static available for HTTP access.
 * Now that we've taken a look at how the app works go ahead and deploy it. 
-* Once deployed navigate to *http://<LOOKUP YOUR ROUTE>/mqttListener.html* to see the incoming tweets! You can lookup your route in the apps manager or by using the command below:
+* Once deployed navigate to *http://**LOOKUP YOUR ROUTE**/mqttListener.html* to see the incoming tweets! You can lookup your route in the apps manager or by using the command below:
 
 ``` bash
 $ cf app spring-boot-mqttwebapp

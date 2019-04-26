@@ -42,7 +42,7 @@ public class ScsProcessorPositive {
 	//TODO - Add replacement positive words below! Have some fun!!
 	static {
 		negToPosMap = new HashMap<String, String>();
-		negToPosMap.put("awful", "");
+		negToPosMap.put("awful", "awesome"); // DON'T CHANGE THIS ONE, but if you want to then change the "expectedOutput in the unit test
 		negToPosMap.put("sucks", "");
 		negToPosMap.put("worst", "");
 		negToPosMap.put("hate", "");

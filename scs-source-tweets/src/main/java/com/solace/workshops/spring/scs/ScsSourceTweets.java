@@ -84,7 +84,7 @@ public class ScsSourceTweets {
 		}
 		nextTweet.updateTimestamp();
 		nextTweet.updateUuid();
-		log.info(nextTweet.toString());
+		log.info("Sending " + nextTweet.toString());
 		return nextTweet;
 	}
 

@@ -50,8 +50,8 @@ public class ScsProcessorPositiveTests {
 
 	@Test
 	public void testPositiveTweets() throws InterruptedException {
-		String input = "This is an awful horrendous vehicle!";
-		String expectedOutput = "This is an awesome amazing vehicle!";
+		String input = "This is an awful vehicle!";
+		String expectedOutput = "This is an awesome vehicle!";
 		Tweet tweet = new Tweet("username", input);
 
 		Message<Tweet> msgInput = MessageBuilder.withPayload(tweet).build();
