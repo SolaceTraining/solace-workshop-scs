@@ -11,10 +11,10 @@
 	</parent>
 
 	<groupId>com.solace.workshops.spring.scs</groupId>
-	<artifactId>scs-processor-dynamicfeature</artifactId>
+	<artifactId>06-scs-processor-dynamicfeature</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
-	<name>scs-processor-dynamicfeature</name>
+	<name>06-scs-processor-dynamicfeature</name>
 	<description>Sample processor for Spring Cloud Stream using Solace PubSub+ binder</description>
 
 	<properties>
@@ -30,7 +30,7 @@
 		</dependency>
 		<dependency>
 			<groupId>com.solace.workshop</groupId>
-			<artifactId>scs-workshop-common</artifactId>
+			<artifactId>01-scs-workshop-common</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>

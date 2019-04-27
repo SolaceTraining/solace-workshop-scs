@@ -1,7 +1,7 @@
 ---
 applications:
-- name: scs-source-tweets
+- name: 02-scs-source-tweets
   memory: 1024M
-  path: target/scs-source-tweets-0.0.1-SNAPSHOT.jar
+  path: target/02-scs-source-tweets-0.0.1-SNAPSHOT.jar
   services:
   - Space1-Instance

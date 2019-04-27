@@ -1,7 +1,7 @@
 ---
 applications:
-- name: scs-processor-feature
+- name: 06-scs-processor-feature
   memory: 1024M
-  path: target/scs-processor-feature-0.0.1-SNAPSHOT.jar
+  path: target/06-scs-processor-feature-0.0.1-SNAPSHOT.jar
   services:
   - Space1-Instance

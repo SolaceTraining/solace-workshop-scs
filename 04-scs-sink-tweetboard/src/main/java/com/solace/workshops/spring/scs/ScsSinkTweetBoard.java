@@ -43,6 +43,6 @@ public class ScsSinkTweetBoard {
 	//TODO Add the @StreamListener on the Sink.INPUT
 //	@StreamListener(Sink.INPUT)
 //	public void sink(Tweet tweet) {
-//		log.info(tweet.toString());
+//	    log.info("Received: " + tweet.toString());
 //	}
 }

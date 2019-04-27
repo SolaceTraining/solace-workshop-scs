@@ -41,6 +41,6 @@ public class ScsSinkBossideas {
 
 	@StreamListener(Sink.INPUT)
 	public void sink(Tweet tweet) {
-		log.info(tweet.toString());
+		log.info("Received: " + tweet.toString());
 	}
 }

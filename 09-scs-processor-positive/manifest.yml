@@ -1,7 +1,7 @@
 ---
 applications:
-- name: scs-processor-positive-<ATTENDEE_NAME>
+- name: 09-scs-processor-positive-<ATTENDEE_NAME>
   memory: 1024M
-  path: target/scs-processor-positive-0.0.1-SNAPSHOT.jar
+  path: target/09-scs-processor-positive-0.0.1-SNAPSHOT.jar
   services:
   - Space1-Instance

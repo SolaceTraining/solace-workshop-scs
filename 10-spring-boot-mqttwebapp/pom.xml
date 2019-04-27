@@ -10,9 +10,9 @@
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.solace.workshops.spring.scs</groupId>
-	<artifactId>spring-boot-mqttwebapp</artifactId>
+	<artifactId>10-spring-boot-mqttwebapp</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>spring-boot-mqttwebapp</name>
+	<name>10-spring-boot-mqttwebapp</name>
 	<description>Spring Boot JavaScript MQTT Sample App</description>
 
 	<properties>
@@ -39,7 +39,7 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-		
+
 	</dependencies>
 
 	<build>

@@ -1,7 +1,7 @@
 ---
 applications:
-- name: scs-sink-twitterboard-<ATTENDEE_NAME>
+- name: 04-scs-sink-twitterboard-<ATTENDEE_NAME>
   memory: 1024M
-  path: target/scs-sink-twitterboard-0.0.1-SNAPSHOT.jar
+  path: target/04-scs-sink-twitterboard-0.0.1-SNAPSHOT.jar
   services:
   - Space1-Instance
