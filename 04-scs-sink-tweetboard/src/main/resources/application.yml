@@ -1,0 +1,33 @@
+spring:
+  cloud:
+    stream:
+      bindings:
+        input:
+          destination: TWEETS.Q.BOARD.attendee
+          binder: local_solace
+          # Note that no "group" is specified so this input will follow the "publish-subscribe" pattern
+      binders:
+        local_solace:
+          type: solace
+          environment:
+            solace:
+              java:
+                host: tcp://localhost:55555
+                msgVpn: default
+                clientUsername: default
+                clientPassword: default
+                connectRetries: -1
+                reconnectRetries: -1
+      solace:
+        bindings:
+          input:
+            consumer:
+(??)              queueAdditionalSubscriptions: tweets/stream/nofeatures/noyelling/positive/attendee
+logging:
+  level:
+    root: INFO
+    com.solacesystems.jcsmp: INFO
+    org.springframework: INFO
+
+server:
+  port: 8094
