@@ -10,7 +10,7 @@
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 
-	<groupId>com.solace.workshop.spring.scs</groupId>
+	<groupId>com.solace.workshops.spring.scs</groupId>
 	<artifactId>08-scs-processor-yelling</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>08-scs-processor-yelling</name>

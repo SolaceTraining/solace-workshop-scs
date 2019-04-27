@@ -1,4 +1,4 @@
-package com.solace.workshop.spring.scs;
+package com.solace.workshops.spring.scs;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
