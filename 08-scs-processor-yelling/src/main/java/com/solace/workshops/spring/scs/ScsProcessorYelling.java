@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package com.solace.workshop.spring.scs;
+package com.solace.workshops.spring.scs;
 
 
 import java.util.function.Function;

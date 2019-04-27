@@ -22,7 +22,7 @@ spring:
         bindings:
           input:
             consumer:
-(??)              queueAdditionalSubscriptions: tweets/stream/nofeatures/noyelling/positive/attendee
+              queueAdditionalSubscriptions: tweets/stream/nofeatures/noyelling/positive/attendee
 logging:
   level:
     root: INFO
