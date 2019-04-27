@@ -41,6 +41,6 @@ public class ScsSinkAnalytics {
 	// We define an INPUT to receive from
 	@StreamListener(Sink.INPUT)
 	public void sink(Tweet tweet) {
-		log.info(tweet.toString());
+		log.info("Received: " + tweet.toString());
 	}
 }
