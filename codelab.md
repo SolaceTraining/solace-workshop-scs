@@ -31,10 +31,7 @@ Negative
 ## Set-up & Prerequisites
 Duration: 0:20:00
 
-* Boss - Glad you made it into work today! Go get setup since we've got a lot of work to do! 
-* Developer - Yep, I'll have everything up and running in 20 minutes or so. 
-![Story_1_350](images/Story_1_350.png)
-![Story_1_500](images/Story_1_500.png)
+![story_section2](images/story_section2.png)
 
 ### Developer IDE & Code Access
 #### IDE Setup
@@ -102,8 +99,7 @@ When developing your application, you may want to test using a local instance of
 ## Deploy Your First Source & Sink
 Duration: 0:45:00
 
-* Boss - The marketing department wants to use the tweets to learn more about our customer’s thoughts.  Since you’re already getting them can you share them with marketing?
-* Developer - That’s Possible!  Tell them to give me a call! 
+![story_section3](images/story_section3.png)
 
 ### Application Architecture
 At the end of this section we will have created the apps below!
@@ -163,6 +159,7 @@ $ mvn spring-boot:run
 
 * Developer - Awesome! Now we have a stream of tweets coming in! 
 * Developer - As marketing requested we just need to capture them so they can perform their analytics.
+
 To do this we will deploy a sink app.  Recall that a sink app binds to an INPUT channel. 
 
 ### Deploying a Sink
@@ -184,7 +181,8 @@ Positive
 ## Deploy to Pivotal Cloud Foundry
 Duration: 0:20:00
 
-* Developer - Deploying my app locally for development was super convenient, but now I need to deploy it to production in PCF!
+![story_section4](images/story_section4.png)
+
 ### Configure a Cloud Foundry Target in STS
 STS provides integrated support for deploying, running and debugging your SCS services in PCF.  In the Boot Dashboard view, configure a connection to your PCF deployment by clicking the "+" button as seen in the image below. 
 
@@ -264,8 +262,7 @@ $ cf logs 03-scs-sink-analytics
 ## Discover the ease of 1-to-Many with Publish-Subscribe
 Duration: 0:10:00
 
-* Boss - Hey Tweet Master, I’m loving this twitter thing my buddy told me about!  I want our LED ribbon around the factory floor to become a “Tweet Board” and show all the tweets about our awesome vehicles. The factory team members are going to love it!
-* That’s Possible!  I’ll get right on it – give me a half hour.
+![story_section5_g1](images/story_section5_g1.png)
 
 ### Application Architecture
 At the end of this section we will have added the Factory Tweet Board Sink. 
@@ -293,7 +290,7 @@ At this point we have created our "04-scs-sink-twitterboard" application and it 
 Time to see if you've been paying attention! Deploy it in the same way you deployed the apps in the previous section. 
 **Don't forget to update the service in the manifest.yml file to point to your PubSub+ service!**
 
-* Developer - Well that was easy!  I'm loving our event-driven architecture! 
+![story_section5_g2](images/story_section5_g2.png)
 
 Positive
 : Notice that the publisher (Source) application did not need to be modified in order for another consumer (Sink) application to receive the stream of tweets. There are two takeaways here: 
@@ -305,8 +302,7 @@ Duration: 0:30:00
 
 So far in this workshop we have created source or sink applications. In this section we will create our first processor.
 
-* Hey Tweet Master, I’ve got a problem with your work!  This twitter board is letting employees take credit for all the customer’s ideas.  I want to send the new feature tweets to my private page instead of the “Tweet Board.” Can you fix it?
-* That’s Possible! I’ll do it right away – should be ready in 30 minutes.
+![story_section6_g1](images/story_section6_g1.png)
 
 ### Application Architecture
 In order to meet our new goal we will add the Features processor and a new Sink as seen below. 
@@ -315,7 +311,7 @@ In order to meet our new goal we will add the Features processor and a new Sink 
 
 ### Create the Feature Processor
 
-* Developer - Let's get started! 
+![story_section6_g2](images/story_section6_g2.png)
 
 #### Processor with a Custom Binding Interface	
 * Open the "05-scs-processor-feature" project
@@ -386,8 +382,7 @@ Positive
 ## Reactive with Spring Cloud Streams
 Duration: 0:10:00
 
-* Boss - "Hey Tweet Master, what’s with all these tweets in all caps.  We keep getting yelled at.  Can you fix it?"
-* Developer - "Yep, that's possible - let me get right on that!"
+![story_section7](images/story_section7.png)
 
 Negative
 : Spring Cloud Streams currently has two different ways to follow a Reactive (Functional) Programming Model: Spring Cloud Functions and spring-cloud-stream-reactive. We're going to concentrate on Spring Cloud Functions since the latter option is marked for deprecation.
@@ -419,8 +414,7 @@ Positive
 ## Multiple Processor Chaining
 Duration: 0:15:00
 
-* Hey Tweet Master – we’re still receiving a bunch of complaints and negative tweets…I’m looking like an idiot here.  Fix it now!  And while you’re at it create some upbeat positive tweets!  I don’t want people seeing our cars break down or catch on fire and explode! 
-* Ummm...sure I guess I can do that.  
+![story_section8](images/story_section8.png)
 
 Negative
 : Obviously this company has some morality issues :) 
@@ -463,8 +457,7 @@ Negative
 ## Painless Multi-protocol with MQTT
 Duration: 0:10:00
 
-* Boss - Good job Tweet Master!  Now everyone is looking at me like the genius I am.  Look at all those amazing tweets coming through.  Unfortunately only the people in the factory can see them.  Can you create a webpage so people in the offices can see them too? 
-* Developer - "Sure thing, I'll whip up a webapp that any of our employees can access!" 
+![story_section9](images/story_section9.png)
 
 ### Application Architecture
 To meet this new requirement we are going to add the MQTT Web App shown in the diagram below:
@@ -507,8 +500,7 @@ Duration: 0:05:00
 
 ### Review
 
-* Boss - Thank's tweet master! You've done an excellent job today - take the rest of the day off and go get yourself a drink! 
-* Developer - That's Possible!
+![story_section10](images/story_section10.png)
 
 Positive
 : Hopefully you not only learned how to use Spring Cloud Streams today, but also how it enables developers to concentrate on achieving business goals by removing the need to learn messaging APIs. You should also now have a solid understanding of how implementing an event-driven architecture allows for loose coupling between your apps which enables rapid addition of new functionality. 

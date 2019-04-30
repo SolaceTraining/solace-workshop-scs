@@ -44,10 +44,7 @@
       </google-codelab-step>
     
       <google-codelab-step label="Set-up &amp; Prerequisites" duration="20">
-        <ul>
-<li>Boss - Glad you made it into work today! Go get setup since we&#39;ve got a lot of work to do!</li>
-<li>Developer - Yep, I&#39;ll have everything up and running in 20 minutes or so.<br><img alt="Story_1_350" src="img/30464b67380deb46.png"><img alt="Story_1_500" src="img/1ad0f5d03cc43f06.png"></li>
-</ul>
+        <p class="image-container"><img alt="story_section2" src="img/c634d97d30498a69.png"></p>
 <h2 is-upgraded>Developer IDE &amp; Code Access</h2>
 <h3 is-upgraded>IDE Setup</h3>
 <p>The recommended IDE for the workshop is Spring Tools Suite (STS) <a href="https://spring.io/tools" target="_blank">Download Here</a>. STS comes with some niceties, such as autodeploy, when used with spring-boot-devtools. Participants can of course use another IDE if preferred. It is also recommended that you begin the workshop with an empty STS workspace to avoid any unforeseen issues with existing projects/configurations/code.</p>
@@ -104,10 +101,7 @@ $ mvn clean install
       </google-codelab-step>
     
       <google-codelab-step label="Deploy Your First Source &amp; Sink" duration="45">
-        <ul>
-<li>Boss - The marketing department wants to use the tweets to learn more about our customer&#39;s thoughts.  Since you&#39;re already getting them can you share them with marketing?</li>
-<li>Developer - That&#39;s Possible!  Tell them to give me a call!</li>
-</ul>
+        <p class="image-container"><img alt="story_section3" src="img/552516a043e3db5a.png"></p>
 <h2 is-upgraded>Application Architecture</h2>
 <p>At the end of this section we will have created the apps below!<br>The Source will send out tweets that will be received by the marketing Sink.</p>
 <p class="image-container"><img alt="1 Application Architecture" src="img/ad95e9f36014b52d.png"></p>
@@ -171,10 +165,9 @@ $ mvn clean install
       </google-codelab-step>
     
       <google-codelab-step label="Deploy to Pivotal Cloud Foundry" duration="20">
-        <ul>
-<li>Developer - Deploying my app locally for development was super convenient, but now I need to deploy it to production in PCF!<h2 is-upgraded>Configure a Cloud Foundry Target in STS</h2>
-STS provides integrated support for deploying, running and debugging your SCS services in PCF.  In the Boot Dashboard view, configure a connection to your PCF deployment by clicking the &#34;+&#34; button as seen in the image below.</li>
-</ul>
+        <p class="image-container"><img alt="story_section4" src="img/911f2c66e9d0e690.png"></p>
+<h2 is-upgraded>Configure a Cloud Foundry Target in STS</h2>
+<p>STS provides integrated support for deploying, running and debugging your SCS services in PCF.  In the Boot Dashboard view, configure a connection to your PCF deployment by clicking the &#34;+&#34; button as seen in the image below.</p>
 <p class="image-container"><img alt="Configuring a connection to Cloud Foundry in STS(use button circled in red)" src="img/1a64fd3fa78db22a.png"></p>
 <p>Follow the dialog prompts and fill in the username / password associated with your PCF account.  You may need to skip SSL validation if your PCF deployment uses self-signed certificates.</p>
 <h2 is-upgraded>Cloud Foundry CLI Setup</h2>
@@ -234,10 +227,7 @@ $ cf push
       </google-codelab-step>
     
       <google-codelab-step label="Discover the ease of 1-to-Many with Publish-Subscribe" duration="10">
-        <ul>
-<li>Boss - Hey Tweet Master, I&#39;m loving this twitter thing my buddy told me about!  I want our LED ribbon around the factory floor to become a &#34;Tweet Board&#34; and show all the tweets about our awesome vehicles. The factory team members are going to love it!</li>
-<li>That&#39;s Possible!  I&#39;ll get right on it – give me a half hour.</li>
-</ul>
+        <p class="image-container"><img alt="story_section5_g1" src="img/ceeff772d463d4df.png"></p>
 <h2 is-upgraded>Application Architecture</h2>
 <p>At the end of this section we will have added the Factory Tweet Board Sink.</p>
 <p class="image-container"><img alt="2 Application Architecture" src="img/7f171fecebc03f2.png"></p>
@@ -256,9 +246,7 @@ $ cf push
 </aside>
 <h2 is-upgraded>Deploying the Tweet Board</h2>
 <p>At this point we have created our &#34;04-scs-sink-twitterboard&#34; application and it needs to be deployed.<br>Time to see if you&#39;ve been paying attention! Deploy it in the same way you deployed the apps in the previous section.<br><strong>Don&#39;t forget to update the service in the manifest.yml file to point to your PubSub+ service!</strong></p>
-<ul>
-<li>Developer - Well that was easy!  I&#39;m loving our event-driven architecture!</li>
-</ul>
+<p class="image-container"><img alt="story_section5_g2" src="img/160e2425fd4167e6.png"></p>
 <aside class="special"><p>Notice that the publisher (Source) application did not need to be modified in order for another consumer (Sink) application to receive the stream of tweets. There are two takeaways here:<br>1: The publish-subscribe paradigm allows for the publisher to send data once and not care whether 0,1,2 or 100 applications are subscribed on the other end. It just send the data and moves on.<br>2: Developing event driven applications allows for decoupling of your sending and receiving applications. This powerful concept allowed our company to add new functionality without touching our already operational applications.</p>
 </aside>
 
@@ -267,17 +255,12 @@ $ cf push
     
       <google-codelab-step label="Creating your first Processor" duration="30">
         <p>So far in this workshop we have created source or sink applications. In this section we will create our first processor.</p>
-<ul>
-<li>Hey Tweet Master, I&#39;ve got a problem with your work!  This twitter board is letting employees take credit for all the customer&#39;s ideas.  I want to send the new feature tweets to my private page instead of the &#34;Tweet Board.&#34; Can you fix it?</li>
-<li>That&#39;s Possible! I&#39;ll do it right away – should be ready in 30 minutes.</li>
-</ul>
+<p class="image-container"><img alt="story_section6_g1" src="img/3b35000a8848b68e.png"></p>
 <h2 is-upgraded>Application Architecture</h2>
 <p>In order to meet our new goal we will add the Features processor and a new Sink as seen below.</p>
 <p class="image-container"><img alt="3 Application Architecture" src="img/431c8fdf2f0592ec.png"></p>
 <h2 is-upgraded>Create the Feature Processor</h2>
-<ul>
-<li>Developer - Let&#39;s get started!</li>
-</ul>
+<p class="image-container"><img alt="story_section6_g2" src="img/e0d65d490564ff89.png"></p>
 <h3 is-upgraded>Processor with a Custom Binding Interface</h3>
 <ul>
 <li>Open the &#34;05-scs-processor-feature&#34; project</li>
@@ -342,10 +325,7 @@ $ cf push
       </google-codelab-step>
     
       <google-codelab-step label="Reactive with Spring Cloud Streams" duration="10">
-        <ul>
-<li>Boss - &#34;Hey Tweet Master, what&#39;s with all these tweets in all caps.  We keep getting yelled at.  Can you fix it?&#34;</li>
-<li>Developer - &#34;Yep, that&#39;s possible - let me get right on that!&#34;</li>
-</ul>
+        <p class="image-container"><img alt="story_section7" src="img/a9ea92de3482c4d3.png"></p>
 <aside class="warning"><p>Spring Cloud Streams currently has two different ways to follow a Reactive (Functional) Programming Model: Spring Cloud Functions and spring-cloud-stream-reactive. We&#39;re going to concentrate on Spring Cloud Functions since the latter option is marked for deprecation.</p>
 </aside>
 <h2 is-upgraded>Application Architecture</h2>
@@ -370,10 +350,7 @@ $ cf push
       </google-codelab-step>
     
       <google-codelab-step label="Multiple Processor Chaining" duration="15">
-        <ul>
-<li>Hey Tweet Master – we&#39;re still receiving a bunch of complaints and negative tweets...I&#39;m looking like an idiot here.  Fix it now!  And while you&#39;re at it create some upbeat positive tweets!  I don&#39;t want people seeing our cars break down or catch on fire and explode!</li>
-<li>Ummm...sure I guess I can do that.<br></li>
-</ul>
+        <p class="image-container"><img alt="story_section8" src="img/55800129a03e799a.png"></p>
 <aside class="warning"><p>Obviously this company has some morality issues :)<br>In the real world you should definitely not modify people&#39;s speech or create fake news!<br></p>
 </aside>
 <h2 is-upgraded>Application Architecture</h2>
@@ -411,10 +388,7 @@ $ cf push
       </google-codelab-step>
     
       <google-codelab-step label="Painless Multi-protocol with MQTT" duration="10">
-        <ul>
-<li>Boss - Good job Tweet Master!  Now everyone is looking at me like the genius I am.  Look at all those amazing tweets coming through.  Unfortunately only the people in the factory can see them.  Can you create a webpage so people in the offices can see them too?</li>
-<li>Developer - &#34;Sure thing, I&#39;ll whip up a webapp that any of our employees can access!&#34;</li>
-</ul>
+        <p class="image-container"><img alt="story_section9" src="img/d27e95d661524099.png"></p>
 <h2 is-upgraded>Application Architecture</h2>
 <p>To meet this new requirement we are going to add the MQTT Web App shown in the diagram below:</p>
 <p class="image-container"><img alt="6 Application Architecture" src="img/2b656724d3c10e11.png"></p>
@@ -451,10 +425,7 @@ $ cf push
     
       <google-codelab-step label="Review &amp; Continued Learning!" duration="5">
         <h2 is-upgraded>Review</h2>
-<ul>
-<li>Boss - Thank&#39;s tweet master! You&#39;ve done an excellent job today - take the rest of the day off and go get yourself a drink!</li>
-<li>Developer - That&#39;s Possible!</li>
-</ul>
+<p class="image-container"><img alt="story_section10" src="img/85df5439561c4947.png"></p>
 <aside class="special"><p>Hopefully you not only learned how to use Spring Cloud Streams today, but also how it enables developers to concentrate on achieving business goals by removing the need to learn messaging APIs. You should also now have a solid understanding of how implementing an event-driven architecture allows for loose coupling between your apps which enables rapid addition of new functionality.</p>
 </aside>
 <h2 is-upgraded>Continued learning topics:</h2>
@@ -476,11 +447,11 @@ $ cf push
   System.out.println(&#34;Hello World!&#34;);
   }
 </code></pre>
-<aside class="special"><p>This will appear in a positive info box.</p>
+<aside class="special"><p>This will appear in a green info box.</p>
 </aside>
-<aside class="warning"><p>This will appear in a negative info box.</p>
+<aside class="warning"><p>This will appear in a yellow info box.</p>
 </aside>
-<p><a href="https://www.google.com" target="_blank">Download SDK</a></p>
+<p><a href="https://www.google.com" target="_blank">Example of a Link</a></p>
 <p>Adding an image<br><img alt="image_caption" src="img/3c1a18672fbd28c8.png"></p>
 <ul>
 <li>List</li>
