@@ -19,16 +19,38 @@
     hr {
       border-color: #00CB95;
     }
+    #div_tl {
+      position: absolute;
+      top: 0px;
+      right: 0px;
+      z-index: 99;
+      background-color: rgba(255, 255, 255, 0);
+      padding: 10px;
+    }
+    .button {
+      background-color: #00CB95;
+      border: none;
+      color: #333333;
+      padding: 5px 30px;
+      text-align: center;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
   </style>
 </head>
 
 <body style="background-color: #333333">
+<div id="div_tl">
+  <button id="button" class="button" onClick="pause();">Pause</button>
+</div>
 <h2>MQTT Web App - Entire Class Tweets</h2>
 
 <script>
 
   // TODO - UPDATE CREDENTIALS, HOSTS, PORT, TOPIC BELOW!!
   const LINES_TO_SHOW = 50;
+  var isPaused = false;
   var topicSub = "tweets/stream/nofeatures/noyelling/positive/#";
   var host = "localhost";
   var port = 8000;
@@ -65,8 +87,11 @@
 
   // called when a message arrives
   function onMessageArrived(message) {
-     var tweet = JSON.parse(message.payloadString);
-     writeToScreen("Tweet: topic='"+message.destinationName+"',&nbsp;@"+tweet.username+" -- '"+tweet.text+"'");
+	if (!isPaused) {
+	   // only write to the screen if we're not paused; otherwise, throw away
+       var tweet = JSON.parse(message.payloadString);
+       writeToScreen("Tweet: topic='"+message.destinationName+"',&nbsp;@"+tweet.username+" -- '"+tweet.text+"'");
+	}
   }
 
  
@@ -79,6 +104,18 @@
     var paragraphList = document.body.getElementsByTagName("p");
     if (paragraphList.length > LINES_TO_SHOW) {
       document.body.removeChild(paragraphList[0]);
+    }
+  }
+  
+  function pause() {
+    if (isPaused) {
+      //writeToScreen('...unpaused.'); 
+      isPaused = false;
+      document.getElementById('button').innerHTML = 'Pause';
+    } else {
+      writeToScreen('Pausing...'); 
+      isPaused = true;
+      document.getElementById('button').innerHTML = 'Unpause';
     }
   }
 
