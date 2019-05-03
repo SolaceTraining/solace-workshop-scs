@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Template
 metadata:
-  name: solace-spring-csc-workshop-template
+  name: solace-spring-scs-workshop-template
   annotations:
     description: 'Sample Spring Cloud Stream Template used to deploy SCS Workshop Samples'
     iconClass: icon-openshift
@@ -11,7 +11,7 @@ objects:
   - kind: BuildConfig
     apiVersion: v1
     metadata:
-      name: 'scs-${APPLICATION_NAME}'
+      name: '${GIT_CONTEXT}'
     spec:
       triggers:
         - type: ImageChange
@@ -40,13 +40,13 @@ objects:
       output:
         to:
           kind: ImageStreamTag
-          name: 'scs-${APPLICATION_NAME}:latest'
+          name: '${GIT_CONTEXT}:latest'
       resources: {}
 
   - kind: ImageStream
     apiVersion: v1
     metadata:
-      name: 'scs-${APPLICATION_NAME}'
+      name: '${GIT_CONTEXT}'
     spec:
       dockerImageRepository: ''
       tags:
@@ -55,7 +55,7 @@ objects:
   - kind: DeploymentConfig
     apiVersion: v1
     metadata:
-      name: 'scs-${APPLICATION_NAME}'
+      name: '${GIT_CONTEXT}'
     spec:
       strategy:
         type: Rolling
@@ -70,21 +70,22 @@ objects:
           imageChangeParams:
             automatic: true
             containerNames:
-              - 'scs-${APPLICATION_NAME}'
+              - '${GIT_CONTEXT}'
             from:
               kind: ImageStreamTag
-              name: 'scs-${APPLICATION_NAME}:latest'
+              name: '${GIT_CONTEXT}:latest'
       replicas: 1
       selector:
-        deploymentconfig: 'scs-${APPLICATION_NAME}'
+        deploymentconfig: '${GIT_CONTEXT}'
       template:
         metadata:
           labels:
-            deploymentconfig: 'scs-${APPLICATION_NAME}'
+            deploymentconfig: '${GIT_CONTEXT}'
+            app: '${GIT_CONTEXT}'
         spec:
           containers:
-            - name: 'scs-${APPLICATION_NAME}'
-              image: 'scs-${APPLICATION_NAME}'
+            - name: '${GIT_CONTEXT}'
+              image: '${GIT_CONTEXT}'
               ports:
                 - containerPort: 8090
                   protocol: TCP
@@ -114,12 +115,6 @@ objects:
           dnsPolicy: ClusterFirst
           
 parameters:
-  - name: APPLICATION_NAME
-    displayName: Application name
-    description: The name for the application.
-    generate: expression
-    from: '[A-Z0-9]{8}'
-    required: true
   - name: GIT_URI
     description: Git source URI for application
     value: 'https://github.com/mrc0113/solace-workshop-scs.git'
@@ -138,5 +133,4 @@ parameters:
     
 
 labels:
-  application: solace-springboot-spring-cloud-streams
-  createdBy: template-solace-springboot-spring-cloud-streams
+  createdBy: solace-spring-scs-workshop-template
