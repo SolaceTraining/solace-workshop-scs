@@ -1,0 +1,36 @@
+spring:
+  cloud:
+    stream:
+      bindings:
+        input:
+          destination: TWEETS.Q.POSITIVE
+          binder: local_solace
+          group: Marc
+        output:
+          destination: T/tweets/stream/nofeatures/noyelling/positive/Marc
+          binder: local_solace
+      binders:
+        local_solace:
+          type: solace
+          environment:
+            solace:
+              java:
+                host: tcp://localhost:55555
+                msgVpn: default
+                clientUsername: default
+                clientPassword: default
+                connectRetries: -1
+                reconnectRetries: -1
+      solace:
+        bindings:
+          input:
+            consumer:
+              queueAdditionalSubscriptions: T/tweets/stream/nofeatures/noyelling
+logging:
+  level:
+    root: INFO
+    com.solacesystems.jcsmp: INFO
+    org.springframework: INFO
+    
+server:
+  port: 8091

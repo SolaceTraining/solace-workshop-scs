@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Implementation-Title: scs-processor-positive
+Implementation-Version: 0.0.1.SNAPSHOT
+Built-By: heinz
+Implementation-Vendor-Id: com.solace.workshops.spring.scs
+Build-Jdk: 1.8.0_144
+Implementation-URL: https://spring.io/spring-cloud/app-starters-build/
+ scs-processor-positive
+Created-By: Maven Integration for Eclipse
+Implementation-Vendor: Pivotal Software, Inc.
+
