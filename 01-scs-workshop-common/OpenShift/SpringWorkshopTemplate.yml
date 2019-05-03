@@ -1,0 +1,142 @@
+apiVersion: v1
+kind: Template
+metadata:
+  name: solace-spring-csc-workshop-template
+  annotations:
+    description: 'Sample Spring Cloud Stream Template used to deploy SCS Workshop Samples'
+    iconClass: icon-openshift
+    tags: 'instant-app,springboot,springcloudstream, mvn,java'
+objects:
+
+  - kind: BuildConfig
+    apiVersion: v1
+    metadata:
+      name: 'scs-${APPLICATION_NAME}'
+    spec:
+      triggers:
+        - type: ImageChange
+          imageChange: {}
+      source:
+        type: Git
+        git:
+          uri: '${GIT_URI}'
+          ref: '${GIT_REF}'
+        contextDir: '${GIT_CONTEXT}'
+        sourceSecret:
+          name: git
+      strategy:
+        type: Source
+        sourceStrategy:
+          env:
+          - name: MAVEN_ARGS
+            value: ' -Dmaven.repo.local=/tmp/artifacts/m2 -s /tmp/artifacts/configuration/settings.xml -e -DskipTests -Dcom.redhat.xpaas.repo.redhatga -Dfabric8.skip=true package -Djava.net.preferIPv4Stack=true
+'
+          from:
+            kind: ImageStreamTag
+#            name: 's2i-java:latest'
+            namespace: openshift
+            name: 'redhat-openjdk18-openshift:1.4'
+
+      output:
+        to:
+          kind: ImageStreamTag
+          name: 'scs-${APPLICATION_NAME}:latest'
+      resources: {}
+
+  - kind: ImageStream
+    apiVersion: v1
+    metadata:
+      name: 'scs-${APPLICATION_NAME}'
+    spec:
+      dockerImageRepository: ''
+      tags:
+        - name: latest
+        
+  - kind: DeploymentConfig
+    apiVersion: v1
+    metadata:
+      name: 'scs-${APPLICATION_NAME}'
+    spec:
+      strategy:
+        type: Rolling
+        rollingParams:
+          updatePeriodSeconds: 1
+          intervalSeconds: 1
+          timeoutSeconds: 600
+        resources: {}
+      triggers:
+        - type: ConfigChange
+        - type: ImageChange
+          imageChangeParams:
+            automatic: true
+            containerNames:
+              - 'scs-${APPLICATION_NAME}'
+            from:
+              kind: ImageStreamTag
+              name: 'scs-${APPLICATION_NAME}:latest'
+      replicas: 1
+      selector:
+        deploymentconfig: 'scs-${APPLICATION_NAME}'
+      template:
+        metadata:
+          labels:
+            deploymentconfig: 'scs-${APPLICATION_NAME}'
+        spec:
+          containers:
+            - name: 'scs-${APPLICATION_NAME}'
+              image: 'scs-${APPLICATION_NAME}'
+              ports:
+                - containerPort: 8090
+                  protocol: TCP
+              env:
+              - name: 'SPRING_CLOUD_STREAM_BINDER_TYPE'
+                value: 'solace'
+              - name: 'SPRING_CLOUD_STREAM_BINDERS_LOCALSOLACE_ENVIRONMENT_SOLACE_JAVA_HOST'
+                value: '${VMR_DNS_NAME}'
+              - name: 'solace_java_msgVpn'
+                value: 'default'
+              - name: 'solace_java_clientUsername'
+                value: 'default'
+              - name: 'solace_java_clientPassword'
+                value: 'default'
+#              livenessProbe:
+#                tcpSocket:
+#                  port: 8090
+#                initialDelaySeconds: 30
+#                timeoutSeconds: 1
+              resources: {}
+              terminationMessagePath: /dev/termination-log
+              imagePullPolicy: IfNotPresent
+              securityContext:
+                capabilities: {}
+                privileged: false
+          restartPolicy: Always
+          dnsPolicy: ClusterFirst
+          
+parameters:
+  - name: APPLICATION_NAME
+    displayName: Application name
+    description: The name for the application.
+    generate: expression
+    from: '[A-Z0-9]{8}'
+    required: true
+  - name: GIT_URI
+    description: Git source URI for application
+    value: 'https://github.com/mrc0113/solace-workshop-scs.git'
+  - name: GIT_REF
+    description: Git branch/tag reference
+    value: 'openshift-solution'
+  - name: GIT_CONTEXT
+    description: 'GitHub project directory, for example, 02-scs-source-tweets'
+    displayName: 'GitHub project directory, for example, 02-scs-source-tweets'
+    required: true
+  - name: VMR_DNS_NAME
+    description: "FQDN Name of the PS+ broker"
+    required: true
+    displayName: "PS+ Event Broker Name - usually in the format of service_name.project.svc"
+    value: "vmr-ci-svc.solace.svc"
+    
+
+labels:
+  application: solace-springboot-spring-cloud-streams
+  createdBy: template-solace-springboot-spring-cloud-streams
