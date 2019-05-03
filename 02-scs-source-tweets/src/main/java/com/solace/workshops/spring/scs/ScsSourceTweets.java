@@ -23,15 +23,19 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.messaging.Source;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.integration.annotation.InboundChannelAdapter;
 import org.springframework.integration.annotation.Poller;
 
@@ -52,19 +56,17 @@ public class ScsSourceTweets {
 
 	// Constructor that takes in a tweet file
 	public ScsSourceTweets(String tweetFile) {
-		String filename = tweetFile;
-		if (null == filename) {
-			throw new IllegalArgumentException("Must pass in a tweet file");
-		}
 		
-		if (!new File(filename).isFile()) {
-			//Passed in file doesn't exist; try default
-			filename = "BOOT-INF/classes/static/canned_tweets.txt";
-		}
+		String filename = "static/canned_tweets.txt";
 
 		tweetList = readFile(filename);
 		tweetIterator = tweetList.iterator();
-		log.info("Loaded " + tweetList.size() + " tweet templates to send");
+		log.info("Loaded %d tweet templates to send", tweetList.size());
+		Map<String, String> env = System.getenv();
+		for (String envName : env.keySet()) {
+		    System.out.format("%s=%s%n", envName, env.get(envName));
+		}
+		
 	}
 
 	public static void main(String[] args) {
@@ -72,6 +74,7 @@ public class ScsSourceTweets {
 	}
 
 	// Define an output to send to; every fixedRate ms
+	@Autowired
 	@InboundChannelAdapter(channel = Source.OUTPUT, poller = @Poller(fixedRate = "1000"))
 	public Tweet sendTweet() {
 		Tweet nextTweet;
@@ -92,7 +95,11 @@ public class ScsSourceTweets {
 	private ArrayList<Tweet> readFile(String filename) {
 		ArrayList<Tweet> tweets = new ArrayList<Tweet>();
 		try {
-			BufferedReader reader = new BufferedReader(new FileReader(filename));
+			//BufferedReader reader = new BufferedReader(new FileReader(filename));
+
+			ClassPathResource resource = new ClassPathResource(filename);
+			BufferedReader reader = new BufferedReader(new InputStreamReader(resource.getInputStream()));
+
 			String line;
 			// Create a new tweet object for each line in the file
 			while ((line = reader.readLine()) != null) {
