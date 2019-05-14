@@ -17,7 +17,7 @@ Using Java & Spring Cloud Streams (SCS) to create Event-Driven Applications with
 * “Spring Cloud Stream is a framework for building highly scalable event-driven microservices connected with shared messaging systems."
 * It is based on Spring Boot, Spring Cloud, Spring Integration and Spring Messaging
 
-You're a developer that works for an up and coming car company named Edison Automotives. Your boss is not the most adept in the use of social media but he's been hearing great things about Twitter from his inner-circle and is a bit infatuated with tying it into Edison Automotive's everyday business and culture....little does he know that his company does not exactly have the best products or reputation....
+![story_section1](images/story_section1.png)
 
 Positive
 : **Developer Resources** 
@@ -99,7 +99,7 @@ When developing your application, you may want to test using a local instance of
 ## Deploy Your First Source & Sink
 Duration: 0:45:00
 
-![story_section3](images/story_section3.png)
+![story_section3](images/story_section3_g1.png)
 
 ### Application Architecture
 At the end of this section we will have created the apps below!
@@ -157,8 +157,7 @@ $ mvn spring-boot:run
 ```
 * Whichever way you started the app you should see the app start, connect and begin to send tweets by looking at the console.
 
-* Developer - Awesome! Now we have a stream of tweets coming in! 
-* Developer - As marketing requested we just need to capture them so they can perform their analytics.
+![story_section3_g2](images/story_section3_g2.png)
 
 To do this we will deploy a sink app.  Recall that a sink app binds to an INPUT channel. 
 
@@ -174,6 +173,7 @@ Negative
 
 ### 
 * Developer - Woohoo! We've deployed our first SCS source and sink applications and the marketing department is now getting the stream of tweets as they requested! Time to give our boss the good news.
+![story_section3_g3](images/story_section3_g3.png)
 
 Positive
 : You now have a source application sending events to a sink application via an external eventing system, but notice that you didn't need to use any messaging APIs! SCS provides this abstraction and makes it possible for developers to concentrate on their business logic rather than learning proprietary messaging APIs!
@@ -482,6 +482,7 @@ Positive
 * Since we're Spring experts let's go ahead and whip up a quick Spring Boot app that uses JavaScript and the open source MQTT Paho library to connect to PubSub+ and receive the stream of tweets.  
 * Open the "10-spring-boot-mqttwebapp" project
 * Check out the *pom.xml* file and notice that there is nothing spring-cloud-streams related; only spring boot! 
+* Update the *manifest.yml* file with your Solace PubSub+ service name 
 * Then open up the *mqttListener.html* to see how simple it was to connect & receive events using MQTT Paho. 
 * In *mqttListener.html* update the host/port/username/credentials to connect to PubSub+ (Search for "UPDATE" to find where the updates need to be made) using the information found in the previous subsection.
 * Lastly look at the *MqttWebApp.java* class.  You'll see that we just have a simple RestController that is smart enough to make the files in src/main/resources/static available for HTTP access.
