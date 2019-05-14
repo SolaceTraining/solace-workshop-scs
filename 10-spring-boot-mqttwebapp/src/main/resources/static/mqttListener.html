@@ -53,9 +53,10 @@
   var isPaused = false;
   var topicSub = "tweets/stream/nofeatures/noyelling/positive/#";
   var host = "localhost";
-  var port = 8000;
+  var port = 8000; //8443;
   var username = "default";
   var password = "default";
+  var useSSL = false; //true; 
   var client_id = ""+(Math.random() + 1).toString(36).substring(2,10);  // 8 "random" [0-9a-z]
   client = new Paho.MQTT.Client(host,Number(port),client_id);
 
@@ -65,7 +66,7 @@
 
   // connect the client
   connectOptions = { };
-  connectOptions["useSSL"] = false;
+  connectOptions["useSSL"] = useSSL;
   connectOptions["userName"] = username;
   connectOptions["password"] = password;
   connectOptions["onSuccess"] = onConnect;

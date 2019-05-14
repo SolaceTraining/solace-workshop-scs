@@ -34,7 +34,7 @@
 <li>&#34;Spring Cloud Stream is a framework for building highly scalable event-driven microservices connected with shared messaging systems.&#34;</li>
 <li>It is based on Spring Boot, Spring Cloud, Spring Integration and Spring Messaging</li>
 </ul>
-<p>You&#39;re a developer that works for an up and coming car company named Edison Automotives. Your boss is not the most adept in the use of social media but he&#39;s been hearing great things about Twitter from his inner-circle and is a bit infatuated with tying it into Edison Automotive&#39;s everyday business and culture....little does he know that his company does not exactly have the best products or reputation....</p>
+<p class="image-container"><img alt="story_section1" src="img/74c5ab5aa7a9cf08.png"></p>
 <aside class="special"><p><strong>Developer Resources</strong><br>Spring Cloud Stream Project Home: <a href="https://spring.io/projects/spring-cloud-stream" target="_blank">https://spring.io/projects/spring-cloud-stream</a><br>The latest version of Spring Clouds Streams as of the creation of this lab is Greenwich.SR1 (2.1.4)<br>The Reference Guide for that current version is available <a href="https://docs.spring.io/spring-cloud-stream/docs/current/reference/htmlsingle" target="_blank">here</a>.</p>
 </aside>
 <aside class="warning"><p>The SCS framework allows for building messaging-driven applications without having to explicitly write any code for publishing or receiving events.  While many microservices-oriented applications today are based on synchronous, request/response interactions based on protocols such as HTTP or gRPC, the asynchronous, event-driven nature of communications using SCS allows for building highly scalable, efficient and responsive distributed systems that can run on-premise or in the cloud.  When combined with the high-performance Solace PubSub+ Event Broker which can be deployed in virtually any environment, you can create powerful and flexible applications that support both hybrid and multi-cloud capabilities, all operating in real-time with high throughput and low latency.</p>
@@ -142,9 +142,9 @@ $ mvn clean install
 </code></pre>
 </li>
 <li>Whichever way you started the app you should see the app start, connect and begin to send tweets by looking at the console.</li>
-<li>Developer - Awesome! Now we have a stream of tweets coming in!</li>
-<li>Developer - As marketing requested we just need to capture them so they can perform their analytics.<br>To do this we will deploy a sink app.  Recall that a sink app binds to an INPUT channel.</li>
 </ul>
+<p class="image-container"><img alt="story_section3_g2" src="img/39fe5ed1c324f817.png"></p>
+<p>To do this we will deploy a sink app.  Recall that a sink app binds to an INPUT channel.</p>
 <h2 is-upgraded>Deploying a Sink</h2>
 <ul>
 <li>Open the &#34;03-scs-sink-analytics&#34; project</li>
@@ -156,7 +156,7 @@ $ mvn clean install
 <aside class="warning"><p>Note that Spring Cloud Streams <a href="https://docs.spring.io/spring-cloud-stream/docs/current/reference/htmlsingle/#_provided_messageconverters" target="_blank">provides message converters</a> which enable the conversion of a payload to/from a specified format/shape (such as a Tweet POJO in our case) based on the argumentType in the method signature and the contentType specified on the message. The default content type is application/json.</p>
 </aside>
 <ul>
-<li>Developer - Woohoo! We&#39;ve deployed our first SCS source and sink applications and the marketing department is now getting the stream of tweets as they requested! Time to give our boss the good news.</li>
+<li>Developer - Woohoo! We&#39;ve deployed our first SCS source and sink applications and the marketing department is now getting the stream of tweets as they requested! Time to give our boss the good news.<br><img alt="story_section3_g3" src="img/6d6527085f2915ed.png"></li>
 </ul>
 <aside class="special"><p>You now have a source application sending events to a sink application via an external eventing system, but notice that you didn&#39;t need to use any messaging APIs! SCS provides this abstraction and makes it possible for developers to concentrate on their business logic rather than learning proprietary messaging APIs!</p>
 </aside>

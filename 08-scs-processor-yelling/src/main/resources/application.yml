@@ -13,14 +13,15 @@ spring:
         local_solace:
           type: solace
           environment:
-            spring:
-              solace:
+            solace:
+              java:
                 host: tcp://localhost:55555
                 msgVpn: default
                 clientUsername: default
                 clientPassword: default
-                connectRetries: 1
-                reconnectRetries: -1
+                connectRetries: 3
+                connectRetriesPerHost: 0
+                reconnectRetries: 3
                 # Add API properties here
                 apiProperties: 
                   generate_sequence_numbers: true 

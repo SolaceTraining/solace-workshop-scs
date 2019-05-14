@@ -16,8 +16,9 @@ spring:
                 msgVpn: default
                 clientUsername: default
                 clientPassword: default
-                connectRetries: -1
-                reconnectRetries: -1
+                connectRetries: 3
+                connectRetriesPerHost: 0
+                reconnectRetries: 3
       solace:
         bindings:
           input:
