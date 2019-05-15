@@ -25,7 +25,7 @@
                   id="solace-codelab-scs-1"
                   title="Developer Workshop: Using Spring Cloud Streams with Solace PubSub&#43;"
                   environment="web"
-                  feedback-link="github.com/Mrc0113/solace-workshop-scs">
+                  feedback-link="github.com/SolaceTraining/solace-workshop-scs">
     
       <google-codelab-step label="CodeLab Overview" duration="10">
         <p>Using Java &amp; Spring Cloud Streams (SCS) to create Event-Driven Applications with PubSub+ in PCF</p>
@@ -57,14 +57,14 @@
 </ul>
 <h3 is-upgraded>Code Access</h3>
 <ul>
-<li>Clone the github repo **TODO - Add real repo **</li>
-<li>Use https<pre><code>$ git clone -b pcf https://github.com/Mrc0113/solace-workshop-scs.git
+<li>Clone the github repo</li>
+<li>Use https<pre><code>$ git clone -b pcf https://github.com/SolaceTraining/solace-workshop-scs.git
 </code></pre>
 </li>
-<li>OR Use SSH<pre><code>$ git clone -b pcf git@github.com:Mrc0113/solace-workshop-scs.git
+<li>OR Use SSH<pre><code>$ git clone -b pcf git@github.com:SolaceTraining/solace-workshop-scs.git
 </code></pre>
 </li>
-<li>OR Navigate to https://github.com/Mrc0113/solace-workshop-scs, <strong>Choose the pcf branch</strong>, click &#34;Clone or download&#34; -&gt; &#34;Download ZIP&#34; &amp; unzip in your desired directory</li>
+<li>OR Navigate to https://github.com/SolaceTraining/solace-workshop-scs, <strong>Choose the pcf branch</strong>, click &#34;Clone or download&#34; -&gt; &#34;Download ZIP&#34; &amp; unzip in your desired directory</li>
 <li>Import the projects into STS<br>In STS, use the File -&gt; Import -&gt; Maven -&gt; Existing Maven Projects -&gt; Click Next -&gt; Click Browse and Navigate to the git repo you cloned in the previous step -&gt; Select all the pom files and click Finish.</li>
 </ul>
 <p>After importing everything you should see the following projects in STS:</p>
@@ -409,6 +409,7 @@ $ cf push
 <li>Since we&#39;re Spring experts let&#39;s go ahead and whip up a quick Spring Boot app that uses JavaScript and the open source MQTT Paho library to connect to PubSub+ and receive the stream of tweets.<br></li>
 <li>Open the &#34;10-spring-boot-mqttwebapp&#34; project</li>
 <li>Check out the <em>pom.xml</em> file and notice that there is nothing spring-cloud-streams related; only spring boot!</li>
+<li>Update the <em>manifest.yml</em> file with your Solace PubSub+ service name</li>
 <li>Then open up the <em>mqttListener.html</em> to see how simple it was to connect &amp; receive events using MQTT Paho.</li>
 <li>In <em>mqttListener.html</em> update the host/port/username/credentials to connect to PubSub+ (Search for &#34;UPDATE&#34; to find where the updates need to be made) using the information found in the previous subsection.</li>
 <li>Lastly look at the <em>MqttWebApp.java</em> class.  You&#39;ll see that we just have a simple RestController that is smart enough to make the files in src/main/resources/static available for HTTP access.</li>

@@ -4,7 +4,7 @@ id: solace-codelab-scs-1
 categories: spring,scs,cloud-streams,solace,pubsub+,java,pcf
 environments: Web
 status: draft
-feedback link: github.com/Mrc0113/solace-workshop-scs
+feedback link: github.com/SolaceTraining/solace-workshop-scs
 analytics account: 0
 
 # Developer Workshop: Using Spring Cloud Streams with Solace PubSub+
@@ -44,17 +44,17 @@ Required libraries:
 * If the correct JDK does not already have a checkmark next to it then click the "Add" button, choose "Standard VM", click "Next", navigate to your JDK -> Click "Finish". Then click the checkbox next to the added JRE and click "Apply and close"  
 
 #### Code Access
-* Clone the github repo **TODO - Add real repo **
+* Clone the github repo
 
 * Use https
 ``` 
-$ git clone -b pcf https://github.com/Mrc0113/solace-workshop-scs.git
+$ git clone -b pcf https://github.com/SolaceTraining/solace-workshop-scs.git
 ```
 * OR Use SSH
 ``` bash
-$ git clone -b pcf git@github.com:Mrc0113/solace-workshop-scs.git
+$ git clone -b pcf git@github.com:SolaceTraining/solace-workshop-scs.git
 ```
-* OR Navigate to https://github.com/Mrc0113/solace-workshop-scs, **Choose the pcf branch**, click "Clone or download" -> "Download ZIP" & unzip in your desired directory 
+* OR Navigate to https://github.com/SolaceTraining/solace-workshop-scs, **Choose the pcf branch**, click "Clone or download" -> "Download ZIP" & unzip in your desired directory 
 
 
 * Import the projects into STS
