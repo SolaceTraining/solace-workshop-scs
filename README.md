@@ -17,10 +17,6 @@ More information is in the CodeLab linked above, but if you just want to mess ar
 mvn spring-boot:run
 ```
 
-## Authors
-
-See the list of [contributors](https://github.com/TODO/contributors) who participated in this project.
-
 ## License
 
 This project is licensed under the Apache License, Version 2.0. - See the [LICENSE](LICENSE) file for details.
