@@ -4,7 +4,7 @@
   "format": "html",
   "prefix": "https://storage.googleapis.com",
   "mainga": "UA-49880327-14",
-  "updated": "2019-05-15T11:53:30-04:00",
+  "updated": "2019-06-18T17:16:27-04:00",
   "id": "solace-codelab-scs-1",
   "duration": 175,
   "title": "Developer Workshop: Using Spring Cloud Streams with Solace PubSub+",
