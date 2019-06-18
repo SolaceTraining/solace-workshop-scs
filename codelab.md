@@ -211,8 +211,10 @@ solace-pubsub-service   solace-pubsub       Enterprise Shared Plan     sample-ap
 ```
 
 ### Deploy the Source to PCF
+#### IF PARTICIPATING IN AN INSTRUCTOR LED WORKSHOP THE INSTRUCTOR WILL PUSH TO PCF. YOU ARE WELCOME TO RUN LOCALLY IF YOU WOULD LIKE
+
 * Open the manifest.yml file under the *02-scs-source-tweets* project
-* Change the services name from "Space1-Instance" to whatever Solace Service instace is running your space. 
+* Change the services name from "Space1-Instance" to whatever Solace Service instance is running your space. 
 * **If using STS** run a Maven build and install it to the local repository.
  ![Using STS to install your artifact via Maven](images/MavenInstall.png)
 * Open the "Boot Dashboard" view (Window -> Show View -> Other -> Boot Dashboard)
@@ -235,8 +237,9 @@ Positive
 : Notice that you did not have to add any credentials for your PubSub+ service instance running in PCF. This is because the Solace Spring Cloud Connector allows for Auto-Configuration in PCF. Just specify the service name and the service configuration is automatically looked up and injected into your app from VCAP_SERVICES! This allows you to leave your local credentials in place for even easier development and also refrain from storing credentials in your code repository.
 
 ### Deploy the Sink to PCF
+#### IF PARTICIPATING IN AN INSTRUCTOR LED WORKSHOP THE INSTRUCTOR WILL PUSH TO PCF. YOU ARE WELCOME TO RUN LOCALLY IF YOU WOULD LIKE
 * Open the manifest.yml file under the *03-scs-sink-analytics* project
-* Change the services name from "Space1-Instance" to whatever Solace Service instace is running your space. 
+* Change the services name from "Space1-Instance" to whatever Solace Service instance is running your space. 
 * **If using STS** run a Maven build and install it to the local repository.
 ![Using STS to install your artifact via Maven](images/MavenInstall.png)
 
@@ -277,7 +280,7 @@ We obviously don't have a giant LED board that we can use so we're going to sett
 * Add a "sink" method that takes in a "Tweet" POJO from the INPUT channel and logs that it was received. 
 * Update the application.yml file, verify that there is indeed a destination configured for the input channel, and add your name to the end of the destination name (e.g: TWEETS.Q.BOARD.Marc).  Note that by not specifying a group we are using the "Publish-Subscribe" messaging model. 
 * If not deploying to PCF you'll also need to update the host, msgVpn, clientUsername, clientPassword in the application.yml file. 
-* If you are deploying to PCF you'll need to open the *manifest.yml* file and change <ATTENDEE_NAME> to your name
+* If you are deploying to PCF you'll need to open the *manifest.yml* file and update 2 items: 1) Update the solace service name, and 2) Change <ATTENDEE_NAME> to your name
 
 Negative
 : Spring Cloud Streams supports multiple messaging models. We are going to use two different ones in this workshop
@@ -287,8 +290,23 @@ Negative
 
 ### Deploying the Tweet Board
 At this point we have created our "04-scs-sink-twitterboard" application and it needs to be deployed. 
-Time to see if you've been paying attention! Deploy it in the same way you deployed the apps in the previous section. 
-**Don't forget to update the service in the manifest.yml file to point to your PubSub+ service!**
+* **If using STS** run a Maven build and install it to the local repository.
+ ![Using STS to install your artifact via Maven](images/MavenInstall.png)
+* Open the "Boot Dashboard" view (Window -> Show View -> Other -> Boot Dashboard)
+* Right-click on your app in the Spring Boot Dashboard, and select the Deploy and Run On… -> [CHOOSE YOUR DEPLOYMENT TARGET WE SETUP EARLIER]: 
+![Deploy to Cloud Foundry](images/DeployAndRunOn.png)
+* At this point you should see the app deploying to the chosen space and the console should automatically open to follow the progress. Once complete you should see the app start to send a tweet every second. 
+
+* **If not using STS** open a cli and navigate to the *04-scs-sink-twitterboard* project and then run
+``` bash
+$ mvn clean install
+$ cf push
+```
+* At this point you should see the app being deployed to PCF. If all goes correctly you should see the app start and have a requested state of "started" before the command exits.
+* You can then see the app logs by executing the command below and should see a tweet being sent every second. 
+``` bash 
+$ cf logs 04-scs-sink-twitterboard-<ATTENDEE_NAME>
+```
 
 ![story_section5_g2](images/story_section5_g2.png)
 
@@ -325,7 +343,8 @@ Positive
 ### 
 * Note that in the application.yml file the bindings that are listed include input, outputFeature, and outputNoFeature as defined in our custom bindings interface. 
 * If not using PubSub+ in PCF, update the host, msgVpn, clientUsername, clientPassword in the application.yml file so we can connect to the PubSub+ service
-* Deploy the app in the same manner that you've been deploying the others. (**Don't forget to update the service in the manifest.yml file to point to your PubSub+ service!**)
+#### IF PARTICIPATING IN AN INSTRUCTOR LED WORKSHOP THE INSTRUCTOR WILL PUSH TO PCF. YOU ARE WELCOME TO RUN LOCALLY IF YOU WOULD LIKE
+* Deploy the app in the same manner that you've been deploying the others. (**Don't forget to update the solace service in the manifest.yml file to point to your PubSub+ service!**)
 
 #### Processor using Dynamic Destinations
 Negative
@@ -336,17 +355,15 @@ Negative
 * Let's create a second feature processor that makes use of dynamic destinations. 
 * Open the "06-scs-processor-dynamicfeature" project
 * Open the *ScsProcessorFeaturesDynamic.java* class
-* You'll notice that the *@EnableBinding* annotation defines the app as a "Sink" app. This is because we only bind the INPUT channel at startup and then at runtime we are using a *BinderAwareChannelResolver* (which is registered automatically by the *@EnableBinding* annotation) to dynaimcally create output channels. 
+* You'll notice that the *@EnableBinding* annotation defines the app as a "Sink" app. This is because we only bind the INPUT channel at startup and then at runtime we are using a *BinderAwareChannelResolver* (which is registered automatically by the *@EnableBinding* annotation) to dynamically create output channels. 
 
 Negative
 : From the JavaDocs, the *BinderAwareChannelResolver* is "A DestinationResolver implementation that resolves the channel from the bean factory and, if not present, creates a new channel and adds it to the factory after binding it to the binder."
 
 ###
 * Review the *handle* method to see an example of how to specify dynamic destinations
+* Open the manifest.yml file to update the solace service name
 * Build (mvn clean install) & Deploy the app to PCF
-
-Positive
-: Note that our two different feature processors are listening as part of a consumer group so they will receive messages in a round robin fashion
 
 ### Create the Feature Sink for the Boss
 * Open the "07-scs-sink-bossideas" project
@@ -354,7 +371,9 @@ Positive
 * Add the *@EnableBinding(Sink.class)* annotation to label the app as a Sink
 * Add a "sink" method that takes in a "Tweet" POJO from the INPUT channel and logs that it was received. 
 * Update the application.yml file and verify that there is indeed a destination & group configured for the input channel. Note that by specifying a group we are now using the consumer group model. Since this application will likely do further processing in the future we want to provide the option of scaling up to keep up with the number of events that come in.
-* At this point we have created our "07-scs-sink-bossideas" application and it needs to be deployed. Time to see if you've been paying attention! Deploy it in the same way you deployed the apps in the previous section. 
+* At this point we have created our "07-scs-sink-bossideas" application and it needs to be deployed. Time to see if you've been paying attention!
+#### IF PARTICIPATING IN AN INSTRUCTOR LED WORKSHOP THE INSTRUCTOR WILL PUSH TO PCF. YOU ARE WELCOME TO RUN LOCALLY IF YOU WOULD LIKE
+* Deploy the app in the same manner that you've been deploying the others. (**Don't forget to update the solace service in the manifest.yml file to point to your PubSub+ service!**)
 
 ### Update the Tweet Board Subscription
 Note that our processor that we created earlier in this lab publishes to multiple topics essentially splitting our feed into two. Due to our new requirements to not show new features on the twitter board we need to update that sink appropriately.
@@ -404,7 +423,8 @@ Negative
  java.util.function.Consumer maps to a SCS Sink
 
 ### 
-* Now that we've seen how to create a SCS app using Spring Cloud Functions go ahead and deploy it. 
+#### IF PARTICIPATING IN AN INSTRUCTOR LED WORKSHOP THE INSTRUCTOR WILL PERFORM THIS SECTION. YOU ARE WELCOME TO RUN LOCALLY IF YOU WOULD LIKE
+* Now that we've seen how to create a SCS app using Spring Cloud Functions go ahead and deploy it.  (Don't forget to update the solace service in the manifest.yml file to point to your PubSub+ service!) 
 * After deploying you should start to see the BEFORE and AFTER log entries scrolling across the console where the AFTER log entries do not contain any uppercase letters in the text field. 
 
 Positive
@@ -428,7 +448,8 @@ A processor will be added to our architecture in order to convert negative words
 ### Create the Processor
 Let's get started and hopefully have a bit of fun! 
 * Open the "09-scs-processor-positive" project
-* Open the manifest.yml file and change <ATTENDEE_NAME> to your name
+* Open the manifest.yml file and change <ATTENDEE_NAME> to your name 
+* Don't forget to update the solace service in the manifest.yml file to point to your PubSub+ service!
 * Open the application.yml file and change **both** <ATTENDEE_NAME> placeholders with your name (in the input group & output destination)
 * Find & Open the *ScsProcessorPositive.java* class. At this point we know how to create and deploy a processor so we'll do something a bit different. At the top of the class you'll see that the negToPosMap object is being initialized in a static method. This Map holds the key for changing our negative tweets to positive ones. Go ahead and fill in some positive words for each negative one in the map. Remember that you can find the canned tweets in the canned_tweets.txt file under the "02-scs-source-tweets" project if you need some more context :) 
 * After filling in your "positive" words go ahead and deploy the app
@@ -468,6 +489,7 @@ Positive
 : Since we're using Solace PubSub+ as our event broker we support a bunch of open standards and protocols. Even though the SCS apps are sending/receiving events using the Java API other applications can still use their language/protocol of choice. 
 
 ### Obtain PubSub+ Credentials for an App that can't use the Cloud Connector & Auto-config
+#### IF PARTICIPATING IN AN INSTRUCTOR LED WORKSHOP THE INSTRUCTOR WILL PERFORM THIS SECTION. YOU ARE WELCOME TO RUN LOCALLY IF YOU WOULD LIKE
 * Open Pivotal Apps Manager & Login
 * Navigate to your Org & Space
 * Click on "Services"
@@ -479,10 +501,10 @@ Positive
 ![Service Key Credentials](images/ServiceKeyCredentials.png)
 
 ### Create the Web App
+#### IF PARTICIPATING IN AN INSTRUCTOR LED WORKSHOP THE INSTRUCTOR WILL PERFORM THIS SECTION. YOU ARE WELCOME TO RUN LOCALLY IF YOU WOULD LIKE
 * Since we're Spring experts let's go ahead and whip up a quick Spring Boot app that uses JavaScript and the open source MQTT Paho library to connect to PubSub+ and receive the stream of tweets.  
 * Open the "10-spring-boot-mqttwebapp" project
 * Check out the *pom.xml* file and notice that there is nothing spring-cloud-streams related; only spring boot! 
-* Update the *manifest.yml* file with your Solace PubSub+ service name 
 * Then open up the *mqttListener.html* to see how simple it was to connect & receive events using MQTT Paho. 
 * In *mqttListener.html* update the host/port/username/credentials to connect to PubSub+ (Search for "UPDATE" to find where the updates need to be made) using the information found in the previous subsection.
 * Lastly look at the *MqttWebApp.java* class.  You'll see that we just have a simple RestController that is smart enough to make the files in src/main/resources/static available for HTTP access.
