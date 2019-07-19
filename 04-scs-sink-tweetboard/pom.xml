@@ -11,10 +11,10 @@
 	</parent>
 
 	<groupId>com.solace.workshops.spring.scs</groupId>
-	<artifactId>04-scs-sink-twitterboard</artifactId>
+	<artifactId>04-scs-sink-tweetboard</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
-	<name>04-scs-sink-twitterboard</name>
+	<name>04-scs-sink-tweetboard</name>
 	<description>Sample sink for Spring Cloud Stream using Solace PubSub+ binder</description>
 
 	<properties>

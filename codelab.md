@@ -64,7 +64,7 @@ After importing everything you should see the following projects in STS:
 * 01-scs-workshop-common
 * 02-scs-source-tweets
 * 03-scs-sink-analytics
-* 04-scs-sink-twitterboard
+* 04-scs-sink-tweetboard
 * 05-scs-processor-feature
 * 06-scs-processor-dynamicfeature
 * 07-scs-sink-bossideas
@@ -276,7 +276,7 @@ At the end of this section we will have added the Factory Tweet Board Sink.
 
 ### Creating the Tweet Board Sink
 We obviously don't have a giant LED board that we can use so we're going to settle for logging the tweets as they come in. 
-* Open the "04-scs-sink-twitterboard" project
+* Open the "04-scs-sink-tweetboard" project
 * Open the *ScsSinkTweetBoard.java* class
 * Add the *@EnableBinding(Sink.class)* annotation to label the app as a Sink
 * Add a "sink" method that takes in a "Tweet" POJO from the INPUT channel and logs that it was received. 
@@ -291,7 +291,7 @@ Negative
 
 
 ### Deploying the Tweet Board
-At this point we have created our "04-scs-sink-twitterboard" application and it needs to be deployed. 
+At this point we have created our "04-scs-sink-tweetboard" application and it needs to be deployed. 
 * **If using STS** run a Maven build and install it to the local repository.
  ![Using STS to install your artifact via Maven](images/MavenInstall.png)
 * Open the "Boot Dashboard" view (Window -> Show View -> Other -> Boot Dashboard)
@@ -299,7 +299,7 @@ At this point we have created our "04-scs-sink-twitterboard" application and it 
 ![Deploy to Cloud Foundry](images/DeployAndRunOn.png)
 * At this point you should see the app deploying to the chosen space and the console should automatically open to follow the progress. Once complete you should see the app start to send a tweet every second. 
 
-* **If not using STS** open a cli and navigate to the *04-scs-sink-twitterboard* project and then run
+* **If not using STS** open a cli and navigate to the *04-scs-sink-tweetboard* project and then run
 ``` 
 $ mvn clean install
 $ cf push
@@ -307,7 +307,7 @@ $ cf push
 * At this point you should see the app being deployed to PCF. If all goes correctly you should see the app start and have a requested state of "started" before the command exits.
 * You can then see the app logs by executing the command below and should see a tweet being sent every second. 
 ``` 
-$ cf logs 04-scs-sink-twitterboard-**ATTENDEE_NAME**
+$ cf logs 04-scs-sink-tweetboard-**ATTENDEE_NAME**
 ```
 
 ![story_section5_g2](images/story_section5_g2.png)
@@ -380,7 +380,7 @@ Negative
 
 ### Update the Tweet Board Subscription
 Note that our processor that we created earlier in this lab publishes to multiple topics essentially splitting our feed into two. Due to our new requirements to not show new features on the twitter board we need to update that sink appropriately.
-* Navigate to your "04-scs-sink-twitterboard" project
+* Navigate to your "04-scs-sink-tweetboard" project
 * Open your application.yml file
 * Update the queueAdditionalSubscriptions property to listen on "tweets/stream/**ATTENDEE_NAME**/nofeatures"
 * Save the file
@@ -461,7 +461,7 @@ Positive
 : Notice that multiple processors can easily be connected together in order to form a processing chain. 
 
 ### Update the Tweet Board Subscription
-* Navigate to your "04-scs-sink-twitterboard" project
+* Navigate to your "04-scs-sink-tweetboard" project
 * Open your application.yml file
 * Update the queueAdditionalSubscriptions property to listen on "tweets/stream/**ATTENDEE_NAME**/nofeatures/noyelling/positive" replacing **ATTENDEE_NAME** with your name
 * Save the file
