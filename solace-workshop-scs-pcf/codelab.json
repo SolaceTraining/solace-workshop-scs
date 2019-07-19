@@ -1,24 +1,21 @@
 {
   "environment": "web",
-  "source": "codelab.md",
   "format": "html",
   "prefix": "https://storage.googleapis.com",
   "mainga": "UA-49880327-14",
-  "updated": "2019-06-18T17:16:27-04:00",
-  "id": "solace-codelab-scs-1",
+  "updated": "2019-07-19T09:43:50-04:00",
+  "id": "solace-workshop-scs-pcf",
   "duration": 175,
   "title": "Developer Workshop: Using Spring Cloud Streams with Solace PubSub+",
   "summary": "Using Spring Cloud Streams w/ Solace PubSub+ in PCF",
+  "source": "codelab.md",
   "theme": "",
   "status": [
-    "draft"
+    "published"
   ],
   "category": [
     "spring",
-    "scs",
-    "cloud-streams",
-    "solace",
-    "pubsub+",
+    "springcloudstreams",
     "java",
     "pcf"
   ],
@@ -27,5 +24,5 @@
   ],
   "feedback": "github.com/SolaceTraining/solace-workshop-scs",
   "ga": "0",
-  "url": "solace-codelab-scs-1"
+  "url": "solace-workshop-scs-pcf"
 }

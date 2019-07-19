@@ -5,11 +5,11 @@ spring:
       bindings:
         input:
           destination: TWEETS.Q
-          group: FEATURES
+          group: FEATURES.<ATTENDEE_NAME>
         outputFeature:
-          destination: tweets/stream/features
+          destination: tweets/stream/<ATTENDEE_NAME>/features
         outputNoFeature:
-          destination: tweets/stream/nofeatures
+          destination: tweets/stream/<ATTENDEE_NAME>/nofeatures
       binders:
         local_solace:
           type: solace

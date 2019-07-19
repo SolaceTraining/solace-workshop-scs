@@ -7,7 +7,7 @@ spring:
           binder: local_solace
           group: <ATTENDEE_NAME>
         output:
-          destination: tweets/stream/nofeatures/noyelling/positive/<ATTENDEE_NAME>
+          destination: tweets/stream/<ATTENDEE_NAME>/nofeatures/noyelling/positive
           binder: local_solace
       binders:
         local_solace:
@@ -26,7 +26,7 @@ spring:
         bindings:
           input:
             consumer:
-              queueAdditionalSubscriptions: tweets/stream/nofeatures/noyelling
+              queueAdditionalSubscriptions: tweets/stream/<ATTENDEE_NAME>/nofeatures/noyelling
 logging:
   level:
     root: INFO
