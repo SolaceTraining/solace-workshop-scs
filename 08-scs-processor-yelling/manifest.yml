@@ -1,6 +1,6 @@
 ---
 applications:
-- name: 08-scs-processor-yelling
+- name: 08-scs-processor-yelling-attendee
   memory: 1024M
   path: target/08-scs-processor-yelling-0.0.1-SNAPSHOT.jar
   services:

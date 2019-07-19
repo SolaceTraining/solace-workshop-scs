@@ -47,7 +47,7 @@ public class ScsProcessorFeaturesDynamic {
 	private BinderAwareChannelResolver resolver;
 	
 	private String feature = "#NewFeature";
-	private String topicStart = "tweets/stream/";
+	private String topicStart = "tweets/stream/attendee";
 	
 	public static void main(String[] args) {
 		SpringApplication.run(ScsProcessorFeaturesDynamic.class, args);

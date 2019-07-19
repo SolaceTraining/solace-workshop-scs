@@ -1,6 +1,6 @@
 ---
 applications:
-- name: 06-scs-processor-dynamicfeature
+- name: 06-scs-processor-dynamicfeature-attendee
   memory: 1024M
   path: target/06-scs-processor-dynamicfeature-0.0.1-SNAPSHOT.jar
   services:

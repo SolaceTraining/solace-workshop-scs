@@ -6,7 +6,7 @@ spring:
           destination: TWEETS.Q
           binder: local_solace
           #The presence of "group" tells the binder to follow the "consumer group" pattern
-          group: MARKETING
+          group: attendee
       binders:
         local_solace:
           type: solace

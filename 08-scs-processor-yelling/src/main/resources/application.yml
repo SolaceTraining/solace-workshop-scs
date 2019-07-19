@@ -5,9 +5,9 @@ spring:
         input:
           destination: TWEETS.Q
           binder: local_solace
-          group: YELLING
+          group: YELLING.attendee
         output:
-          destination: tweets/stream/nofeatures/noyelling
+          destination: tweets/stream/attendee/nofeatures/noyelling
           binder: local_solace
       binders:
         local_solace:
@@ -31,7 +31,7 @@ spring:
         bindings:
           input:
             consumer:
-              queueAdditionalSubscriptions: tweets/stream/nofeatures
+              queueAdditionalSubscriptions: tweets/stream/attendee/nofeatures
 
 logging:
   level:
