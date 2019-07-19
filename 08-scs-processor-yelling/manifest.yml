@@ -4,4 +4,4 @@ applications:
   memory: 1024M
   path: target/08-scs-processor-yelling-0.0.1-SNAPSHOT.jar
   services:
-  - Space1-Instance
+  - solace-eventmesh
