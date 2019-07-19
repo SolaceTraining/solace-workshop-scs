@@ -216,7 +216,7 @@ solace-pubsub-service   solace-pubsub       Enterprise Shared Plan     sample-ap
 #### IF PARTICIPATING IN AN INSTRUCTOR LED WORKSHOP THE INSTRUCTOR WILL PUSH TO PCF. YOU ARE WELCOME TO RUN LOCALLY IF YOU WOULD LIKE
 
 * Open the manifest.yml file under the *02-scs-source-tweets* project
-* Change the services name from "Space1-Instance" to whatever Solace Service instance is running your space. 
+* Change the services name from "solace-eventmesh" to whatever Solace Service instance is running your space. 
 * **If using STS** run a Maven build and install it to the local repository.
  ![Using STS to install your artifact via Maven](images/MavenInstall.png)
 * Open the "Boot Dashboard" view (Window -> Show View -> Other -> Boot Dashboard)
@@ -240,7 +240,7 @@ Positive
 
 ### Deploy the Sink to PCF
 * Open the manifest.yml file under the *03-scs-sink-analytics* project
-* Change the services name from "Space1-Instance" to whatever Solace Service instance is running your space. 
+* Change the services name from "solace-eventmesh" to whatever Solace Service instance is running your space. 
 * Replace **ATTENDEE_NAME** with your unique name.
 * **If using STS** run a Maven build and install it to the local repository.
 ![Using STS to install your artifact via Maven](images/MavenInstall.png)

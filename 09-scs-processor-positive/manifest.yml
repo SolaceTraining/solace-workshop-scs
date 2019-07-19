@@ -4,4 +4,4 @@ applications:
   memory: 1024M
   path: target/09-scs-processor-positive-0.0.1-SNAPSHOT.jar
   services:
-  - Space1-Instance
+  - solace-eventmesh
