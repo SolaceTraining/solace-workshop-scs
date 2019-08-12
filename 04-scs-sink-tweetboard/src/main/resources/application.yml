@@ -4,10 +4,10 @@ spring:
       bindings:
         input:
           destination: TWEETS.Q.BOARD.attendee
-          binder: local_solace
+          binder: localsolace
           # Note that no "group" is specified so this input will follow the "publish-subscribe" pattern
       binders:
-        local_solace:
+        localsolace:
           type: solace
           environment:
             solace:

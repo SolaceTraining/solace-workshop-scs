@@ -1,13 +1,13 @@
 spring:
   cloud:
     stream:
-      default-binder: local_solace
+      default-binder: localsolace
       bindings:
         input:
           destination: TWEETS.Q
           group: FEATURES
       binders:
-        local_solace:
+        localsolace:
           type: solace
           environment:
             solace:

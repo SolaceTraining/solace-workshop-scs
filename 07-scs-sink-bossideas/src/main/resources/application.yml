@@ -5,9 +5,9 @@ spring:
         input:
           destination: TWEETS.Q
           group: BOSSIDEAS
-          binder: local_solace
+          binder: localsolace
       binders:
-        local_solace:
+        localsolace:
           type: solace
           environment:
             solace:

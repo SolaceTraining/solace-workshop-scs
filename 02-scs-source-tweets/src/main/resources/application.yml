@@ -4,9 +4,9 @@ spring:
       bindings:
         output:
           destination: tweets/stream
-          binder: local_solace
+          binder: localsolace
       binders:
-        local_solace:
+        localsolace:
           type: solace
           environment:
             solace:

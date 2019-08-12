@@ -4,11 +4,11 @@ spring:
       bindings:
         input:
           destination: TWEETS.Q
-          binder: local_solace
+          binder: localsolace
           #The presence of "group" tells the binder to follow the "consumer group" pattern
           group: MARKETING
       binders:
-        local_solace:
+        localsolace:
           type: solace
           environment:
             solace:

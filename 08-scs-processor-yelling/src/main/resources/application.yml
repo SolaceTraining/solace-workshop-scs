@@ -8,9 +8,9 @@ spring:
           group: YELLING
         output:
           destination: tweets/stream/nofeatures/noyelling
-          binder: local_solace
+          binder: localsolace
       binders:
-        local_solace:
+        localsolace:
           type: solace
           environment:
             spring:
