@@ -1,5 +1,5 @@
-author: Marc DiPasquale
-summary: Using Spring Cloud Streams w/ Solace PubSub+ in PCF
+author: Marc DiPasquale and Heinz Schaffner
+summary: Using Spring Cloud Streams w/ Solace PubSub+ in OpenSHift
 id: solace-codelab-scs-1
 categories: spring,scs,cloud-streams,solace,pubsub+,java,pcf
 environments: Web
@@ -12,8 +12,8 @@ analytics account: 0
 ## CodeLab Overview
 Duration: 0:10:00
 
-Using Java & Spring Cloud Streams (SCS) to create Event-Driven Applications with PubSub+ in PCF
-* The purpose of this codelab is to introduce java developers to creating event-driven applications with Spring Cloud Streams and PubSub+ in Pivotal Cloud Foundry
+Using Java & Spring Cloud Streams (SCS) to create Event-Driven Applications with PubSub+ in OpenShift
+* The purpose of this codelab is to introduce java developers to creating event-driven applications with Spring Cloud Streams and PubSub+ in RedHat OpenShift and OKD
 * “Spring Cloud Stream is a framework for building highly scalable event-driven microservices connected with shared messaging systems."
 * It is based on Spring Boot, Spring Cloud, Spring Integration and Spring Messaging
 
@@ -44,44 +44,42 @@ Required libraries:
 * If the correct JDK does not already have a checkmark next to it then click the "Add" button, choose "Standard VM", click "Next", navigate to your JDK -> Click "Finish". Then click the checkbox next to the added JRE and click "Apply and close"  
 
 #### Code Access
-* Clone the github repo **TODO - Add real repo **
+* Fork the github repository for the Workshop from:
 
-* Use https
 ``` 
-$ git clone -b pcf https://github.com/Mrc0113/solace-workshop-scs.git
+https://github.com/SolaceTraining/solace-workshop-scs/tree/openshift-solution
 ```
-* OR Use SSH
-``` bash
-$ git clone -b pcf git@github.com:Mrc0113/solace-workshop-scs.git
-```
-* OR Navigate to https://github.com/Mrc0113/solace-workshop-scs, **Choose the pcf branch**, click "Clone or download" -> "Download ZIP" & unzip in your desired directory 
 
-
+* OR Navigate to https://github.com/SolaceTraining/solace-workshop-scs, **Choose the openshift-solution branch**, click "Fork 
+* Download or Clone your Forked repo to you working host.
 * Import the projects into STS
+
 In STS, use the File -> Import -> Maven -> Existing Maven Projects -> Click Next -> Click Browse and Navigate to the git repo you cloned in the previous step -> Select all the pom files and click Finish. 
 
 After importing everything you should see the following projects in STS: 
-* 01-scs-workshop-common
-* 02-scs-source-tweets
-* 03-scs-sink-analytics
-* 04-scs-sink-twitterboard
-* 05-scs-processor-feature
-* 06-scs-processor-dynamicfeature
-* 07-scs-sink-bossideas
-* 08-scs-processor-yelling
-* 09-scs-processor-positive
-* 10-spring-boot-mqttwebapp
+``
+01-scs-workshop-common
+02-scs-source-tweets
+03-scs-sink-analytics
+04-scs-sink-twitterboard
+05-scs-processor-feature
+06-scs-processor-dynamicfeature
+07-scs-sink-bossideas
+08-scs-processor-yelling
+09-scs-processor-positive
+10-spring-boot-mqttwebapp
+``
 
 Negative
-: Note:  There will be errors associated with the template projects as they are incomplete and will be addressed in the exercises that follow.
+: Note: There may be errors associated with the template projects as they are incomplete and will be addressed in the exercises that follow.
 
 ###
 * The workshop uses a common data model which contains the Tweet object which is processed by the SCS services. You will need to prepare the shared artifact for use across the projects. 
-* Throughout this workshop we have two options when deploying apps: 1) via the Spring Tool Suite IDE and 2) via mvn on the command line. 
+* Throughout this workshop we have three options when deploying apps: 1) via an OpenShift Templae and 2) via mvn on the command line for local testing and 3) Using STS to compile the application for local testing. 
 * If you prefer option 1 then in the *01-scs-workshop-common* project, run a Maven build and install it to the local repository. 
 ![Using STS to install your artifact via Maven](images/MavenInstall.png)
 
-* If you prefer option 2 then navigate to the 01-scs-workshop-common directory and perform a maven install of the project.
+* If you will need to intall the common tweet object reference. Navigate to the 01-scs-workshop-common directory and perform a maven install of the project.
 
 ``` bash
 $ cd ~/git/solace-workshop-scs/01-scs-workshop-common/
@@ -94,7 +92,14 @@ $ mvn clean install
 If you want to stand up your Solace PubSub+ Service in Solace Cloud go ahead and login or signup at the [Cloud Signup Page](https://console.solace.cloud/login/new-account).  Note that a free tier is available and will work for this workshop. 
 
 #### Local Solace PubSub+ Instance
-When developing your application, you may want to test using a local instance of the Solace PubSub+ Event Broker.  Refer to the Solace [Docker Getting Started Guide](https://solace.com/software/getting-started/) to get you up and running quickly with a broker instance running in Docker.  You may skip this step if you decide to use a broker running in PCF or Solace Cloud.
+When developing your application, you may want to test using a local instance of the Solace PubSub+ Event Broker.  Refer to the Solace [Docker Getting Started Guide](https://solace.com/software/getting-started/) to get you up and running quickly with a broker instance running in Docker.  You may skip this step if you decide to use a broker running in OpenShift,  PCF, Solace Cloud or any pubic/private Cloud IaaS.
+
+#### PubSub+ Service in OpenShift
+It is possible to install Solace PUbSub+ brokers directly into the OpenShift project. The samples in this workshop assume that the Solace broker is installed in OpenShift, however, this is not madatory. To get more details on installing the
+PubSub+ broker into OpenShift, please visit:
+``` 
+https://github.com/SolaceLabs/solace-openshift-examples
+```
 
 ## Deploy Your First Source & Sink
 Duration: 0:45:00
@@ -152,9 +157,12 @@ Also note that because bindings are dynamically configured at run-time you don't
 * First open the *application.yml* file and update the host, msgVpn, clientUsername & clientPassword to match your PubSub+ environment. When obtaining the connect info note that the SCS solace binder uses the Solace Java API with the SMF protocol. (Keep this connection info handy as you'll need it several more times throughout this lab!)
 * If using STS, start the app by right clicking on the project and choosing "Run As" -> "Spring Boot App"
 * If not using STS, open a cli and navigate to the project's directory and then run 
-``` bash
+
+``` 
+bash
 $ mvn spring-boot:run
 ```
+
 * Whichever way you started the app you should see the app start, connect and begin to send tweets by looking at the console.
 
 * Developer - Awesome! Now we have a stream of tweets coming in! 
@@ -162,7 +170,7 @@ $ mvn spring-boot:run
 
 To do this we will deploy a sink app.  Recall that a sink app binds to an INPUT channel. 
 
-### Deploying a Sink
+#### Deploying a Sink
 * Open the "03-scs-sink-analytics" project 
 * Take a look at the code in the *ScsSinkAnalytics.java* class; you'll notice we have a very simple class with only a few methods. As we saw earlier, the *@StreamListener* attribute identifies which channel our *sink* method will receive events from. Also notice that the sink method is expecting a POJO tweet parameter of type *Tweet*
 * Now update the *application.yml* file for the "03-scs-sink-analytics" project with the same info that you used when deploying the source app.
@@ -178,86 +186,83 @@ Negative
 Positive
 : You now have a source application sending events to a sink application via an external eventing system, but notice that you didn't need to use any messaging APIs! SCS provides this abstraction and makes it possible for developers to concentrate on their business logic rather than learning proprietary messaging APIs!
 
-## Deploy to Pivotal Cloud Foundry
+## Deploy to OpenShift
 Duration: 0:20:00
 
 ![story_section4](images/story_section4.png)
 
-### Configure a Cloud Foundry Target in STS
-STS provides integrated support for deploying, running and debugging your SCS services in PCF.  In the Boot Dashboard view, configure a connection to your PCF deployment by clicking the "+" button as seen in the image below. 
+### OpenShift Source-to-Image (S2I)
 
-![Configuring a connection to Cloud Foundry in STS(use button circled in red)](images/CloudFoundryTarget.png)
+OpenShift provides the capability of taking the source code from a Repository (for example GitHub) and automatically creating a repo clone, compiling from the clone, form the docker image, place the image into the OpenShift project image repository and the run the image as a Pod. Essentially, deploying OpenShift templates that reference S2I images can automatically deploy applications as pods directly from the source code.
 
-Follow the dialog prompts and fill in the username / password associated with your PCF account.  You may need to skip SSL validation if your PCF deployment uses self-signed certificates.
+#### Requirements for S2I
 
+To be able to utilize the S2I capabilities requires that a S2I image that supports the source code language and compiler directives is loaded into the OpenShift project (or a project referencable from the users project). The most common S2I image for Java/Maven is provided as part of OpenShift xPaaS images.
 
-### Cloud Foundry CLI Setup
-* Install the cf-cli using these instructions: [Install CF CLI](https://docs.cloudfoundry.org/cf-cli/install-go-cli.html)
-* Login to your cf org & space with your API endpoint, username/email & password. 
-* Choose the proper Org & Space
-``` bash
-$ cf login -a <API_URL> -u <USERNAME>
-$ Password> 
+The XpaaS images are usually loaded as part of the Standard RedHat OpenShift install. The image that the workshop template uses is the **redhat-openjdk18-openshift** S2I image. 
+
+If you are using an OKD OpenShift environment, such as Minishift, you will need to load the xPaaS images. The images are loaded using the miniahift addon option. After the addon is loaded you need to move a copy of the S2I image to your project (which in this sample the project is called *solace*), for example:
+```
+docker login -u solace -p $(oc whoami -t) 172.30.1.1:5000
+docker pull 172.30.1.1:5000/openshift/redhat-openjdk18-openshift:1.4
+docker tag 172.30.1.1:5000/openshift/redhat-openjdk18-openshift:1.4 172.30.1.1:5000/solace/redhat-openjdk18-openshift:latest
+docker push 172.30.1.1:5000/solace/redhat-openjdk18-openshift:latest
 ```
 
-### Verify PubSub+ Service in Pivotal Cloud Foundry (PCF)
-If you are using PCF, your administrator will have created an org and space for your workshop demo in which you can deploy and run your microservices.  Moreover, a Solace PubSub+ service instance will have been created so that it can be bound by any app running in the space and automatically lookup credentials to connect to a broker instance running in PCF.  You should determine the name of this service instance before deploying or running your application to avoid any service binding errors.  You can do this through the Apps Manager or via the cf CLI. You'll need this service instance name later so don't forget it.
-
-``` bash
-$ cf services 
-Getting services in org test-org / space development as user1... 
-name                    service             plan                       bound apps  
-solace-pubsub-service   solace-pubsub       Enterprise Shared Plan     sample-app 
+There are also common public domain Java/Maven S2I images available. A popular S2I alternative to the xPaaS image is found at:
+```
+https://github.com/jorgemoralespou/s2i-java
 ```
 
-### Deploy the Source to PCF
-* Open the manifest.yml file under the *02-scs-source-tweets* project
-* Change the services name from "Space1-Instance" to whatever Solace Service instace is running your space. 
-* **If using STS** run a Maven build and install it to the local repository.
- ![Using STS to install your artifact via Maven](images/MavenInstall.png)
-* Open the "Boot Dashboard" view (Window -> Show View -> Other -> Boot Dashboard)
-* Right-click on your app in the Spring Boot Dashboard, and select the Deploy and Run On… -> [CHOOSE YOUR DEPLOYMENT TARGET WE SETUP EARLIER]: 
-![Deploy to Cloud Foundry](images/DeployAndRunOn.png)
-* At this point you should see the app deploying to the chosen space and the console should automatically open to follow the progress. Once complete you should see the app start to send a tweet every second. 
+#### Loading the SCSt project to OpenShift via Template
 
-* **If not using STS** open a cli and navigate to the *02-scs-source-tweets* project and then run
-``` bash
-$ mvn clean install
-$ cf push
+Included in the OpenShift training branch is an OpenShift tempalate that can be used to create the running Pod directly from the source code in the GitHub project.  lthough there were changes in he local *application.yaml* file, they are ignored by the template and are overwritten by memory variables defined for the docker image in the template. The template also makes use of paramters that can be used from the OpenShift console or the CLI.
+
+To load the template for the first time is just a matter of referencing the local Solace **SpringWorkshop.yml** file and add it to the current project. If you loaded the file from the local repo you shoud see:
+ 
+
+![Load the provided OpenShift Template)](images/OpenShiftTemplate.png)
+
+if you click create you should be passed to the next screen. You will need to update a couple of the paramter options, but it should look similar to the following for the first source application (in this case *02-scs-source-tweets*) :
+
+![Paramters for  OpenShift Template)](images/OpenShiftTemplate2.png)
+
+Negative
+: Make sure you change the repository reference to point to your forked repository. Most of the samples will run with the main repository until you get to the last module. Feel free to change the defaults in the OpenShift template in your forked project to make things easier for yourself.
+
+At the bottom of the screen you should see:
+
+![Paramters for  OpenShift Template)](images/OpenShiftTemplate4.png)
+
+At the bottom is a reference for the OpenShift FQDN for the Solace OpenShift Pod that is running the Solace PubSub+ broker. In this case the broker was deployed with a ClusterIP service called *vmr-ci-svc* in a project called *solace*. You will need to add your broker's ClusterIP name here. If the PubSub+ broker you are using is not deployed in OpenShift, then simply add the brokers IP or DNS name here instead.
+
+Once you click the *create* buttom you will be prompted to store the template. Click the radio box to agree. This means from now on the Template can be recalled directly from you OpenShift Project repository. 
+
+At this point the template will create and run the Pod bsed on the source code. When complete you should see somehting similar to:
+
+
+![Deployed OpenShift Template)](images/OpenShiftTemplate3.png)
+
+
+The deployment logs and the Solace PubSub+ broker should confirm the Spring application is connected to the broker.
+
+### Deploy the Source to OpenShift
+
+Before you deploy the Source to OpenShift, you can deploy locally and test the applicaiotn first. To test locally you need to first change to the directory where the source application was cloned and make sure the *pom.xml* file is in the current directory. Next prepare the jars and then run the Spring-Boot application with :
+
 ```
-* At this point you should see the app being deployed to PCF. If all goes correctly you should see the app start and have a requested state of "started" before the command exits.
-* You can then see the app logs by executing the command below and should see a tweet being sent every second. 
-``` bash 
-$ cf logs 02-scs-source-tweets
+mvn clean package
+mvn spring-boot:run
 ```
 
-Positive
-: Notice that you did not have to add any credentials for your PubSub+ service instance running in PCF. This is because the Solace Spring Cloud Connector allows for Auto-Configuration in PCF. Just specify the service name and the service configuration is automatically looked up and injected into your app from VCAP_SERVICES! This allows you to leave your local credentials in place for even easier development and also refrain from storing credentials in your code repository.
+If the application runs and starts generating tweets, you are good to go.
 
-### Deploy the Sink to PCF
-* Open the manifest.yml file under the *03-scs-sink-analytics* project
-* Change the services name from "Space1-Instance" to whatever Solace Service instace is running your space. 
-* **If using STS** run a Maven build and install it to the local repository.
-![Using STS to install your artifact via Maven](images/MavenInstall.png)
+To deploy this same application, just make use of the template as described above.
+ 
+### Deploy the Sink to OpenShift
 
-* Open the "Boot Dashboard" view (Window -> Show View -> Other -> Boot Dashboard)
-* Right-click on your app in the Spring Boot Dashboard, and select the Deploy and Run On… -> [ CHOOSE OUR DEPLOYMENT TARGET WE SETUP EARLIER]:
-![Deploy to Cloud Foundry](images/DeployAndRunOn.png)
-
-* At this point you should see the app deploying to the chosen space and the console should automatically open to follow the progress. Once complete you should see the app start to send a tweet every second. 
-
-* **If not using STS** open a cli and navigate to the *03-scs-sink-analytics* project and then run
-``` bash
-$ mvn clean install
-$ cf push
-```
-
-* At this point you should see the app being deployed to PCF. If all goes correctly you should see the app start and have a requested state of "started" before the command exits.
-* You can then see the app logs by executing the command below and should see a tweet being sent every second. 
-
-``` bash 
-$ cf logs 03-scs-sink-analytics
-```
+Deploying the sink application is the same as for the source application. Make sure you are in the *03-scs-sink-analytics* directory. You can deploy locally to test and then use the OpenShift Template to deploy to OpenShift.  
+You may want to also run the source application to see the tweets arriving in the SCSt Sink application. 
 
 ## Discover the ease of 1-to-Many with Publish-Subscribe
 Duration: 0:10:00
@@ -277,7 +282,6 @@ We obviously don't have a giant LED board that we can use so we're going to sett
 * Add a "sink" method that takes in a "Tweet" POJO from the INPUT channel and logs that it was received. 
 * Update the application.yml file, verify that there is indeed a destination configured for the input channel, and add your name to the end of the destination name (e.g: TWEETS.Q.BOARD.Marc).  Note that by not specifying a group we are using the "Publish-Subscribe" messaging model. 
 * If not deploying to PCF you'll also need to update the host, msgVpn, clientUsername, clientPassword in the application.yml file. 
-* If you are deploying to PCF you'll need to open the *manifest.yml* file and change <ATTENDEE_NAME> to your name
 
 Negative
 : Spring Cloud Streams supports multiple messaging models. We are going to use two different ones in this workshop
@@ -288,7 +292,6 @@ Negative
 ### Deploying the Tweet Board
 At this point we have created our "04-scs-sink-twitterboard" application and it needs to be deployed. 
 Time to see if you've been paying attention! Deploy it in the same way you deployed the apps in the previous section. 
-**Don't forget to update the service in the manifest.yml file to point to your PubSub+ service!**
 
 ![story_section5_g2](images/story_section5_g2.png)
 
@@ -325,7 +328,6 @@ Positive
 ### 
 * Note that in the application.yml file the bindings that are listed include input, outputFeature, and outputNoFeature as defined in our custom bindings interface. 
 * If not using PubSub+ in PCF, update the host, msgVpn, clientUsername, clientPassword in the application.yml file so we can connect to the PubSub+ service
-* Deploy the app in the same manner that you've been deploying the others. (**Don't forget to update the service in the manifest.yml file to point to your PubSub+ service!**)
 
 #### Processor using Dynamic Destinations
 Negative
@@ -343,7 +345,7 @@ Negative
 
 ###
 * Review the *handle* method to see an example of how to specify dynamic destinations
-* Build (mvn clean install) & Deploy the app to PCF
+* Build (mvn clean install) & Deploy the app to OpenShift
 
 Positive
 : Note that our two different feature processors are listening as part of a consumer group so they will receive messages in a round robin fashion
@@ -362,15 +364,7 @@ Note that our processor that we created earlier in this lab publishes to multipl
 * Open your application.yml file
 * Update the queueAdditionalSubscriptions property to listen on "tweets/stream/nofeatures"
 * Save the file
-* Redeploy the updated App (Note if you had deployed locally it would automatically re-deploy since we're using devtools; this can also be configured to work with PCF, but is not recommended in production environments for obvious reasons)
-* If deploying via STS deploy as normal by doing a Maven install on the project and then in the Boot Dashboard right clicking and choosing Deploy and Run on your target. When asked if you would like to replace content of the existing Cloud application choose "OK"
-![Replace existing Cloud application](images/ReplaceApplication.png)
-* If using the cf cli, then you also push updates the same way
-``` bash
-$ cd /path/to/app
-$ mvn install
-$ cf push
-```
+* Redeploy the updated App form the Build menu by rebuilding the application.
 
 
 Negative
@@ -441,18 +435,7 @@ Positive
 * Open your application.yml file
 * Update the queueAdditionalSubscriptions property to listen on "tweets/stream/nofeatures/noyelling/positive/<ATTENDEE_NAME>" **replacing <ATTENDEE_NAME> with your name**
 * Save the file
-* Redeploy the updated App (Note if you had deployed locally it would automatically re-deploy since we're using devtools; this can also be configured to work with PCF, but is not recommended in production environments for obvious reasons)
-* If deploying via STS deploy as normal by doing a Maven install on the project and then in the Boot Dashboard right clicking and choosing Deploy and Run on your target. When asked if you would like to replace content of the existing Cloud application choose "OK"
-![Replace existing Cloud application](images/ReplaceApplication.png)
-* If using the cf cli, then you also push updates the same way
-``` bash
-$ cd /path/to/app
-$ mvn install
-$ cf push
-```
-
-Negative
-: Note that a *cf restage* would rebuild with the same code, but would pickup changes to library dependencies or the buildpack itself and a *cf restart* will just restart the already built droplet
+* Redeploy the updated App by rebuilding the build that was deployed by the template.
 
 ## Painless Multi-protocol with MQTT
 Duration: 0:10:00
@@ -468,15 +451,7 @@ Positive
 : Since we're using Solace PubSub+ as our event broker we support a bunch of open standards and protocols. Even though the SCS apps are sending/receiving events using the Java API other applications can still use their language/protocol of choice. 
 
 ### Obtain PubSub+ Credentials for an App that can't use the Cloud Connector & Auto-config
-* Open Pivotal Apps Manager & Login
-* Navigate to your Org & Space
-* Click on "Services"
-* Choose your "Solace PubSub+" service instance
-* Click "Create Service Key" (in red box below)
-![Create Service Key](images/CreateServiceKey.png)
-* Type in a Credentials key name, such as "DemoServiceKey" & Click "Create"
-* After it's created, click on your Service Key Credentials & find and record the "publicMqttWsUris", "clientUsername" & "clientPassword" as we'll need them in the next step
-![Service Key Credentials](images/ServiceKeyCredentials.png)
+The required credentials for access to the PubSub+ broker will be the same as those that were used in the *application.yml* file or the sting used in the OpenShift template when the application was deployed.
 
 ### Create the Web App
 * Since we're Spring experts let's go ahead and whip up a quick Spring Boot app that uses JavaScript and the open source MQTT Paho library to connect to PubSub+ and receive the stream of tweets.  
@@ -488,9 +463,6 @@ Positive
 * Now that we've taken a look at how the app works go ahead and deploy it. 
 * Once deployed navigate to *http://**LOOKUP YOUR ROUTE**/mqttListener.html* to see the incoming tweets! You can lookup your route in the apps manager or by using the command below:
 
-``` bash
-$ cf app 10-spring-boot-mqttwebapp
-```
 
 Negative
 : Note that the MqttWebApp is actually running locally in your browser. This paradigm of creating credentials in the PubSub+ service can be used to connect other external apps as well!
