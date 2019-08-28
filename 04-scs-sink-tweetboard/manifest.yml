@@ -1,0 +1,7 @@
+---
+applications:
+- name: 04-scs-sink-tweetboard-attendee
+  memory: 1024M
+  path: target/04-scs-sink-tweetboard-0.0.1-SNAPSHOT.jar
+  services:
+  - solace-eventmesh
