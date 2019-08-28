@@ -1,0 +1,7 @@
+---
+applications:
+- name: 08-scs-processor-yelling-<ATTENDEE_NAME>
+  memory: 1024M
+  path: target/08-scs-processor-yelling-0.0.1-SNAPSHOT.jar
+  services:
+  - solace-eventmesh

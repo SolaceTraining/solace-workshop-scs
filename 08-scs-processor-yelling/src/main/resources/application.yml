@@ -1,0 +1,44 @@
+spring:
+  cloud:
+    stream:
+      bindings:
+        input:
+          destination: TWEETS.Q
+          binder: local_solace
+          group: YELLING.<ATTENDEE_NAME>
+        output:
+          destination: tweets/stream/<ATTENDEE_NAME>/nofeatures/noyelling
+          binder: local_solace
+      binders:
+        local_solace:
+          type: solace
+          environment:
+            solace:
+              java:
+                host: tcp://localhost:55555
+                msgVpn: default
+                clientUsername: default
+                clientPassword: default
+                connectRetries: 3
+                connectRetriesPerHost: 0
+                reconnectRetries: 3
+                # Add API properties here
+                apiProperties: 
+                  generate_sequence_numbers: true 
+                  generate_sender_id: true 
+                  generate_send_timestamps: true
+      solace:
+        bindings:
+          input:
+            consumer:
+              queueAdditionalSubscriptions: tweets/stream/<ATTENDEE_NAME>/nofeatures
+
+logging:
+  level:
+    root: INFO
+    com.solacesystems.jcsmp: INFO
+    org.springframework: INFO
+    
+server:
+  port: 8092
+
