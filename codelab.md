@@ -1,7 +1,7 @@
 author: Marc DiPasquale
-summary: Using Spring Cloud Streams w/ Solace PubSub+ in PCF
-id: solace-workshop-scs-pcf
-categories: Spring,SpringCloudStreams,Java,PCF
+summary: Using Spring Cloud Streams w/ Solace PubSub+
+id: solace-workshop-scs
+categories: Spring,SpringCloudStreams,Java
 environments: Web
 status: published
 feedback link: github.com/SolaceTraining/solace-workshop-scs
@@ -12,8 +12,8 @@ analytics account: 0
 ## CodeLab Overview
 Duration: 0:10:00
 
-Using Java & Spring Cloud Streams (SCS) to create Event-Driven Applications with PubSub+ in PCF
-* The purpose of this codelab is to introduce java developers to creating event-driven applications with Spring Cloud Streams and PubSub+ in Pivotal Cloud Foundry
+Using Java & Spring Cloud Streams (SCS) to create Event-Driven Applications with PubSub+
+* The purpose of this codelab is to introduce java developers to creating event-driven applications with Spring Cloud Streams and PubSub+
 * “Spring Cloud Stream is a framework for building highly scalable event-driven microservices connected with shared messaging systems."
 * It is based on Spring Boot, Spring Cloud, Spring Integration and Spring Messaging
 
@@ -48,13 +48,13 @@ Required libraries:
 
 * Use https
 ``` go
-$ git clone -b pcf https://github.com/SolaceTraining/solace-workshop-scs.git
+$ git clone -b master https://github.com/SolaceTraining/solace-workshop-scs.git
 ```
 * OR Use SSH
 ``` go
-$ git clone -b pcf git@github.com:SolaceTraining/solace-workshop-scs.git
+$ git clone -b master git@github.com:SolaceTraining/solace-workshop-scs.git
 ```
-* OR Navigate to https://github.com/SolaceTraining/solace-workshop-scs, **Choose the pcf branch**, click "Clone or download" -> "Download ZIP" & unzip in your desired directory 
+* OR Navigate to [https://github.com/SolaceTraining/solace-workshop-scs](https://github.com/SolaceTraining/solace-workshop-scs), click "Clone or download" -> "Download ZIP" & unzip in your desired directory 
 
 
 * Import the projects into STS
@@ -73,7 +73,7 @@ After importing everything you should see the following projects in STS:
 * 10-spring-boot-mqttwebapp
 
 Negative
-: Note:  There will be errors associated with the template projects as they are incomplete and will be addressed in the exercises that follow.
+: Note:  There may be errors associated with the template projects as they are incomplete and will be addressed in the exercises that follow.
 
 ###
 * The workshop uses a common data model which contains the Tweet object which is processed by the SCS services. You will need to prepare the shared artifact for use across the projects. 
@@ -93,8 +93,22 @@ $ mvn clean install
 #### PubSub+ Service in Solace Cloud
 If you want to stand up your Solace PubSub+ Service in Solace Cloud go ahead and login or signup at the [Cloud Signup Page](https://console.solace.cloud/login/new-account).  Note that a free tier is available and will work for this workshop. 
 
+* **Capture the Solace Messaging connect info to be used by the Spring Cloud Streams binder throughout this workshop**
+* Login to Solace Cloud -> Choose your messaging service -> Click the *Connect* tab
+* Click on the *Solace Messaging* Option
+* Under *Connection Details* capture the *Username*, *Password*, *Message VPN*, and *SMF Host* for use throughout the workshop.
+
 #### Local Solace PubSub+ Instance
-When developing your application, you may want to test using a local instance of the Solace PubSub+ Event Broker.  Refer to the Solace [Docker Getting Started Guide](https://solace.com/software/getting-started/) to get you up and running quickly with a broker instance running in Docker.  You may skip this step if you decide to use a broker running in PCF or Solace Cloud.
+When developing your application, you may want to test using a local instance of the Solace PubSub+ Event Broker.  Refer to the Solace [Docker Getting Started Guide](https://solace.com/software/getting-started/) to get you up and running quickly with a broker instance running in Docker.  You may skip this step if you decide to use a broker running elsewhere, such as in Solace Cloud.
+
+* **Capture the Solace Messaging connect info to be used by the Spring Cloud Streams binder throughout this workshop**
+* If you just deployed a docker container using the instructions linked above then the values will be as follows:
+* *Username* & *Password* are 'admin', *Message VPN* is 'default', and *SMF Host* is 'tcp://localhost:55555'
+
+#### Other Solace PubSub+ Service Instance
+If using another PubSub+ Service Instance either get the connection information from your administrator or if you have management access it can be retrieved from the PubSub+ manager.  
+* You will need the *SMF Host*, *Username*, *Password*, and *Message VPN* to connect to. 
+
 
 ## Deploy Your First Source & Sink
 Duration: 0:45:00
@@ -115,7 +129,7 @@ Negative
 
 ### Deploying a Source
 
-Before our company can do anything with the tweets we have to start to receive an incoming stream of them!  Let's get started! Please navigate to the "02-scs-source-tweets" project in your IDE.
+Before our company can do anything with the tweets we have to start to receive an incoming stream of them.  Let's get started! Please navigate to the "02-scs-source-tweets" project in your IDE.
 
 #### Learn the Project Structure
 Before we take a look at the code, let's take a quick look at the structure of a Spring Cloud Streams project.  
@@ -151,8 +165,10 @@ Also note that because bindings are dynamically configured at run-time you don't
 #### Deploy our 02-scs-source-tweets app
 * First open the *application.yml* file and update the host, msgVpn, clientUsername & clientPassword to match your PubSub+ environment. When obtaining the connect info note that the SCS solace binder uses the Solace Java API with the SMF protocol. (Keep this connection info handy as you'll need it several more times throughout this lab!)
 * If using STS, start the app by right clicking on the project and choosing "Run As" -> "Spring Boot App"
+![Run_Spring_Boot_App1](images/Run_Spring_Boot_App.png)
 * If not using STS, open a cli and navigate to the project's directory and then run 
 ```
+$ mvn clean install
 $ mvn spring-boot:run
 ```
 
@@ -180,90 +196,6 @@ Negative
 Positive
 : You now have a source application sending events to a sink application via an external eventing system, but notice that you didn't need to use any messaging APIs! SCS provides this abstraction and makes it possible for developers to concentrate on their business logic rather than learning proprietary messaging APIs!
 
-## Deploy to Pivotal Cloud Foundry
-Duration: 0:20:00
-
-![story_section4](images/story_section4.png)
-
-### Configure a Cloud Foundry Target in STS
-STS provides integrated support for deploying, running and debugging your SCS services in PCF.  In the Boot Dashboard view, configure a connection to your PCF deployment by clicking the "+" button as seen in the image below. 
-
-![Configuring a connection to Cloud Foundry in STS(use button circled in red)](images/CloudFoundryTarget.png)
-
-Follow the dialog prompts and fill in the username / password associated with your PCF account.  You may need to skip SSL validation if your PCF deployment uses self-signed certificates.
-
-
-### Cloud Foundry CLI Setup
-* Install the cf-cli using these instructions: [Install CF CLI](https://docs.cloudfoundry.org/cf-cli/install-go-cli.html)
-* Login to your cf org & space with your API endpoint, username/email & password. 
-* Choose the proper Org & Space
-``` bash
-$ cf login -a <API_URL> -u <USERNAME>
-$ Password> 
-```
-
-### Verify PubSub+ Service in Pivotal Cloud Foundry (PCF)
-If you are using PCF, your administrator will have created an org and space for your workshop demo in which you can deploy and run your microservices.  Moreover, a Solace PubSub+ service instance will have been created so that it can be bound by any app running in the space and automatically lookup credentials to connect to a broker instance running in PCF.  You should determine the name of this service instance before deploying or running your application to avoid any service binding errors.  You can do this through the Apps Manager or via the cf CLI. You'll need this service instance name later so don't forget it.
-
-``` 
-$ cf services 
-Getting services in org test-org / space development as user1... 
-name                    service             plan                       bound apps  
-solace-pubsub-service   solace-pubsub       Enterprise Shared Plan     sample-app 
-```
-
-### Deploy the Source to PCF
-#### IF PARTICIPATING IN AN INSTRUCTOR LED WORKSHOP THE INSTRUCTOR WILL PUSH TO PCF. YOU ARE WELCOME TO RUN LOCALLY IF YOU WOULD LIKE
-
-* Open the manifest.yml file under the *02-scs-source-tweets* project
-* Change the services name from "solace-eventmesh" to whatever Solace Service instance is running your space. 
-* **If using STS** run a Maven build and install it to the local repository.
- ![Using STS to install your artifact via Maven](images/MavenInstall.png)
-* Open the "Boot Dashboard" view (Window -> Show View -> Other -> Boot Dashboard)
-* Right-click on your app in the Spring Boot Dashboard, and select the Deploy and Run On… -> [CHOOSE YOUR DEPLOYMENT TARGET WE SETUP EARLIER]: 
-![Deploy to Cloud Foundry](images/DeployAndRunOn.png)
-* At this point you should see the app deploying to the chosen space and the console should automatically open to follow the progress. Once complete you should see the app start to send a tweet every second. 
-
-* **If not using STS** open a cli and navigate to the *02-scs-source-tweets* project and then run
-``` 
-$ mvn clean install
-$ cf push
-```
-* At this point you should see the app being deployed to PCF. If all goes correctly you should see the app start and have a requested state of "started" before the command exits.
-* You can then see the app logs by executing the command below and should see a tweet being sent every second. 
-``` 
-$ cf logs 02-scs-source-tweets
-```
-
-Positive
-: Notice that you did not have to add any credentials for your PubSub+ service instance running in PCF. This is because the Solace Spring Cloud Connector allows for Auto-Configuration in PCF. Just specify the service name and the service configuration is automatically looked up and injected into your app from VCAP_SERVICES! This allows you to leave your local credentials in place for even easier development and also refrain from storing credentials in your code repository.
-
-### Deploy the Sink to PCF
-* Open the manifest.yml file under the *03-scs-sink-analytics* project
-* Change the services name from "solace-eventmesh" to whatever Solace Service instance is running your space. 
-* Replace **ATTENDEE_NAME** with your unique name.
-* **If using STS** run a Maven build and install it to the local repository.
-![Using STS to install your artifact via Maven](images/MavenInstall.png)
-
-* Open the "Boot Dashboard" view (Window -> Show View -> Other -> Boot Dashboard)
-* Right-click on your app in the Spring Boot Dashboard, and select the Deploy and Run On… -> [ CHOOSE OUR DEPLOYMENT TARGET WE SETUP EARLIER]:
-![Deploy to Cloud Foundry](images/DeployAndRunOn.png)
-
-* At this point you should see the app deploying to the chosen space and the console should automatically open to follow the progress. Once complete you should see the app start to send a tweet every second. 
-
-* **If not using STS** open a cli and navigate to the *03-scs-sink-analytics* project and then run
-``` 
-$ mvn clean install
-$ cf push
-```
-
-* At this point you should see the app being deployed to PCF. If all goes correctly you should see the app start and have a requested state of "started" before the command exits.
-* You can then see the app logs by executing the command below and should see a tweet being sent every second. 
-
-``` 
-$ cf logs 03-scs-sink-analytics
-```
-
 ## Discover the ease of 1-to-Many with Publish-Subscribe
 Duration: 0:10:00
 
@@ -281,8 +213,7 @@ We obviously don't have a giant LED board that we can use so we're going to sett
 * Add the *@EnableBinding(Sink.class)* annotation to label the app as a Sink
 * Add a "sink" method that takes in a "Tweet" POJO from the INPUT channel and logs that it was received. 
 * Update the application.yml file, verify that there is indeed a destination configured for the input channel, and add your name to the end of the destination name (e.g: TWEETS.Q.BOARD.Marc).  Note that by not specifying a group we are using the "Publish-Subscribe" messaging model. 
-* If not deploying to PCF you'll also need to update the host, msgVpn, clientUsername, clientPassword in the application.yml file. 
-* If you are deploying to PCF you'll need to open the *manifest.yml* file and update 2 items: 1) Update the solace service name, and 2) Change **ATTENDEE_NAME** to your name
+* Update the host, msgVpn, clientUsername, clientPassword in the application.yml file. 
 
 Negative
 : Spring Cloud Streams supports multiple messaging models. We are going to use two different ones in this workshop
@@ -292,23 +223,15 @@ Negative
 
 ### Deploying the Tweet Board
 At this point we have created our "04-scs-sink-tweetboard" application and it needs to be deployed. 
-* **If using STS** run a Maven build and install it to the local repository.
- ![Using STS to install your artifact via Maven](images/MavenInstall.png)
-* Open the "Boot Dashboard" view (Window -> Show View -> Other -> Boot Dashboard)
-* Right-click on your app in the Spring Boot Dashboard, and select the Deploy and Run On… -> [CHOOSE YOUR DEPLOYMENT TARGET WE SETUP EARLIER]: 
-![Deploy to Cloud Foundry](images/DeployAndRunOn.png)
-* At this point you should see the app deploying to the chosen space and the console should automatically open to follow the progress. Once complete you should see the app start to send a tweet every second. 
+* **If using STS** deploy by right clicking on the project, choosing *Run As*, *Spring Boot App*
+ ![Run_Spring_Boot_App2](images/Run_Spring_Boot_App.png)
 
 * **If not using STS** open a cli and navigate to the *04-scs-sink-tweetboard* project and then run
 ``` 
 $ mvn clean install
-$ cf push
+$ mvn spring-boot:run
 ```
-* At this point you should see the app being deployed to PCF. If all goes correctly you should see the app start and have a requested state of "started" before the command exits.
-* You can then see the app logs by executing the command below and should see a tweet being sent every second. 
-``` 
-$ cf logs 04-scs-sink-tweetboard-**ATTENDEE_NAME**
-```
+* At this point you should see the app starting up. If all goes correctly you should see a log entry that says the application started in X seconds.
 
 ![story_section5_g2](images/story_section5_g2.png)
 
@@ -345,8 +268,8 @@ Positive
 ### 
 * Note that in the application.yml file the bindings that are listed include input, outputFeature, and outputNoFeature as defined in our custom bindings interface. 
 * Update the **ATTENDEE_NAME** to be your name each time it occurs in the application.yaml file.  
-* If not using PubSub+ in PCF, update the host, msgVpn, clientUsername, clientPassword in the application.yml file so we can connect to the PubSub+ service
-* Deploy the app in the same manner that you've been deploying the others. (Don't forget to update the **ATTENDEE_NAME** & the solace service in the manifest.yml file to point to your PubSub+ service!)
+* Update the host, msgVpn, clientUsername, clientPassword in the application.yml file so we can connect to the PubSub+ service
+* Deploy the app in the same manner that you've been deploying the others. 
 
 #### Processor using Dynamic Destinations
 Negative
@@ -366,8 +289,7 @@ Negative
 ###
 * Review the *handle* method to see an example of how to specify dynamic destinations
 * Open the application.yml file and change **ATTENDEE_NAME** to your unique name
-* Open the manifest.yml file to update the solace service name & replace **ATTENDEE_NAME** with your unique name. 
-* Build (mvn clean install) & Deploy the app to PCF
+* Start the application
 
 ### Create the Feature Sink for the Boss
 * Open the "07-scs-sink-bossideas" project
@@ -376,7 +298,7 @@ Negative
 * Add a "sink" method that takes in a "Tweet" POJO from the INPUT channel and logs that it was received. 
 * Update the application.yml file and verify that there is indeed a destination & group configured for the input channel. Note that by specifying a group we are now using the consumer group model. Since this application will likely do further processing in the future we want to provide the option of scaling up to keep up with the number of events that come in. *Replace **ATTENDEE_NAME** with your unique name in BOTH spots* 
 * At this point we have created our "07-scs-sink-bossideas" application and it needs to be deployed. Time to see if you've been paying attention! 
-* Deploy the app in the same manner that you've been deploying the others. (**Don't forget to update the ATTENDEE_NAME and  solace service in the manifest.yml file to point to your PubSub+ service!**)
+* Deploy the app in the same manner that you've been deploying the others. 
 
 ### Update the Tweet Board Subscription
 Note that our processor that we created earlier in this lab publishes to multiple topics essentially splitting our feed into two. Due to our new requirements to not show new features on the twitter board we need to update that sink appropriately.
@@ -384,16 +306,7 @@ Note that our processor that we created earlier in this lab publishes to multipl
 * Open your application.yml file
 * Update the queueAdditionalSubscriptions property to listen on "tweets/stream/**ATTENDEE_NAME**/nofeatures"
 * Save the file
-* Redeploy the updated App (Note if you had deployed locally it would automatically re-deploy since we're using devtools; this can also be configured to work with PCF, but is not recommended in production environments for obvious reasons)
-* If deploying via STS deploy as normal by doing a Maven install on the project and then in the Boot Dashboard right clicking and choosing Deploy and Run on your target. When asked if you would like to replace content of the existing Cloud application choose "OK"
-![Replace existing Cloud application](images/ReplaceApplication.png)
-* If using the cf cli, then you also push updates the same way
-``` 
-$ cd /path/to/app
-$ mvn install
-$ cf push
-```
-
+* If you're running the app within the IDE it will automatically restart the updated application, if you're running it from the cli go ahead and do a `mvn clean install` followed by a `mvn spring-boot:run` to restart the app.
 
 Negative
 : spring-boot-devtools is handy for development and adds features such as automatic restart and remote debugging. Click [here](https://www.baeldung.com/spring-boot-devtools) for a high level overview of some of the functionality it provides. 
@@ -453,7 +366,7 @@ Let's get started and hopefully have a bit of fun!
 * Open the "09-scs-processor-positive" project
 * Open the manifest.yml file and change **ATTENDEE_NAME** to your name 
 * Don't forget to update the solace service in the manifest.yml file to point to your PubSub+ service!
-* Open the application.yml file and change **all 3** **ATTENDEE_NAME** placeholders with your name (in the input group, output destination & queueAdditionalSubscriptions)
+* Open the application.yml file and change **all 3 ATTENDEE_NAME** placeholders with your name (in the input group, output destination & queueAdditionalSubscriptions)
 * Find & Open the *ScsProcessorPositive.java* class. At this point we know how to create and deploy a processor so we'll do something a bit different. At the top of the class you'll see that the negToPosMap object is being initialized in a static method. This Map holds the key for changing our negative tweets to positive ones. Go ahead and fill in some positive words for each negative one in the map. Remember that you can find the canned tweets in the canned_tweets.txt file under the "02-scs-source-tweets" project if you need some more context :) 
 * After filling in your "positive" words go ahead and deploy the app
 
@@ -465,18 +378,7 @@ Positive
 * Open your application.yml file
 * Update the queueAdditionalSubscriptions property to listen on "tweets/stream/**ATTENDEE_NAME**/nofeatures/noyelling/positive" replacing **ATTENDEE_NAME** with your name
 * Save the file
-* Redeploy the updated App (Note if you had deployed locally it would automatically re-deploy since we're using devtools; this can also be configured to work with PCF, but is not recommended in production environments for obvious reasons)
-* If deploying via STS deploy as normal by doing a Maven install on the project and then in the Boot Dashboard right clicking and choosing Deploy and Run on your target. When asked if you would like to replace content of the existing Cloud application choose "OK"
-![Replace existing Cloud application](images/ReplaceApplication.png)
-* If using the cf cli, then you also push updates the same way
-``` 
-$ cd /path/to/app
-$ mvn install
-$ cf push
-```
-
-Negative
-: Note that a *cf restage* would rebuild with the same code, but would pickup changes to library dependencies or the buildpack itself and a *cf restart* will just restart the already built droplet
+* If you're running the app within the IDE it will automatically restart the updated application, if you're running it from the cli go ahead and do a `mvn clean install` followed by a `mvn spring-boot:run` to restart the app.
 
 ## Painless Multi-protocol with MQTT
 Duration: 0:10:00
@@ -491,17 +393,20 @@ To meet this new requirement we are going to add the MQTT Web App shown in the d
 Positive
 : Since we're using Solace PubSub+ as our event broker we support a bunch of open standards and protocols. Even though the SCS apps are sending/receiving events using the Java API other applications can still use their language/protocol of choice. 
 
-### Obtain PubSub+ Credentials for an App that can't use the Cloud Connector & Auto-config
+### Obtain PubSub+ Connection Info for MQTT over Websockets
 #### IF PARTICIPATING IN AN INSTRUCTOR LED WORKSHOP THE INSTRUCTOR WILL PERFORM THIS SECTION. YOU ARE WELCOME TO RUN LOCALLY IF YOU WOULD LIKE
-* Open Pivotal Apps Manager & Login
-* Navigate to your Org & Space
-* Click on "Services"
-* Choose your "Solace PubSub+" service instance
-* Click "Create Service Key" (in red box below)
-![Create Service Key](images/CreateServiceKey.png)
-* Type in a Credentials key name, such as "DemoServiceKey" & Click "Create"
-* After it's created, click on your Service Key Credentials & find and record the "publicMqttWsUris", "clientUsername" & "clientPassword" as we'll need them in the next step
-![Service Key Credentials](images/ServiceKeyCredentials.png)
+* If using Solace Cloud then login to Solace Cloud
+* Navigate to your service & choose the *Connect* tab
+* View by *Protocol* and Click *MQTT*
+* The *Connection Details* section displays the information that you'll need to connect. 
+* You'll need the *username*, *password*, and *WebSocket MQTT Host* in the next step. 
+![MQTT_Connect_Info](images/MQTT_Connect_Info.png)
+* If using PubSub+ Software or Hardware navigate to the PubSub+ Manager
+* To connect using HTTP, enter: `http://<pubsubplus-address>:8080` (port 80 for an appliance).
+* To connect using HTTPS, enter: `https://<pubsubplus-address>:943` (port 443 for an appliance).
+* Once logged in choose your Message VPN and choose *Services* on the upper menu. 
+* Scroll down to find the *MQTT* section, ensure *WebSocket Enabled* is toggled to the on position, and capture the port number. 
+* You will use this port with the same client-username, client-password & host you're been using for previous steps. 
 
 ### Create the Web App
 #### IF PARTICIPATING IN AN INSTRUCTOR LED WORKSHOP THE INSTRUCTOR WILL PERFORM THIS SECTION. YOU ARE WELCOME TO RUN LOCALLY IF YOU WOULD LIKE
@@ -512,14 +417,7 @@ Positive
 * In *mqttListener.html* update the host/port/username/credentials to connect to PubSub+ (Search for "UPDATE" to find where the updates need to be made) using the information found in the previous subsection.
 * Lastly look at the *MqttWebApp.java* class.  You'll see that we just have a simple RestController that is smart enough to make the files in src/main/resources/static available for HTTP access.
 * Now that we've taken a look at how the app works go ahead and deploy it. 
-* Once deployed navigate to *http://**LOOKUP YOUR ROUTE**/mqttListener.html* to see the incoming tweets! You can lookup your route in the apps manager or by using the command below:
-
-``` 
-$ cf app 10-spring-boot-mqttwebapp
-```
-
-Negative
-: Note that the MqttWebApp is actually running locally in your browser. This paradigm of creating credentials in the PubSub+ service can be used to connect other external apps as well!
+* Once deployed navigate to `http://<hostname/mqttListener.html` to see the incoming tweets! You can lookup your route in the apps manager or by using the command below:
 
 ## Review & Continued Learning!
 Duration: 0:05:00
@@ -542,32 +440,3 @@ This course was just an introduction to Spring Cloud Streams, but we've included
 * [Actuator for metrics](https://docs.spring.io/spring-cloud-stream/docs/current/reference/htmlsingle/#spring-cloud-stream-overview-metrics-emitter)
 * [Sleuth for tracing](https://cloud.spring.io/spring-cloud-sleuth/single/spring-cloud-sleuth.html)
 
-## Markdown Syntax Backup
-Duration: 0:00:00
-
-``` Java
-public static void main(String args[]){
-  System.out.println("Hello World!");
-  }
-```
-
-Positive
-: This will appear in a green info box.
-
-Negative
-: This will appear in a yellow info box.
-
- [Example of a Link](https://www.google.com)
-
-Adding an image
-![image_caption](https://s3-eu-west-1.amazonaws.com/released-artifacts-3.x/assets/tutorial_images/creating-styles/step1.png)
-
-* List
-* using 
-* bullets
-
-###
-
-1. List
-1. Using
-1. Numbers

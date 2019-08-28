@@ -1,7 +1,0 @@
----
-applications:
-- name: 09-scs-processor-positive-attendee
-  memory: 1024M
-  path: target/09-scs-processor-positive-0.0.1-SNAPSHOT.jar
-  services:
-  - solace-eventmesh

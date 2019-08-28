@@ -1,7 +1,0 @@
----
-applications:
-- name: 05-scs-processor-feature-attendee
-  memory: 1024M
-  path: target/05-scs-processor-feature-0.0.1-SNAPSHOT.jar
-  services:
-  - solace-eventmesh
