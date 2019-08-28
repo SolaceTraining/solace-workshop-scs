@@ -1,0 +1,27 @@
+{
+  "environment": "web",
+  "format": "html",
+  "prefix": "https://storage.googleapis.com",
+  "mainga": "UA-49880327-14",
+  "updated": "2019-08-28T15:34:42-04:00",
+  "id": "solace-workshop-scs",
+  "duration": 155,
+  "title": "Developer Workshop: Using Spring Cloud Streams with Solace PubSub+",
+  "summary": "Using Spring Cloud Streams w/ Solace PubSub+",
+  "source": "codelab.md",
+  "theme": "",
+  "status": [
+    "published"
+  ],
+  "category": [
+    "spring",
+    "springcloudstreams",
+    "java"
+  ],
+  "tags": [
+    "web"
+  ],
+  "feedback": "github.com/SolaceTraining/solace-workshop-scs",
+  "ga": "0",
+  "url": "solace-workshop-scs"
+}
