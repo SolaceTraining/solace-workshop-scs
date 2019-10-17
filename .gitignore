@@ -25,3 +25,4 @@ hs_err_pid*
 # Eclipse 
 .settings/*
 .project
+.DS_Store
