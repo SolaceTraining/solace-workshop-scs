@@ -1,17 +1,17 @@
 spring:
   cloud:
     stream:
-      default-binder: local_solace
+      default-binder: solaceBroker
       bindings:
         input:
           destination: TWEETS.Q
-          group: FEATURES.<ATTENDEE_NAME>
+          group: FEATURES.ATTENDEE
         outputFeature:
-          destination: tweets/stream/<ATTENDEE_NAME>/features
+          destination: ATTENDEE/tweets/stream/features
         outputNoFeature:
-          destination: tweets/stream/<ATTENDEE_NAME>/nofeatures
+          destination: ATTENDEE/tweets/stream/nofeatures
       binders:
-        local_solace:
+        solaceBroker:
           type: solace
           environment:
             solace:
@@ -27,7 +27,7 @@ spring:
         bindings:
           input:
             consumer:
-              queueAdditionalSubscriptions: tweets/stream
+              queueAdditionalSubscriptions: ATTENDEE/tweets/stream
 logging:
   level:
     root: INFO

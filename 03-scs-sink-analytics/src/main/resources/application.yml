@@ -4,11 +4,11 @@ spring:
       bindings:
         input:
           destination: TWEETS.Q
-          binder: local_solace
+          binder: solaceBroker
           #The presence of "group" tells the binder to follow the "consumer group" pattern
-          group: <ATTENDEE_NAME>
+          group: ATTENDEE
       binders:
-        local_solace:
+        solaceBroker:
           type: solace
           environment:
             solace:
@@ -24,7 +24,7 @@ spring:
         bindings:
           input:
             consumer:
-              queueAdditionalSubscriptions: tweets/stream
+              queueAdditionalSubscriptions: ATTENDEE/tweets/stream
                 
 logging:
   level:

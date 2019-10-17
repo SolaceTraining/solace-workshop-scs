@@ -3,11 +3,11 @@ spring:
     stream:
       bindings:
         input:
-          destination: TWEETS.Q.BOARD.<AttendeeName>
-          binder: local_solace
+          destination: TWEETS.Q.BOARD.ATTENDEE
+          binder: solaceBroker
           # Note that no "group" is specified so this input will follow the "publish-subscribe" pattern
       binders:
-        local_solace:
+        solaceBroker:
           type: solace
           environment:
             solace:
@@ -23,7 +23,7 @@ spring:
         bindings:
           input:
             consumer:
-              queueAdditionalSubscriptions: tweets/stream
+              queueAdditionalSubscriptions: ATTENDEE/tweets/stream
 logging:
   level:
     root: INFO

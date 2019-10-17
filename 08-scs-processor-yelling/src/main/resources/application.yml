@@ -4,13 +4,13 @@ spring:
       bindings:
         input:
           destination: TWEETS.Q
-          binder: local_solace
-          group: YELLING.<ATTENDEE_NAME>
+          binder: solaceBroker
+          group: YELLING.ATTENDEE
         output:
-          destination: tweets/stream/<ATTENDEE_NAME>/nofeatures/noyelling
-          binder: local_solace
+          destination: ATTENDEE/tweets/stream/nofeatures/noyelling
+          binder: solaceBroker
       binders:
-        local_solace:
+        solaceBroker:
           type: solace
           environment:
             solace:
@@ -31,7 +31,7 @@ spring:
         bindings:
           input:
             consumer:
-              queueAdditionalSubscriptions: tweets/stream/<ATTENDEE_NAME>/nofeatures
+              queueAdditionalSubscriptions: ATTENDEE/tweets/stream/nofeatures
 
 logging:
   level:

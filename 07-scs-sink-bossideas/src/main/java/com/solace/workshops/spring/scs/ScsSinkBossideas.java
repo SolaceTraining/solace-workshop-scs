@@ -30,7 +30,7 @@ import org.springframework.cloud.stream.messaging.Sink;
 import com.solace.workshop.Tweet;
 
 @SpringBootApplication
-@EnableBinding(Sink.class)
+//@EnableBinding(Sink.class)
 public class ScsSinkBossideas {
 	
 	private static final Logger log = LoggerFactory.getLogger(ScsSinkBossideas.class);
@@ -39,8 +39,8 @@ public class ScsSinkBossideas {
 		SpringApplication.run(ScsSinkBossideas.class, args);
 	}
 
-	@StreamListener(Sink.INPUT)
-	public void sink(Tweet tweet) {
-		log.info("Received: " + tweet.toString());
-	}
+//	@StreamListener(Sink.INPUT)
+//	public void sink(Tweet tweet) {
+//		log.info("Received: " + tweet.toString());
+//	}
 }

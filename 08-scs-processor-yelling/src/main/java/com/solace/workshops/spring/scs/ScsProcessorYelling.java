@@ -35,26 +35,19 @@ import com.solace.workshop.Tweet;
 import reactor.core.publisher.Flux;
 
 @SpringBootApplication
-@EnableBinding(Processor.class)
 public class ScsProcessorYelling {
 	
 	private static final Logger logger = LoggerFactory.getLogger(ScsProcessorYelling.class);
 
 	public static void main(String[] args) {
 		// Defining the reactive function to bind to the INPUT channel of the Processor
-		SpringApplication.run(ScsProcessorYelling.class, "--spring.cloud.stream.function.definition=changeCase");
+		SpringApplication.run(ScsProcessorYelling.class);
 	}
 	
 	@Bean
 	public Function<Flux<Tweet>, Flux<Tweet>> changeCase() {
-		return flux -> flux
-				.doOnNext(t ->logger.info("====Tweet BEFORE mapping: " + t.toString()))
-				.map(t -> { t.setText(t.getText().toLowerCase());
-					return t;
-					})
-				.doOnNext(t ->logger.info("++++Tweet AFTER mapping: " + t.toString()))
-				;
-	
+		 //TODO - implement; see instructions in codelab! 
+		 return null;
 	}
 		
 }

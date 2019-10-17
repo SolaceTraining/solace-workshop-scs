@@ -3,10 +3,10 @@ spring:
     stream:
       bindings:
         output:
-          destination: tweets/stream
-          binder: local_solace
+          destination: ATTENDEE/tweets/stream
+          binder: solaceBroker
       binders:
-        local_solace:
+        solaceBroker:
           type: solace
           environment:
             solace:
