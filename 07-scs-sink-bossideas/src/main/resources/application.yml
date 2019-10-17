@@ -4,10 +4,10 @@ spring:
       bindings:
         input:
           destination: TWEETS.Q
-          group: BOSSIDEAS.attendee
-          binder: local_solace
+          group: BOSSIDEAS.ATTENDEE
+          binder: solaceBroker
       binders:
-        local_solace:
+        solaceBroker:
           type: solace
           environment:
             solace:
@@ -23,7 +23,7 @@ spring:
         bindings:
           input:
             consumer:
-              queueAdditionalSubscriptions: tweets/stream/attendee/features
+              queueAdditionalSubscriptions: ATTENDEE/tweets/stream/features
 logging:
   level:
     root: INFO
